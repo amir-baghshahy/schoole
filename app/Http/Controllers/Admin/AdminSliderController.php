@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\SliderResource;
+use App\Repositories\SliderRepository;
+use Illuminate\Support\Facades\Validator;
+
+class AdminSliderController extends Controller
+{
+
+    protected $repository;
+
+    public function __construct(SliderRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function index()
+    {
+        $slides =  $this->repository->getall();
+
+        return  new SliderResource($slides);
+    }
+
+
+    public function create(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'link' => 'required|string|max:255',
+            'description' => 'required|string',
+            'img' => 'required|mimes:png,jpg,jpeg|max:4048',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+
+        if ($request->file('img')) {
+
+            $requestdata = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
+
+            $create = $this->repository->create($requestdata);
+
+            if ($create) {
+                return response(['status' => true]);
+            } else {
+                return response(['status' => false]);
+            }
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'id' => 'required|string|max:255',
+            'link' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'img' => 'required|mimes:png,jpg,jpeg|max:4048',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+        if ($request->file('img')) {
+
+            $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
+
+            $slider = $this->repository->findslide($request->id);
+            $update = $this->repository->update($slider, $requestdata);
+
+            if ($update) {
+                return (new SliderResource($slider))->additional([
+                    "status" => $update
+                ]);
+            }
+            return response(['status' => false]);
+        }
+    }
+
+    public function delete($id)
+    {
+        $delete  = $this->repository->delete($id);
+
+        if ($delete) {
+            return response(['status' => true]);
+        }
+        return response(['status' => false]);
+    }
+
+
+    public function upload_image($request)
+    {
+        $file = $request['img'];
+        $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
+        $location = public_path('images/sliders');
+        $file->move($location, $filename);
+
+        $requestdata = $request;
+        $requestdata['img'] = $filename;
+
+        return $request;
+    }
+}
