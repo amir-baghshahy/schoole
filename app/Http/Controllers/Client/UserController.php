@@ -29,21 +29,24 @@ class UserController extends Controller
 
         $user = auth()->user();
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'family' => 'required|string|max:255',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id',
-            'national_code' => 'required|min:10|max:10|unique:users,national_code,' . $user->id . 'id',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
 
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id',
+                'password' => 'required|string|min:8|confirmed',
+            ],
+            [
+                'phone.unique' => 'شماره قبلا ثبت شده است ',
+            ]
+        );
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
 
-        $update = $this->repository->update($user, $request->only(['name', 'family', 'phone', 'national_code', 'password']));
+        $update = $this->repository->update($user, $request->only(['phone', 'password']));
 
         if ($update) {
             $user = $this->repository->finduser($user->id);

@@ -8,9 +8,8 @@ class UserRepository
 {
     public function finduser($id)
     {
-        return  User::find($id);
+        return  User::findOrFail($id);
     }
-
 
     public function get_teachars()
     {
@@ -29,11 +28,13 @@ class UserRepository
 
     public function getall()
     {
-        return  User::all();
+        return  User::with('account')->get();
     }
 
     public function delete($id)
     {
-        return  User::destroy($id);
+        $user = $this->finduser($id);
+        $user->account()->delete();
+        return $user->delete();
     }
 }

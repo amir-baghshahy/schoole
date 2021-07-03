@@ -15,11 +15,10 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('family');
             $table->string('phone');
-            $table->string("national_code");
             $table->integer("role")->default(2);
+            $table->string("status")->default('incomplete-information');
+            $table->string("status_cause")->default('ناقص بودن اطلاعات شما');
             $table->string('password');
             $table->timestamps();
         });

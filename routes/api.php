@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Client\MajorController;
 use App\Http\Controllers\Client\NewsController;
 use App\Http\Controllers\Client\SliderController;
@@ -38,6 +39,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     Route::prefix("user")->group(function () {
         Route::get('/info', [UserController::class, 'index']);
         Route::put('/update', [UserController::class, 'update']);
+        Route::get('/account/info', [AccountController::class, 'index']);
+        Route::put('/account/update', [AccountController::class, 'update']);
     });
 
     Route::get('slider/all', [SliderController::class, 'index']);
@@ -60,6 +63,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix("user")->group(function () {
             Route::get('/all', [AdminUserController::class, 'index']);
             Route::get('/all/teachers', [AdminUserController::class, 'get_teachers']);
+            Route::put('/change/status', [AdminUserController::class, 'change_status']);
             Route::post('/create', [AdminUserController::class, 'create']);
             Route::put('/update', [AdminUserController::class, 'update']);
             Route::delete('/delete/{id}', [AdminUserController::class, 'delete']);

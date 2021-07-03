@@ -19,14 +19,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'family',
         'phone',
-        'national_code',
-        'grade',
         'role',
-        'is_accepted',
-        'password',
+        'status',
+        'status_cause',
+        'password'
     ];
 
     /**
@@ -48,5 +45,10 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         return  $this->attributes['password'] =  Hash::make($value);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'id', 'user_id');
     }
 }

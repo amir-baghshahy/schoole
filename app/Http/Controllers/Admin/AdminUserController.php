@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
@@ -31,14 +32,11 @@ class AdminUserController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'family' => 'required|string|max:255',
             'phone' => 'required|max:11|min:11|unique:users',
-            'national_code' => 'required|min:10|max:10|unique:users',
+            'role' => 'required',
             'password' => 'required|string|min:8|confirmed',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
-            'national_code.unique' => 'کد ملی قبلا ثبت شده است'
         ]);
 
         if ($validator->fails()) {
@@ -46,6 +44,9 @@ class AdminUserController extends Controller
         }
 
         $user = $this->repository->create($request->toArray());
+        if ($user->role != 1 && $user->role != 0) {
+            Account::create(['user_id' => $user->id]);
+        }
 
         if ($user) {
             return (new UserResource($user));
@@ -59,12 +60,11 @@ class AdminUserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'family' => 'required|string|max:255',
             'role' => 'required',
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
-            'national_code' => 'required|min:10|max:10|unique:users,national_code,' . $request->id . 'id',
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'phone.unique' => 'شماره قبلا ثبت شده است ',
         ]);
 
 
@@ -74,7 +74,7 @@ class AdminUserController extends Controller
 
         $user = $this->repository->finduser($request->id);
 
-        $update = $this->repository->update($user, $request->only(['name', 'family', 'phone', 'national_code', 'password', 'role']));
+        $update = $this->repository->update($user, $request->only(['phone', 'password', 'role']));
 
         if ($update) {
             $user = $this->repository->finduser($user->id);
@@ -84,6 +84,30 @@ class AdminUserController extends Controller
         }
         return response(['status' => false]);
     }
+
+
+    public function change_status(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|max:255',
+            'status' => 'required',
+            'status_cause' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+        $user = $this->repository->finduser($request->user_id);
+        $update = $this->repository->update($user, $request->only(['status', 'status_cause']));
+
+        if ($update) {
+            return response(['status' => true]);
+        }
+        return response(['status' => false]);
+    }
+
 
     public function delete($id)
     {
