@@ -9,7 +9,7 @@ class MajorRepository
 
     public function find($id)
     {
-        return  Major::find($id);
+        return  Major::findOrFail($id);
     }
 
     public function get_majors_title()

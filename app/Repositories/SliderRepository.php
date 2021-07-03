@@ -9,7 +9,7 @@ class SliderRepository
 
     public function findslide($id)
     {
-        return Slider::find($id);
+        return Slider::findOrFail($id);
     }
 
     public function getall()
