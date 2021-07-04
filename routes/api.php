@@ -34,6 +34,7 @@ Route::middleware(['json.response'])->prefix('auth')->group(function () {
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     // client
+
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
     Route::prefix("user")->group(function () {
@@ -50,6 +51,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     Route::get('news/{id}', [NewsController::class, 'find']);
 
 
+
+
+
     // admin
     Route::prefix("admin")->middleware(['admin'])->group(function () {
 
@@ -61,8 +65,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         });
 
         Route::prefix("user")->group(function () {
-            Route::get('/all', [AdminUserController::class, 'index']);
-            Route::get('/all/teachers', [AdminUserController::class, 'get_teachers']);
+            Route::get('/all/{status}', [AdminUserController::class, 'index']);
             Route::put('/change/status', [AdminUserController::class, 'change_status']);
             Route::post('/create', [AdminUserController::class, 'create']);
             Route::put('/update', [AdminUserController::class, 'update']);

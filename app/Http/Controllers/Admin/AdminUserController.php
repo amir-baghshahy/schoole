@@ -19,14 +19,21 @@ class AdminUserController extends Controller
     }
 
 
-    public function index()
+    public function index($status)
     {
-        return new UserResource($this->repository->getall());
-    }
-
-    public function get_teachers()
-    {
-        return new UserResource($this->repository->get_teachars());
+        if ($status == "teachers") {
+            return new UserResource($this->repository->get_teachars());
+        } elseif ($status == "students") {
+            return new UserResource($this->repository->get_students());
+        } elseif ($status == "not-accepted") {
+            return new UserResource($this->repository->get_not_accepted());
+        } elseif ($status == "wait-accepted") {
+            return new UserResource($this->repository->get_wait_accepted());
+        } elseif ($status == "incomplete-information") {
+            return new UserResource($this->repository->get_incomplete_info());
+        }elseif ($status == "all") {
+            return new UserResource($this->repository->get_all());
+        }
     }
 
     public function create(Request $request)

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\User;
+use App\Rules\Nationalcode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AccountResource;
@@ -33,8 +35,8 @@ class AccountController extends Controller
             [
                 'name' => 'required|string|max:255',
                 'family' => 'required|string|max:255',
-                'national_code' => 'required|min:10|max:10|unique:accounts,national_code,' . $user->id,
-                'birthday' => 'required|string',
+                'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $user->id],
+                'birthday' => 'required',
                 'grade' => 'required|max:255',
                 'major_name' => 'required|string|max:255',
                 'address' => 'required|string',
@@ -43,7 +45,7 @@ class AccountController extends Controller
                 'dad_work_address' => 'required|string',
                 'dad_is_dead' => 'required|string|max:255',
                 'mom_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,mom_phone,' . $user->id,
-                'mom_work_address' => 'required|string|max:255',
+                'mom_work_address' => 'string|max:255',
                 'mom_is_dead' => 'required|string',
                 'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,relatives_phone,' . $user->id,
                 'relatives_name' => 'required|string|max:255',
@@ -65,6 +67,9 @@ class AccountController extends Controller
 
         $account = $this->repository->find($user->id);
         $update = $this->repository->update($account, $request->toArray());
+        $user_update = User::find($user->id);
+        $user_update->update(['status' => 'wait-accepte', 'status_cause' => 'منتظر برای تایید ادمین']);
+
 
 
         if ($update) {

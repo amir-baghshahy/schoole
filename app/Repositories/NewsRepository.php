@@ -18,7 +18,7 @@ class NewsRepository
     {
         return News::select('*')->with(['user' => function ($q) {
             return  $q->select('name', 'id');
-        }])->get();
+        }])->paginate(30);
     }
 
     public function create($request)
