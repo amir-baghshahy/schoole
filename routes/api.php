@@ -65,7 +65,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         });
 
         Route::prefix("user")->group(function () {
-            Route::get('/all/{status}', [AdminUserController::class, 'index']);
+            Route::get('/{status}', [AdminUserController::class, 'index']);
             Route::put('/change/status', [AdminUserController::class, 'change_status']);
             Route::post('/create', [AdminUserController::class, 'create']);
             Route::put('/update', [AdminUserController::class, 'update']);

@@ -29,10 +29,10 @@ class AdminSliderController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'link' => 'required|string|max:255',
-            'description' => 'required|string',
-            'img' => 'required|mimes:png,jpg,jpeg|max:4048',
+            'title' => 'nullable|max:255',
+            'link' => 'nullable|max:255',
+            'description' => 'nullable',
+            'img' => 'required|mimes:png,jpg,jpeg',
         ]);
 
         if ($validator->fails()) {
@@ -57,11 +57,11 @@ class AdminSliderController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
+            'title' => 'sometimes|max:255',
             'id' => 'required|string|max:255',
-            'link' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'img' => 'required|mimes:png,jpg,jpeg|max:4048',
+            'link' => 'sometimes|max:255',
+            'description' => 'sometimes|max:255',
+            'img' => 'required|mimes:png,jpg,jpeg',
         ]);
 
         if ($validator->fails()) {
