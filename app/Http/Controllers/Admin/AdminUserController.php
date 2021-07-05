@@ -21,7 +21,7 @@ class AdminUserController extends Controller
     }
 
 
-    public function index($status)
+    public function index(Request $request, $status)
     {
         if ($status == "teachers") {
             return new UserResource($this->repository->get_teachars());
@@ -36,7 +36,7 @@ class AdminUserController extends Controller
         } elseif ($status == "archive") {
             return new UserResource($this->repository->get_archives());
         } elseif ($status == "all") {
-            return new UserResource($this->repository->get_all());
+            return new UserResource($this->repository->get_all($request));
         }
     }
 

@@ -38,9 +38,51 @@ class UserRepository
     }
 
 
-    public function get_all()
+    public function get_all($request)
     {
-        return  User::with('account')->where([['role', '=', '2'], ['archive', '0']])->paginate(30);
+        $code = $request->query('code');
+        $family = $request->query('family');
+        $grade = $request->query('grade');
+        $major_name = $request->query('major');
+
+        if ($code) {
+            return  User::whereHas(
+                'account',
+                function ($q) use ($code) {
+                    return $q->where('national_code', $code);
+                }
+            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+        } elseif ($family) {
+            return User::whereHas(
+                'account',
+                function ($q) use ($family) {
+                    return $q->where('family', 'LIKE', '%' . $family . '%');
+                }
+            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+        } elseif ($grade) {
+            return  User::whereHas(
+                'account',
+                function ($q) use ($grade) {
+                    return $q->where('grade', $grade);
+                }
+            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+        } elseif ($major_name) {
+            return  User::whereHas(
+                'account',
+                function ($q) use ($major_name) {
+                    return $q->where('major_name', 'LIKE', '%' . $major_name . '%');
+                }
+            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+        } elseif ($grade && $major_name) {
+            return  User::whereHas(
+                'account',
+                function ($q) use ($major_name) {
+                    return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
+                }
+            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+        } else {
+            return  User::with('account')->where([['role', '2'], ['archive', '0']])->paginate(30);
+        }
     }
 
     public function get_archives()
