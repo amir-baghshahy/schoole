@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSliderController;
@@ -66,9 +67,14 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
         Route::prefix("user")->group(function () {
             Route::get('/{status}', [AdminUserController::class, 'index']);
+
+            Route::get('/account/{id}', [AdminAccountController::class, 'find']);
+            Route::put('/account/update', [AdminAccountController::class, 'update']);
+
             Route::put('/change/status', [AdminUserController::class, 'change_status']);
-            Route::post('/create', [AdminUserController::class, 'create']);
-            Route::put('/update', [AdminUserController::class, 'update']);
+            Route::post('student/create', [AdminUserController::class, 'create']);
+            Route::put('student/update', [AdminUserController::class, 'update']);
+            Route::post('student/archive', [AdminUserController::class, 'archive']);
             Route::delete('/delete/{id}', [AdminUserController::class, 'delete']);
         });
 

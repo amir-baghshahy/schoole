@@ -23,7 +23,8 @@ class User extends Authenticatable
         'role',
         'status',
         'status_cause',
-        'password'
+        'password',
+        'archive'
     ];
 
     /**

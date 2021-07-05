@@ -26,8 +26,12 @@ class CreateAccountsTable extends Migration
             $table->string("dad_name")->nullable();
             $table->string("dad_phone")->nullable();
             $table->string("dad_work_address")->nullable();
+            $table->string("degree_dad")->nullable();
             $table->tinyInteger("dad_is_dead")->nullable();
+            $table->string("mom_name")->nullable();
+            $table->string("mom_family")->nullable();
             $table->string("mom_phone")->nullable();
+            $table->string("degree_mom")->nullable();
             $table->string("mom_work_address")->nullable();
             $table->tinyInteger("mom_is_dead")->nullable();
             $table->string("relatives_phone")->nullable();
