@@ -64,7 +64,7 @@ class AdminUserController extends Controller
             'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts',
             'relatives_name' => 'required|string|max:255',
         ], [
-            'phone.unique' => 'شماره قبلا ثبت شده است ',
+            'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
             'national_code.unique' => 'کد ملی قبلا ثبت شده است',
             'mom_phone.unique' => 'شماره مادر قبلا ثبت شده است ',
@@ -124,52 +124,6 @@ class AdminUserController extends Controller
         } else {
             return response(['status' => false], 422);
         }
-    }
-
-    public function update(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'id' => 'required|string|max:255',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
-            'password' => 'required|string|min:8|confirmed',
-            'name' => 'required|string|max:255',
-            'family' => 'required|string|max:255',
-            'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $request->id],
-            'birthday' => 'required',
-            'grade' => 'required|max:255',
-            'major_name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'dad_name' => 'required|string|max:255',
-            'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $request->id,
-            'dad_work_address' => 'nullable',
-            'dad_is_dead' => 'required|string|max:255',
-            'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $request->id,
-            'mom_work_address' => 'nullable',
-            'mom_is_dead' => 'required|string',
-            'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,relatives_phone,' . $request->id,
-            'relatives_name' => 'required|string|max:255',
-        ], [
-            'phone.unique' => 'شماره قبلا ثبت شده است ',
-        ]);
-
-
-        if ($validator->fails()) {
-            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
-        }
-
-        $user = $this->repository->finduser($request->id);
-        $update = $this->repository->update($user, $request->only(['phone', 'password']));
-        $account = Account::find(['user_id', $user->id]);
-        $update_account = Account::updated($request->toArray());
-
-        if ($update) {
-            $user = $this->repository->finduser($user->id);
-            return (new UserResource($user))->additional([
-                'status' => true
-            ]);
-        }
-        return response(['status' => false]);
     }
 
 

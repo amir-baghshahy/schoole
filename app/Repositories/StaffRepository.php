@@ -9,7 +9,7 @@ class StaffRepository
 
     public function all()
     {
-        return Staff::all()->where('status', '1')->get();
+        return Staff::all()->where('status', '1');
     }
 
     public function find($userid)

@@ -31,11 +31,9 @@ Route::middleware(['json.response'])->prefix('auth')->group(function () {
 });
 
 
-
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     // client
-
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
     Route::prefix("user")->group(function () {
@@ -52,49 +50,53 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     Route::get('news/{id}', [NewsController::class, 'find']);
 
 
-
-
-
     // admin
     Route::prefix("admin")->middleware(['admin'])->group(function () {
 
-        Route::prefix("slider")->group(function () {
-            Route::get('/all', [AdminSliderController::class, 'index']);
-            Route::post('/create', [AdminSliderController::class, 'create']);
-            Route::put('/update', [AdminSliderController::class, 'update']);
-            Route::delete('/delete/{id}', [AdminSliderController::class, 'delete']);
-        });
-
         Route::prefix("user")->group(function () {
+
             Route::get('{status}', [AdminUserController::class, 'index']);
 
+            Route::prefix('student')->group(function () {
+                Route::post('create', [AdminUserController::class, 'create']);
+                Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
+                Route::put('change/status', [AdminUserController::class, 'change_status']);
+
+                Route::put('update', [AdminAccountController::class, 'update']);
+                Route::post('archive', [AdminUserController::class, 'archive']);
+                Route::put('grade/up', [AdminUserController::class, 'grade_up']);
+            });
+
+
             Route::get('account/{id}', [AdminAccountController::class, 'find']);
-            Route::put('account/update', [AdminAccountController::class, 'update']);
 
-            Route::put('change/status', [AdminUserController::class, 'change_status']);
-            Route::post('student/create', [AdminUserController::class, 'create']);
-            Route::put('student/update', [AdminUserController::class, 'update']);
-            Route::post('student/archive', [AdminUserController::class, 'archive']);
-            Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
-            Route::put('student/grade/up', [AdminUserController::class, 'grade_up']);
+            Route::prefix('teacher')->group(function () {
+                Route::post('teacher/create', [AdminUserController::class, 'create_teacher']);
+            });
+        });
 
-            Route::post('teacher/create', [AdminUserController::class, 'create_teacher']);
+
+        Route::prefix("slider")->group(function () {
+            Route::post('create', [AdminSliderController::class, 'create']);
+            Route::put('update', [AdminSliderController::class, 'update']);
+            Route::delete('delete/{id}', [AdminSliderController::class, 'delete']);
+            Route::get('all', [AdminSliderController::class, 'index']);
         });
 
 
         Route::prefix("major")->group(function () {
-            Route::get('/all', [AdminMajorController::class, 'index']);
-            Route::post('/create', [AdminMajorController::class, 'create']);
-            Route::put('/update', [AdminMajorController::class, 'update']);
-            Route::delete('/delete/{id}', [AdminMajorController::class, 'delete']);
+            Route::post('create', [AdminMajorController::class, 'create']);
+            Route::put('update', [AdminMajorController::class, 'update']);
+            Route::delete('delete/{id}', [AdminMajorController::class, 'delete']);
+            Route::get('all', [AdminMajorController::class, 'index']);
         });
 
 
         Route::prefix("news")->group(function () {
-            Route::get('/all', [AdminNewsController::class, 'index']);
-            Route::post('/create', [AdminNewsController::class, 'create']);
-            Route::put('/update', [AdminNewsController::class, 'update']);
-            Route::delete('/delete/{id}', [AdminNewsController::class, 'delete']);
+            Route::post('create', [AdminNewsController::class, 'create']);
+            Route::put('update', [AdminNewsController::class, 'update']);
+            Route::delete('delete/{id}', [AdminNewsController::class, 'delete']);
+            Route::get('all', [AdminNewsController::class, 'index']);
         });
     });
 });

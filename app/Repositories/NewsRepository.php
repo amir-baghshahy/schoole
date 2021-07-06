@@ -9,9 +9,9 @@ class NewsRepository
 
     public function find($id)
     {
-        return News::select('*')->with(['user' => function ($q) {
+        return News::findOrFail($id)->with(['user' => function ($q) {
             return  $q->select('name', 'id');
-        }])->where('id', $id)->get();
+        }])->get();
     }
 
     public function getall()

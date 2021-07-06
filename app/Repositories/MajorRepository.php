@@ -12,7 +12,7 @@ class MajorRepository
         return  Major::findOrFail($id);
     }
 
-    public function get_majors_title()
+    public function index()
     {
         return  Major::all('title', 'icone');
     }
@@ -20,7 +20,7 @@ class MajorRepository
 
     public function get_major_des($id)
     {
-        return  Major::where('id', $id)->get(['media', 'text']);
+        return  Major::findOrFail($id)->get(['media', 'text']);
     }
 
     public function create($request)

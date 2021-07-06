@@ -19,15 +19,15 @@ class MajorController extends Controller
 
     public function index()
     {
-        $major =  $this->repository->get_majors_title();
+        $major =  $this->repository->index();
 
-        return  MajorResource::collection($major);
+        return  new MajorResource($major);
     }
 
 
     public function get_descroption($id)
     {
-        $major =  $this->repository->get_major_des($id);
-        return  MajorResource::collection($major);
+        $major = $this->repository->get_major_des($id);
+        return  new MajorResource($major);
     }
 }

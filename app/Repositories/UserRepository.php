@@ -76,7 +76,7 @@ class UserRepository
         } elseif ($grade && $major_name) {
             return  User::whereHas(
                 'account',
-                function ($q) use ($major_name) {
+                function ($q) use ($major_name, $grade) {
                     return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
                 }
             )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
