@@ -7,6 +7,7 @@ use App\Rules\Nationalcode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Staff;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
@@ -84,6 +85,41 @@ class AdminUserController extends Controller
         Account::create($request->toArray());
 
         if ($user) {
+            return response(['status' => true], 200);
+        } else {
+            return response(['status' => false], 422);
+        }
+    }
+
+
+    public function create_teacher(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|max:11|min:11|unique:users',
+            'password' => 'required|string|min:8',
+            'name' => 'required|string|max:255',
+            'family' => 'required|string|max:255',
+            'rolename' => 'required',
+            'degree' => 'required',
+            'teaching_experience' => 'nullable',
+            'major' => 'required',
+            'status' => 'nullable',
+            // 'image' => 'required|mimes:png,jpg,jpeg',
+        ], [
+            'phone.unique' => 'شماره قبلا ثبت شده است ',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+        $user = $this->repository->create(['phone' => $request->phone, 'password' => $request->password, 'role' => '1', 'status' => '', 'status_cause' => '']);
+        $request_staff = $request;
+        $request_staff['user_id'] = $user->id;
+        $staff = Staff::create($request_staff->toArray());
+
+        if ($staff) {
             return response(['status' => true], 200);
         } else {
             return response(['status' => false], 422);

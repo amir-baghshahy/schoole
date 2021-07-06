@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Account::class, 'id', 'user_id');
     }
+
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'id', 'user_id');
+    }
 }

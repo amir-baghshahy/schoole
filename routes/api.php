@@ -66,17 +66,19 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         });
 
         Route::prefix("user")->group(function () {
-            Route::get('/{status}', [AdminUserController::class, 'index']);
+            Route::get('{status}', [AdminUserController::class, 'index']);
 
-            Route::get('/account/{id}', [AdminAccountController::class, 'find']);
-            Route::put('/account/update', [AdminAccountController::class, 'update']);
+            Route::get('account/{id}', [AdminAccountController::class, 'find']);
+            Route::put('account/update', [AdminAccountController::class, 'update']);
 
-            Route::put('/change/status', [AdminUserController::class, 'change_status']);
+            Route::put('change/status', [AdminUserController::class, 'change_status']);
             Route::post('student/create', [AdminUserController::class, 'create']);
             Route::put('student/update', [AdminUserController::class, 'update']);
             Route::post('student/archive', [AdminUserController::class, 'archive']);
-            Route::delete('/delete/{id}', [AdminUserController::class, 'delete']);
+            Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
             Route::put('student/grade/up', [AdminUserController::class, 'grade_up']);
+
+            Route::post('teacher/create', [AdminUserController::class, 'create_teacher']);
         });
 
 
