@@ -76,6 +76,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
             Route::put('student/update', [AdminUserController::class, 'update']);
             Route::post('student/archive', [AdminUserController::class, 'archive']);
             Route::delete('/delete/{id}', [AdminUserController::class, 'delete']);
+            Route::put('student/grade/up', [AdminUserController::class, 'grade_up']);
         });
 
 

@@ -35,15 +35,12 @@ class AdminAccountController extends Controller
                 $request->all(),
                 [
                     'id' => 'required',
-                    'address' => 'required|string',
                     'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $user->id,
                     'dad_work_address' => 'nullable',
                     'dad_is_dead' => 'required|string|max:255',
                     'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $user->id,
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required|string',
-                    'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,relatives_phone,' . $user->id,
-                    'relatives_name' => 'required|string|max:255',
                 ],
                 [
 

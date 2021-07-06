@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AdminUserController extends Controller
@@ -174,11 +175,23 @@ class AdminUserController extends Controller
     {
         $update = User::whereHas('account', function ($query) {
             return $query->where('grade', 3);
-        });
+        })->where([['role', '=', 2], ['archive', '=', 0], ['status', 'accepted']]);
 
         $result =  $update->update(['archive' => '1']);
 
         if ($result) {
+            return response(['status' => true]);
+        }
+        return response(['status' => false]);
+    }
+
+    public function grade_up()
+    {
+        $update = User::with(['account' => function ($q) {
+            return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
+        }])->where([['role', 2], ['archive', '0'], ['status', 'accepted']])->get();
+
+        if ($update) {
             return response(['status' => true]);
         }
         return response(['status' => false]);
