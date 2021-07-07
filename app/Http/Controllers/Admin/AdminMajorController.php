@@ -19,7 +19,7 @@ class AdminMajorController extends Controller
 
     public function index()
     {
-        $major =  $this->repository->get_majors_title();
+        $major =  $this->repository->index();
         return  new MajorResource($major);
     }
 
@@ -28,9 +28,9 @@ class AdminMajorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'icone' => 'required|mimes:png,jpg,jpeg|max:4048',
+            'icone' => 'required|mimes:png,jpg,jpeg',
             'text' => 'required|string',
-            'media' => 'required'
+            'media' => 'required|mimes:png,jpg,jpeg,mp4,mov,ogg,ogx,oga,ogv,ogg,webm'
         ]);
 
         if ($validator->fails()) {

@@ -9,15 +9,15 @@ class NewsRepository
 
     public function find($id)
     {
-        return News::findOrFail($id)->with(['user' => function ($q) {
-            return  $q->select('name', 'id');
-        }])->get();
+        return News::findOrFail($id)->with('user')->get();
     }
 
     public function getall()
     {
         return News::select('*')->with(['user' => function ($q) {
-            return  $q->select('name', 'id');
+            return  $q->select('id');
+        }, "user.account" => function ($q) {
+            return  $q->select('id', 'user_id', 'name', 'family');
         }])->paginate(30);
     }
 
@@ -33,6 +33,10 @@ class NewsRepository
 
     public function delete($id)
     {
+        $news = $this->find($id);
+        if ($news->image) {
+            unlink(public_path() . "/" . $news->image);
+        }
         return News::destroy($id);
     }
 }

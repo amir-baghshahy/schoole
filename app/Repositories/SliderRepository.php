@@ -29,6 +29,11 @@ class SliderRepository
 
     public function delete($id)
     {
+        $slider = $this->findslide($id);
+        if ($slider->img) {
+            unlink(public_path() . "/" . $slider->img);
+        }
+
         return Slider::destroy($id);
     }
 }

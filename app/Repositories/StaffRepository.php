@@ -9,12 +9,12 @@ class StaffRepository
 
     public function all()
     {
-        return Staff::all()->where('status', '1');
+        return Staff::with('user');
     }
 
     public function find($userid)
     {
-        return  Staff::where(['user_id' => $userid])->firstOrFail();
+        return  Staff::with('user')->where(['user_id' => $userid])->firstOrFail();
     }
 
     public function create($request)
@@ -22,9 +22,9 @@ class StaffRepository
         return  Staff::create($request);
     }
 
-    public function update($account, $request)
+    public function update($staff, $request)
     {
-        return  $account->update($request);
+        return  $staff->update($request);
     }
 
     public function delete($id)

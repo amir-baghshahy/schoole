@@ -13,7 +13,7 @@ class Staff extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('published', true);
+        return $query->where('status', '1');
     }
 
     public function user()

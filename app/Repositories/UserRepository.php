@@ -108,6 +108,10 @@ class UserRepository
     public function delete($id)
     {
         $user = $this->finduser($id);
+        if ($user->role == 1 || $user->role == 0) {
+            $user->staff()->delete();
+            return $user->delete();
+        }
         $user->account()->delete();
         return $user->delete();
     }

@@ -39,6 +39,8 @@ class AdminUserController extends Controller
             return new UserResource($this->repository->get_archives());
         } elseif ($status == "all") {
             return new UserResource($this->repository->get_all($request));
+        } else {
+            return response(["message" => "not found", "code" => "404"], 404);
         }
     }
 
@@ -68,7 +70,7 @@ class AdminUserController extends Controller
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
             'national_code.unique' => 'کد ملی قبلا ثبت شده است',
             'mom_phone.unique' => 'شماره مادر قبلا ثبت شده است ',
-            'relatives_phone.unique' => 'شماره   قبلا ثبت شده است'
+            'relatives_phone.unique' => 'شماره  اقوام قبلا ثبت شده است'
         ]);
 
 
@@ -104,7 +106,7 @@ class AdminUserController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            // 'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'required|mimes:png,jpg,jpeg',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
         ]);
@@ -115,9 +117,10 @@ class AdminUserController extends Controller
         }
 
         $user = $this->repository->create(['phone' => $request->phone, 'password' => $request->password, 'role' => '1', 'status' => '', 'status_cause' => '']);
-        $request_staff = $request;
-        $request_staff['user_id'] = $user->id;
-        $staff = Staff::create($request_staff->toArray());
+
+        $request_data = $this->upload_image($request->all());
+        $request_data['user_id'] = $user->id;
+        $staff = Staff::create($request_data);
 
         if ($staff) {
             return response(['status' => true], 200);
@@ -185,5 +188,18 @@ class AdminUserController extends Controller
             return response(['status' => true]);
         }
         return response(['status' => false]);
+    }
+
+    public function upload_image($request)
+    {
+        $file = $request['image'];
+        $filename = "images/staff/" . time() . '_' . $file->getClientOriginalName();
+        $location = public_path('images/staff');
+        $file->move($location, $filename);
+
+        $request_data = $request;
+        $request_data['image'] = $filename;
+
+        return $request_data;
     }
 }

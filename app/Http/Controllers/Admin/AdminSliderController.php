@@ -40,17 +40,14 @@ class AdminSliderController extends Controller
         }
 
 
-        if ($request->file('img')) {
+        $requestdata = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
 
-            $requestdata = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
+        $create = $this->repository->create($requestdata);
 
-            $create = $this->repository->create($requestdata);
-
-            if ($create) {
-                return response(['status' => true]);
-            } else {
-                return response(['status' => false]);
-            }
+        if ($create) {
+            return response(['status' => true]);
+        } else {
+            return response(['status' => false]);
         }
     }
 
@@ -67,20 +64,18 @@ class AdminSliderController extends Controller
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
-        if ($request->file('img')) {
 
-            $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
+        $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
 
-            $slider = $this->repository->findslide($request->id);
-            $update = $this->repository->update($slider, $requestdata);
+        $slider = $this->repository->findslide($request->id);
+        $update = $this->repository->update($slider, $requestdata);
 
-            if ($update) {
-                return (new SliderResource($slider))->additional([
-                    "status" => $update
-                ]);
-            }
-            return response(['status' => false]);
+        if ($update) {
+            return (new SliderResource($slider))->additional([
+                "status" => $update
+            ]);
         }
+        return response(['status' => false]);
     }
 
     public function delete($id)
@@ -101,9 +96,9 @@ class AdminSliderController extends Controller
         $location = public_path('images/sliders');
         $file->move($location, $filename);
 
-        $requestdata = $request;
-        $requestdata['img'] = $filename;
+        $request_data = $request;
+        $request_data['img'] = $filename;
 
-        return $request;
+        return $request_data;
     }
 }

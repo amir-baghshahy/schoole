@@ -36,19 +36,15 @@ class AdminNewsController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
+        $requestdata = $this->upload_image($request->only(['title', 'text', 'image']));
+        $requestdata['user_id'] = auth()->user()->id;
 
-        if ($request->file('image')) {
+        $create = $this->repository->create($requestdata);
 
-            $requestdata = $this->upload_image($request->only(['title', 'text', 'image']));
-            $requestdata['user_id'] = auth()->user()->id;
-
-            $create = $this->repository->create($requestdata);
-
-            if ($create) {
-                return response(['status' => true]);
-            } else {
-                return response(['status' => false]);
-            }
+        if ($create) {
+            return response(['status' => true]);
+        } else {
+            return response(['status' => false]);
         }
     }
 
@@ -100,7 +96,8 @@ class AdminNewsController extends Controller
 
         $requestdata = $request;
         $requestdata['image'] = $filename;
+        $requestdata['user_id'] = auth()->user()->id;
 
-        return $request;
+        return $requestdata;
     }
 }

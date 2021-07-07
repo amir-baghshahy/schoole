@@ -35,6 +35,14 @@ class MajorRepository
 
     public function delete($id)
     {
+        $major = $this->find($id);
+        if ($major->icon != null) {
+            unlink(public_path() . "/" . $major->icone);
+        }
+
+        if ($major->media != null) {
+            unlink(public_path() . "/" . $major->media);
+        }
         return Major::destroy($id);
     }
 }

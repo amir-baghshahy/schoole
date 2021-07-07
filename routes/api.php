@@ -4,12 +4,14 @@ use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSliderController;
+use App\Http\Controllers\Admin\AdminStaffController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Client\MajorController;
 use App\Http\Controllers\Client\NewsController;
 use App\Http\Controllers\Client\SliderController;
+use App\Http\Controllers\Client\StaffController;
 use App\Http\Controllers\Client\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +43,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::put('/update', [UserController::class, 'update']);
         Route::get('/account/info', [AccountController::class, 'index']);
         Route::put('/account/update', [AccountController::class, 'update']);
+
+        Route::get('staff/all', [StaffController::class, 'index']);
+        Route::put('staff/update', [StaffController::class, 'update']);
     });
 
     Route::get('slider/all', [SliderController::class, 'index']);
@@ -62,16 +67,19 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
                 Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
                 Route::put('change/status', [AdminUserController::class, 'change_status']);
 
+                Route::get('account/{id}', [AdminAccountController::class, 'find']);
                 Route::put('update', [AdminAccountController::class, 'update']);
                 Route::post('archive', [AdminUserController::class, 'archive']);
                 Route::put('grade/up', [AdminUserController::class, 'grade_up']);
             });
 
 
-            Route::get('account/{id}', [AdminAccountController::class, 'find']);
 
-            Route::prefix('teacher')->group(function () {
-                Route::post('teacher/create', [AdminUserController::class, 'create_teacher']);
+            Route::prefix('staff')->group(function () {
+                Route::get('all', [AdminStaffController::class, 'index']);
+                Route::post('create', [AdminUserController::class, 'create_teacher']);
+                Route::put('update', [AdminStaffController::class, 'update']);
+                Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
             });
         });
 
