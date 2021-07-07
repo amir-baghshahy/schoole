@@ -57,10 +57,10 @@ class AdminSliderController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|max:255',
+            'title' => 'nullable|max:255',
             'id' => 'required|string|max:255',
-            'link' => 'sometimes|max:255',
-            'description' => 'sometimes|max:255',
+            'link' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
             'img' => 'required|mimes:png,jpg,jpeg',
         ]);
 
