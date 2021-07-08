@@ -2,18 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Account;
 use App\Models\Message;
 
-class MessageRespository
+class MessageRepository
 {
     public function getall()
     {
-        return Account::with(['users.accounts' => function ($q) {
-            return $q->select('user_id', 'name', 'family');
-        }]);
+        return Message::with(['user.account' => function ($q) {
+            return $q->select('user_id', 'name', 'family', 'grade');
+        }])->paginate(30);
     }
-
 
     public function create($request)
     {
