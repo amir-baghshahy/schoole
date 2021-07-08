@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminMessageController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminStaffController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Client\AboutController;
 use App\Http\Controllers\Client\AccountController;
 use App\Http\Controllers\Client\MajorController;
 use App\Http\Controllers\Client\MessageController;
@@ -56,6 +58,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     Route::get('news/all', [NewsController::class, 'index']);
     Route::get('news/{id}', [NewsController::class, 'find']);
     Route::post('messages/create', [MessageController::class, 'create']);
+    Route::get('about/all', [AboutController::class, 'index']);
 
 
     // admin
@@ -114,6 +117,13 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix("messages")->group(function () {
             Route::delete('delete/{id}', [AdminMessageController::class, 'delete']);
             Route::get('all', [AdminMessageController::class, 'getall']);
+        });
+
+
+
+        Route::prefix("about")->group(function () {
+            Route::post('create', [AdminAboutController::class, 'create']);
+            Route::put('update', [AdminAboutController::class, 'update']);
         });
     });
 });
