@@ -28,9 +28,9 @@ class StaffController extends Controller
     {
         $user = auth()->user();
 
-        // if ($user->role != 1) {
-        //     return response("Forbidden", 403);
-        // }
+        if ($user->role != 1) {
+            return response("Forbidden", 403);
+        }
 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id,
