@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminAccountController;
+use App\Http\Controllers\Admin\AdminDisciplineController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminNewsController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Client\AboutController;
 use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Client\DisciplineController;
 use App\Http\Controllers\Client\MajorController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\NewsController;
@@ -59,6 +61,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     Route::get('news/{id}', [NewsController::class, 'find']);
     Route::post('messages/create', [MessageController::class, 'create']);
     Route::get('about/all', [AboutController::class, 'index']);
+    Route::get('discipline', [DisciplineController::class, 'index']);
 
 
     // admin
@@ -124,6 +127,13 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix("about")->group(function () {
             Route::post('create', [AdminAboutController::class, 'create']);
             Route::put('update', [AdminAboutController::class, 'update']);
+        });
+
+        Route::prefix("discipline")->group(function () {
+            Route::get('all', [AdminDisciplineController::class, 'get_all']);
+            Route::post('create', [AdminDisciplineController::class, 'create']);
+            Route::put('update', [AdminDisciplineController::class, 'update']);
+            Route::delete('delete/{id}', [AdminDisciplineController::class, 'delete']);
         });
     });
 });
