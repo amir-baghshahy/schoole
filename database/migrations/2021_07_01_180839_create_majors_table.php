@@ -15,7 +15,7 @@ class CreateMajorsTable extends Migration
     {
         Schema::create('majors', function (Blueprint $table) {
             $table->id();
-            $table->string("title")->unique();
+            $table->string("title");
             $table->string("icone");
             $table->text("text");
             $table->string("media");
