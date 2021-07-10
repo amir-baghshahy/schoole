@@ -71,7 +71,7 @@ class UserController extends Controller
             }
 
 
-            $update = $this->repository->update($user, $request->only(['phone']));
+            $update = $this->repository->update($user, $request->only('phone'));
 
             if ($update) {
                 $user = $this->repository->finduser($user->id);
