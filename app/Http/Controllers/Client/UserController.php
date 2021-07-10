@@ -27,9 +27,8 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
-        $user = auth()->user();
-
         if ($request->has('password')) {
+
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -41,6 +40,7 @@ class UserController extends Controller
                 ]
             );
 
+            $user = auth()->user();
             if ($validator->fails()) {
                 return response(['message' => $validator->errors()->first(), 'status' => false], 422);
             }
@@ -70,6 +70,7 @@ class UserController extends Controller
                 return response(['message' => $validator->errors()->first(), 'status' => false], 422);
             }
 
+            $user = auth()->user();
 
             $update = $this->repository->update($user, $request->only(['phone']));
 
