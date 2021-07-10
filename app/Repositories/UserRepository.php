@@ -97,7 +97,7 @@ class UserRepository
 
     public function update($user, $request)
     {
-        return User::where('id', $user->id)->update($request);
+        return  $user->update($request);
     }
 
     public function getall()
