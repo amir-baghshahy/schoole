@@ -29,31 +29,58 @@ class UserController extends Controller
 
         $user = auth()->user();
 
+        if ($request->has('password')) {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id',
+                    'password' => 'required|string|min:8|confirmed',
+                ],
+                [
+                    'phone.unique' => 'شماره قبلا ثبت شده است ',
+                ]
+            );
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id',
-                'password' => 'required|string|min:8|confirmed',
-            ],
-            [
-                'phone.unique' => 'شماره قبلا ثبت شده است ',
-            ]
-        );
+            if ($validator->fails()) {
+                return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+            }
 
-        if ($validator->fails()) {
-            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+            $update = $this->repository->update($user, $request->only(['phone', 'password']));
+
+            if ($update) {
+                $user = $this->repository->finduser($user->id);
+                return (new UserResource($user))->additional([
+                    'status' => true
+                ]);
+            }
+            return response(['status' => false]);
+        } else {
+
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id'
+                ],
+                [
+                    'phone.unique' => 'شماره قبلا ثبت شده است ',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+            }
+
+
+            $update = $this->repository->update($user, $request->only(['phone']));
+
+            if ($update) {
+                $user = $this->repository->finduser($user->id);
+                return (new UserResource($user))->additional([
+                    'status' => true
+                ]);
+            }
+
+            return response(['status' => false]);
         }
-
-
-        $update = $this->repository->update($user, $request->only(['phone', 'password']));
-
-        if ($update) {
-            $user = $this->repository->finduser($user->id);
-            return (new UserResource($user))->additional([
-                'status' => true
-            ]);
-        }
-        return response(['status' => false]);
     }
 }
