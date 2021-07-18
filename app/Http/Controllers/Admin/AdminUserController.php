@@ -47,23 +47,31 @@ class AdminUserController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|max:11|min:11|unique:users',
+            'id' => 'required|string|max:255',
+            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
+            'home_phone' => 'required|unique:users,home_phone,' . $request->id . 'id',
             'password' => 'required|string|min:8|confirmed',
+            'birthday_city' => 'required',
+            'place_issue' => 'required',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
-            'national_code' => ['required', new Nationalcode, 'unique:accounts'],
+            'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $request->id],
             'birthday' => 'required',
             'grade' => 'required|max:255',
             'major_name' => 'required|string|max:255',
             'address' => 'required|string',
             'dad_name' => 'required|string|max:255',
-            'dad_phone' => 'nullable|unique:accounts',
+            'degree_dad' => 'required|string',
+            'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $request->id,
             'dad_work_address' => 'nullable',
             'dad_is_dead' => 'required|string|max:255',
-            'mom_phone' => 'nullable|unique:accounts',
+            'mom_name' => 'required|string|max:255',
+            'mom_family' => 'required|string|max:255',
+            'degree_mom' => 'required|string|max:255',
+            'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $request->id,
             'mom_work_address' => 'nullable',
             'mom_is_dead' => 'required|string',
-            'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts',
+            'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $request->id,
             'relatives_name' => 'required|string|max:255',
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
@@ -102,6 +110,7 @@ class AdminUserController extends Controller
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
             'rolename' => 'required',
+            'role' => "required",
             'degree' => 'required',
             'teaching_experience' => 'nullable',
             'major' => 'required',
@@ -116,7 +125,7 @@ class AdminUserController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $user = $this->repository->create(['phone' => $request->phone, 'password' => $request->password, 'role' => '1', 'status' => '', 'status_cause' => '']);
+        $user = $this->repository->create(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role, 'status' => '', 'status_cause' => '']);
 
         $request_data = $this->upload_image($request->all());
         $request_data['user_id'] = $user->id;

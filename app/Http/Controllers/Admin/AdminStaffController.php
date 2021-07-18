@@ -28,10 +28,11 @@ class AdminStaffController extends Controller
     {
         $validator = Validator::make($request->all(), [
             "id" => 'required',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id,
+            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
             'password' => 'required|string|min:8',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
+            'role' => "required",
             'rolename' => 'required',
             'degree' => 'required',
             'teaching_experience' => 'nullable',
@@ -48,9 +49,9 @@ class AdminStaffController extends Controller
         }
 
         $user = User::find($request->id);
-        $user->update(['phone' => $request->phone, 'password' => $request->password]);
+        $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
 
-        $request_data = $this->upload_image($request->except(['id', 'phone', 'password']));
+        $request_data = $this->upload_image($request->except(['id', 'phone', 'password', 'role']));
         $staff = $this->repository->find($user->id);
         $result = $this->repository->update($staff, $request_data);
 
