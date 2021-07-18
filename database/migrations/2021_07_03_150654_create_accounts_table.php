@@ -19,10 +19,13 @@ class CreateAccountsTable extends Migration
             $table->string("name")->nullable();
             $table->string("family")->nullable();
             $table->string("national_code")->nullable();
+            $table->string("birthday_city")->nullable();
+            $table->string("place_issue")->nullable();
             $table->string("birthday")->nullable();
             $table->integer("grade")->nullable();
             $table->string("major_name")->nullable();
             $table->string("address")->nullable();
+            $table->string("home_phone")->nullable();
             $table->string("dad_name")->nullable();
             $table->string("dad_phone")->nullable();
             $table->string("dad_work_address")->nullable();

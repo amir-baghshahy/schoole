@@ -57,6 +57,9 @@ class AccountController extends Controller
                     'family' => 'required|string|max:255',
                     'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $user->id],
                     'birthday' => 'required',
+                    'birthday_city' => 'required',
+                    'place_issue' => 'required',
+                    'home_phone' => 'required|unique:users,home_phone,' . $user->id . 'id',
                     'grade' => 'required|max:255',
                     'major_name' => 'required|string|max:255',
                     'address' => 'required|string',
@@ -78,6 +81,7 @@ class AccountController extends Controller
 
                     'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
                     'national_code.unique' => 'کد ملی قبلا ثبت شده است',
+                    'home_phone.unique' => 'شماره منزل قبلا ثبت شده است ',
                     'mom_phone.unique' => 'شماره مادر قبلا ثبت شده است ',
                     'relatives_phone.unique' => 'شماره اقوام  قبلا ثبت شده است'
                 ]

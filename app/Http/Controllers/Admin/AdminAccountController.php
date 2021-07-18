@@ -31,7 +31,10 @@ class AdminAccountController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:255',
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
+            'home_phone' => 'required|unique:users,home_phone,' . $request->id . 'id',
             'password' => 'required|string|min:8|confirmed',
+            'birthday_city' => 'required',
+            'place_issue' => 'required',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
             'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $request->id],
@@ -50,10 +53,11 @@ class AdminAccountController extends Controller
             'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $request->id,
             'mom_work_address' => 'nullable',
             'mom_is_dead' => 'required|string',
-            'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,relatives_phone,' . $request->id,
+            'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $request->id,
             'relatives_name' => 'required|string|max:255',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
+            'home_phone.unique' => 'شماره منزل قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
             'national_code.unique' => 'کد ملی قبلا ثبت شده است',
             'mom_phone.unique' => 'شماره مادر قبلا ثبت شده است ',
