@@ -29,9 +29,11 @@ class AccountController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
+        $status_update = null;
 
 
         if ($user->status == 'accepted' && $user->role == 2) {
+            $status_update = false;
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -49,10 +51,8 @@ class AccountController extends Controller
                     'relatives_phone.unique' => 'شماره اقوام  قبلا ثبت شده است'
                 ]
             );
-
-            $account = $this->repository->find($user->id);
-            $update = $this->repository->update($account, $request->toArray());
         } else {
+            $status_update = true;
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -89,17 +89,21 @@ class AccountController extends Controller
                     'relatives_phone.unique' => 'شماره اقوام  قبلا ثبت شده است'
                 ]
             );
-
-
-            $account = $this->repository->find($user->id);
-            $update = $this->repository->update($account, $request->toArray());
-            $user_update = User::find($user->id);
-            $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
         }
 
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+        $account = $this->repository->find($user->id);
+
+        if ($status_update == true) {
+            $update = $this->repository->update($account, $request->toArray());
+            $user_update = User::find($user->id);
+            $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
+        } elseif ($status_update == false) {
+            $update = $this->repository->update($account, $request->only(['dad_phone', 'dad_work_address', 'dad_is_dead', 'mom_phone', 'mom_work_address', 'mom_is_dead']));
         }
 
         if ($update) {
