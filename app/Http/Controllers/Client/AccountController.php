@@ -97,7 +97,7 @@ class AccountController extends Controller
         $account = $this->repository->find($user->id);
         $update = $this->repository->update($account, $request->toArray());
         $user_update = User::find($user->id);
-        $user_update->update(['status' => 'wait-accepte', 'status_cause' => 'منتظر برای تایید ادمین']);
+        $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
 
         if ($update) {
             return (new AccountResource($account))->additional([
