@@ -40,7 +40,7 @@ class AccountController extends Controller
                     'dad_is_dead' => 'required',
                     'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $user->id,
                     'mom_work_address' => 'nullable',
-                    'mom_is_dead' => 'required|string',
+                    'mom_is_dead' => 'required',
                 ],
                 [
 
@@ -49,6 +49,9 @@ class AccountController extends Controller
                     'relatives_phone.unique' => 'شماره اقوام  قبلا ثبت شده است'
                 ]
             );
+
+            $account = $this->repository->find($user->id);
+            $update = $this->repository->update($account, $request->toArray());
         } else {
             $validator = Validator::make(
                 $request->all(),
@@ -86,18 +89,18 @@ class AccountController extends Controller
                     'relatives_phone.unique' => 'شماره اقوام  قبلا ثبت شده است'
                 ]
             );
+
+
+            $account = $this->repository->find($user->id);
+            $update = $this->repository->update($account, $request->toArray());
+            $user_update = User::find($user->id);
+            $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
         }
 
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
-
-
-        $account = $this->repository->find($user->id);
-        $update = $this->repository->update($account, $request->toArray());
-        $user_update = User::find($user->id);
-        $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
 
         if ($update) {
             return (new AccountResource($account))->additional([
