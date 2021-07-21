@@ -19,7 +19,7 @@ class CreateNewsTable extends Migration
             $table->text("text");
             $table->string("image");
             $table->integer("seen")->default(0);
-            $table->foreignId("user_id")->constrained()->nullOnDelete();
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }

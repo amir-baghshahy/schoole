@@ -15,7 +15,7 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete("cascade");
             $table->string("name")->nullable();
             $table->string("family")->nullable();
             $table->string("national_code")->nullable();
