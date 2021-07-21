@@ -38,7 +38,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['json.response'])->prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register']);
+});
 
+
+Route::middleware(['json.response'])->group(function () {
     Route::get('about/all', [AboutController::class, 'index']);
     Route::get('slider/all', [SliderController::class, 'index']);
     Route::get('major/all', [MajorController::class, 'index']);
