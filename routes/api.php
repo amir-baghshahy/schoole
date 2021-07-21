@@ -128,12 +128,12 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
         Route::prefix("about")->group(function () {
+            Route::get('about/all', [AboutController::class, 'index']);
             Route::post('create', [AdminAboutController::class, 'create']);
             Route::put('update', [AdminAboutController::class, 'update']);
         });
 
         Route::prefix("discipline")->group(function () {
-            Route::get('all', [AdminDisciplineController::class, 'get_all']);
             Route::post('create', [AdminDisciplineController::class, 'create']);
             Route::put('update', [AdminDisciplineController::class, 'update']);
             Route::delete('delete/{id}', [AdminDisciplineController::class, 'delete']);
