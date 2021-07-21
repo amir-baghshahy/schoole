@@ -102,14 +102,18 @@ class AdminSliderController extends Controller
 
     public function upload_image($request)
     {
-        $file = $request['img'];
-        $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
-        $location = public_path('images/sliders');
-        $file->move($location, $filename);
+        if (isset($request['img'])) {
+            $file = $request['img'];
+            $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
+            $location = public_path('images/sliders');
+            $file->move($location, $filename);
 
-        $request_data = $request;
-        $request_data['img'] = $filename;
+            $request_data = $request;
+            $request_data['img'] = $filename;
 
-        return $request_data;
+            return $request_data;
+        } else {
+            return  $request_data = $request;
+        }
     }
 }
