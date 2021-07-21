@@ -76,7 +76,12 @@ class AdminSliderController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
+        if ($request->file('img')) {
+            $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
+        } else {
+            $request_data = $request;
+        }
+
 
         $slider = $this->repository->findslide($request->id);
         $update = $this->repository->update($slider, $requestdata);
@@ -102,18 +107,14 @@ class AdminSliderController extends Controller
 
     public function upload_image($request)
     {
-        if ($request->file('img')) {
-            $file = $request['img'];
-            $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
-            $location = public_path('images/sliders');
-            $file->move($location, $filename);
+        $file = $request['img'];
+        $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
+        $location = public_path('images/sliders');
+        $file->move($location, $filename);
 
-            $request_data = $request;
-            $request_data['img'] = $filename;
+        $request_data = $request;
+        $request_data['img'] = $filename;
 
-            return $request_data;
-        } else {
-            return  $request_data = $request;
-        }
+        return $request_data;
     }
 }

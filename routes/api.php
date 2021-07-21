@@ -38,6 +38,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['json.response'])->prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register']);
+
+    Route::get('about/all', [AboutController::class, 'index']);
+    Route::get('slider/all', [SliderController::class, 'index']);
+    Route::get('major/all', [MajorController::class, 'index']);
+    Route::get('major/{id}', [MajorController::class, 'get_descroption']);
+    Route::get('news/all', [NewsController::class, 'index']);
+    Route::get('news/{id}', [NewsController::class, 'find']);
+    Route::get('file/all', [FileController::class, 'getall']);
+    Route::get('file/get/{id}', [FileController::class, 'find']);
 });
 
 
@@ -56,16 +65,12 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::put('staff/update', [StaffController::class, 'update']);
     });
 
-    Route::get('slider/all', [SliderController::class, 'index']);
-    Route::get('major/all', [MajorController::class, 'index']);
-    Route::get('major/{id}', [MajorController::class, 'get_descroption']);
-    Route::get('news/all', [NewsController::class, 'index']);
-    Route::get('news/{id}', [NewsController::class, 'find']);
+
+
+
+
     Route::post('messages/create', [MessageController::class, 'create']);
-    Route::get('about/all', [AboutController::class, 'index']);
     Route::get('discipline', [DisciplineController::class, 'index']);
-    Route::get('file/all', [FileController::class, 'getall']);
-    Route::get('file/get/{id}', [FileController::class, 'find']);
 
 
     // admin
