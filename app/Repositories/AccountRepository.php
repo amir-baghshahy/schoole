@@ -11,10 +11,12 @@ class AccountRepository
 
     public function find($user)
     {
-        if ($user->role == 2) {
-            return  Account::with('user')->where(['user_id' => $user->id])->first();
+        if (isset($user->role)) {
+            if ($user->role == 1 || $user->role == 0) {
+                return  Staff::with('user')->where(['user_id' => $user->id])->first();
+            }
         } else {
-            return  Staff::with('user')->where(['user_id' => $user->id])->first();
+            return  Account::with('user')->where(['user_id' => $user])->first();
         }
     }
 
