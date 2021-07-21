@@ -15,7 +15,7 @@ class CreateDisciplinesTable extends Migration
     {
         Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id");
+            $table->foreignId("user_id")->nullOnDelete();
             $table->string("cause");
             $table->string("time");
             $table->date('date');

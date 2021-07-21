@@ -113,6 +113,8 @@ class UserRepository
             return $user->delete();
         }
         $user->account()->delete();
+        $user->messages()->delete();
+        $user->disciplines()->delete();
         return $user->delete();
     }
 }

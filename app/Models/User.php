@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Staff::class, 'id', 'user_id');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'id', 'user_id');
+    }
+
+    public function disciplines()
+    {
+        return $this->hasMany(Discipline::class, 'id', 'user_id');
+    }
 }

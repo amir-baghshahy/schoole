@@ -17,7 +17,7 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->string("title");
             $table->string("message");
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }
