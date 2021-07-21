@@ -32,7 +32,7 @@ class AdminAccountController extends Controller
             'id' => 'required|string|max:255',
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
             'home_phone' => 'required|unique:accounts,home_phone,' . $request->id . 'id',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'string|min:8',
             'birthday_city' => 'required',
             'place_issue' => 'required',
             'name' => 'required|string|max:255',
