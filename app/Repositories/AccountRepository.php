@@ -10,7 +10,7 @@ class AccountRepository
 
     public function find($userid)
     {
-        return  Account::with('user')->where(['user_id' => $userid])->firstOrFail();
+        return  Account::with('user')->where(['user_id' => $userid])->first();
     }
 
     public function create($request)
