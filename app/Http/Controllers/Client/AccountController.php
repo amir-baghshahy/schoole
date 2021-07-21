@@ -23,7 +23,7 @@ class AccountController extends Controller
 
     public function index()
     {
-        return new AccountResource($this->repository->find(auth()->user()->id));
+        return new AccountResource($this->repository->find(auth()->user()));
     }
 
     public function update(Request $request)
