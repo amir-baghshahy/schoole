@@ -52,23 +52,14 @@ class AdminSliderController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->method() == "PUT") {
-            $validator = Validator::make($request->all(), [
-                'title' => 'nullable|max:255',
-                'id' => 'required|string|max:255',
-                'link' => 'nullable|max:255',
-                'description' => 'nullable|max:255',
-                'img' => 'nullable',
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'title' => 'nullable|max:255',
-                'id' => 'required|string|max:255',
-                'link' => 'nullable|max:255',
-                'description' => 'nullable|max:255',
-                'img' => 'required|mimes:png,jpg,jpeg',
-            ]);
-        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|max:255',
+            'id' => 'required|string|max:255',
+            'link' => 'nullable|max:255',
+            'description' => 'nullable|max:255',
+            'img' => 'string',
+        ]);
 
 
         if ($validator->fails()) {
@@ -96,6 +87,7 @@ class AdminSliderController extends Controller
     public function delete($id)
     {
         $slider = $this->repository->findslide($id);
+
         if ($slider->img && file_exists(public_path() . "/" . $slider->img)) {
             unlink(public_path() . "/" . $slider->img);
         }

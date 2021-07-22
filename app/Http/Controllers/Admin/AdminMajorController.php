@@ -53,23 +53,14 @@ class AdminMajorController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->method() == "PUT") {
-            $validator = Validator::make($request->all(), [
-                'id' => 'required',
-                'title' => 'required|string|max:255',
-                'icone' => 'required|mimes:png,jpg,jpeg',
-                'text' => 'required|string',
-                'media' => 'nullable'
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'id' => 'required',
-                'title' => 'required|string|max:255',
-                'icone' => 'required|mimes:png,jpg,jpeg',
-                'text' => 'required|string',
-                'media' => 'required'
-            ]);
-        }
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'title' => 'required|string|max:255',
+            'icone' => 'string',
+            'text' => 'required|string',
+            'media' => 'string'
+        ]);
+
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);

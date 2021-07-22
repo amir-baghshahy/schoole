@@ -9,7 +9,7 @@ class Staff extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'family', 'rolename', 'degree', 'teaching_experience', 'major', 'image', 'user_id', 'status'];
+    protected $fillable = ['name', 'family', 'rolename', 'degree', 'teaching_experience', 'major', 'image', 'user_id', 'status', 'birthday', 'shabanumber'];
 
     public function scopeActive($query)
     {

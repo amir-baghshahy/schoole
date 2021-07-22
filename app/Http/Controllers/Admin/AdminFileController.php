@@ -50,19 +50,11 @@ class AdminFileController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->method() == 'PUT') {
-            $validator = Validator::make($request->all(), [
-                "id" => "required",
-                'title' => 'required',
-                'file' => 'required'
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                "id" => "required",
-                'title' => 'required',
-                'file' => 'required'
-            ]);
-        }
+        $validator = Validator::make($request->all(), [
+            "id" => "required",
+            'title' => 'required',
+            'file' => 'string'
+        ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);

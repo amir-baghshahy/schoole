@@ -20,9 +20,53 @@ class AdminStaffController extends Controller
 
     public function index()
     {
-        $result =  $this->repository->all()->get();
+        $result =  $this->repository->all_admin()->get();
         return  new StaffResource($result);
     }
+
+
+    public function create(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required|max:11|min:11|unique:users',
+            'password' => 'required|string|min:8',
+            'name' => 'required|string|max:255',
+            'family' => 'required|string|max:255',
+            'rolename' => 'required',
+            'role' => "required",
+            'degree' => 'required',
+            'teaching_experience' => 'nullable',
+            'major' => 'required',
+            'status' => 'nullable',
+            'image' => 'required|mimes:png,jpg,jpeg',
+            'shabanumber' => 'nullable|digits:24',
+            'birthday' => 'required'
+        ], [
+            'phone.unique' => 'شماره قبلا ثبت شده است ',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+        $user = User::create(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role, 'status' => '', 'status_cause' => '']);
+
+        if ($request->file('image')) {
+            $request_data = $this->upload_image($request->toArray());
+        }
+
+        $request_data['user_id'] = $user->id;
+
+        $staff = $this->repository->create($request_data);
+
+        if ($staff) {
+            return response(['status' => true], 200);
+        } else {
+            return response(['status' => false], 422);
+        }
+    }
+
 
     public function update(Request $request)
     {
@@ -38,7 +82,9 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'string',
+            'shabanumber' => 'nullable|digits:24',
+            'birthday' => 'required'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
         ]);
@@ -51,7 +97,12 @@ class AdminStaffController extends Controller
         $user = User::find($request->id);
         $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
 
-        $request_data = $this->upload_image($request->except(['id', 'phone', 'password', 'role']));
+        if ($request->file('image')) {
+            $request_data = $this->upload_image($request->except(['id', 'phone', 'password', 'role']));
+        } else {
+            $request_data = $request->toArray();
+        }
+
         $staff = $this->repository->find($user->id);
         $result = $this->repository->update($staff, $request_data);
 
@@ -62,6 +113,19 @@ class AdminStaffController extends Controller
         }
     }
 
+
+    public function delete($id)
+    {
+        $staff = $this->repository->find($id);
+
+        if ($staff->image && file_exists(public_path() . "/" . $staff->image)) {
+            unlink(public_path() . "/" . $staff->img);
+        }
+
+        $user = User::find($id);
+        $user->staff()->delete();
+        return $user->delete();
+    }
 
     public function upload_image($request)
     {

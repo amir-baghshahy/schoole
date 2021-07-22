@@ -29,7 +29,7 @@ class AdminNewsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'text' => 'required|string',
-            'image' => 'required|mimes:png,jpg,jpeg|max:4048',
+            'image' => 'required|mimes:png,jpg,jpeg',
         ]);
 
         if ($validator->fails()) {
@@ -51,33 +51,41 @@ class AdminNewsController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'equired|string',
+            'id' => 'required|string',
             'title' => 'required|string|max:255',
             'text' => 'required|string',
-            'image' => 'required|mimes:png,jpg,jpeg|max:4048',
+            'image' => 'string',
         ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
         if ($request->file('image')) {
-
-            $requestdata = $this->upload_image($request->only(['id', 'title', 'text', 'image']));
-
-            $news = $this->repository->find($request->id);
-            $update = $this->repository->update($news, $requestdata);
-
-            if ($update) {
-                return (new NewsResource($news))->additional([
-                    "status" => $update
-                ]);
-            }
-            return response(['status' => false]);
+            $request_data = $this->upload_image($request->only(['id', 'title', 'text', 'image']));
+        } else {
+            $request_data = $request->toArray();
         }
+
+        $update = $this->repository->update($request_data);
+        $news = $this->repository->find($request->id);
+
+        if ($update) {
+            return (new NewsResource($news))->additional([
+                "status" => $update
+            ]);
+        }
+        return response(['status' => false]);
     }
 
     public function delete($id)
     {
+
+        $news = $this->repository->find($id);
+
+        if ($news->image != null && file_exists(public_path() . "/" . $news->image)) {
+            unlink(public_path() . "/" . $news->image);
+        }
+
         $delete  = $this->repository->delete($id);
 
         if ($delete) {

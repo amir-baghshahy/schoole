@@ -26,17 +26,13 @@ class NewsRepository
         return  News::create($request);
     }
 
-    public function update($news, $request)
+    public function update($request)
     {
-        return  $news->update($request);
+        News::where('id', '=', $request['id'])->update($request);
     }
 
     public function delete($id)
     {
-        $news = $this->find($id);
-        if ($news->image) {
-            unlink(public_path() . "/" . $news->image);
-        }
         return News::destroy($id);
     }
 }

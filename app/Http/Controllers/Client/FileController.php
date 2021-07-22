@@ -25,7 +25,6 @@ class FileController extends Controller
     public function find($id)
     {
         $file =  $this->repository->find($id);
-
         return response()->download(public_path() . "/" . $file->file);
     }
 }

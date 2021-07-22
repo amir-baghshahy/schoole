@@ -35,13 +35,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware(['json.response'])->prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/register', [AuthController::class, 'register']);
-});
-
-
 Route::middleware(['json.response'])->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('/login', [AuthController::class, 'login'])->name('login');
+        Route::post('/register', [AuthController::class, 'register']);
+    });
     Route::get('about/all', [AboutController::class, 'index']);
     Route::get('slider/all', [SliderController::class, 'index']);
     Route::get('major/all', [MajorController::class, 'index']);
@@ -49,8 +47,10 @@ Route::middleware(['json.response'])->group(function () {
     Route::get('news/all', [NewsController::class, 'index']);
     Route::get('news/{id}', [NewsController::class, 'find']);
     Route::get('file/all', [FileController::class, 'getall']);
-    Route::get('file/get/{id}', [FileController::class, 'find']);
+    Route::get('file/{id}', [FileController::class, 'find']);
+    Route::get('staff/all', [StaffController::class, 'index']);
 });
+
 
 
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
@@ -63,12 +63,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::put('/update', [UserController::class, 'update']);
         Route::get('/account/info', [AccountController::class, 'index']);
         Route::put('/account/update', [AccountController::class, 'update']);
-
-        Route::get('staff/all', [StaffController::class, 'index']);
         Route::put('staff/update', [StaffController::class, 'update']);
     });
-
-
 
 
 
@@ -98,9 +94,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
             Route::prefix('staff')->group(function () {
                 Route::get('all', [AdminStaffController::class, 'index']);
-                Route::post('create', [AdminUserController::class, 'create_teacher']);
+                Route::post('create', [AdminStaffController::class, 'create']);
                 Route::put('update', [AdminStaffController::class, 'update']);
-                Route::delete('delete/{id}', [AdminUserController::class, 'delete']);
+                Route::delete('delete/{id}', [AdminStaffController::class, 'delete']);
             });
         });
 

@@ -9,6 +9,11 @@ class StaffRepository
 
     public function all()
     {
+        return Staff::with('user')->select(['name', 'family', 'rolename', 'degree', 'teaching_experience', 'image']);
+    }
+
+    public function all_admin()
+    {
         return Staff::with('user');
     }
 
