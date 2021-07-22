@@ -24,6 +24,7 @@ class AdminMajorController extends Controller
     }
 
 
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -37,8 +38,8 @@ class AdminMajorController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $requestdata = $this->upload($request->only(['title', 'icone', 'text', 'media']));
-        $create = $this->repository->create($requestdata);
+        $request_data = $this->upload($request->only(['title', 'icone', 'text', 'media']));
+        $create = $this->repository->create($request_data);
 
         if ($create) {
             return response(['status' => true]);
@@ -47,22 +48,42 @@ class AdminMajorController extends Controller
         }
     }
 
+
+
+
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'icone' => 'required|mimes:png,jpg,jpeg|max:4048',
-            'text' => 'required|string',
-            'media' => 'required'
-        ]);
+        if ($request->method() == "PUT") {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'title' => 'required|string|max:255',
+                'icone' => 'required|mimes:png,jpg,jpeg',
+                'text' => 'required|string',
+                'media' => 'nullable'
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'title' => 'required|string|max:255',
+                'icone' => 'required|mimes:png,jpg,jpeg',
+                'text' => 'required|string',
+                'media' => 'required'
+            ]);
+        }
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $requestdata = $this->upload($request->only(['id', 'title', 'icone', 'text', 'media']));
+        if ($request->file('media')) {
+            $request_data = $this->upload($request->only(['id', 'title', 'icone', 'text', 'media']));
+        } else {
+            $request_data = $request->toArray();
+        }
+
+
+        $update = $this->repository->update($request_data);
         $major = $this->repository->find($request->id);
-        $update = $this->repository->update($major, $requestdata);
 
         if ($update) {
             return (new MajorResource($major))->additional([
@@ -72,8 +93,21 @@ class AdminMajorController extends Controller
         return response(['status' => false]);
     }
 
+
+
+
     public function delete($id)
     {
+        $major = $this->repository->find($id);
+
+        if ($major->icon != null && file_exists(public_path() . "/" . $major->icone)) {
+            unlink(public_path() . "/" . $major->icone);
+        }
+
+        if ($major->media != null && file_exists(public_path() . "/" . $major->media)) {
+            unlink(public_path() . "/" . $major->media);
+        }
+
         $delete  = $this->repository->delete($id);
 
         if ($delete) {
@@ -81,6 +115,8 @@ class AdminMajorController extends Controller
         }
         return response(['status' => false]);
     }
+
+
 
 
     public function upload($request)

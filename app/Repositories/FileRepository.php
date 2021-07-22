@@ -29,16 +29,11 @@ class FileRepository
 
     public function delete($id)
     {
-        $file = $this->find($id);
-        if ($file->file) {
-            unlink(public_path() . "/" . $file->file);
-        }
-
         return File::destroy($id);
     }
 
-    public function update($file, $request)
+    public function update($request)
     {
-        return  $file->update($request);
+        return File::where('id', '=', $request['id'])->update($request);
     }
 }

@@ -28,21 +28,13 @@ class MajorRepository
         return  Major::create($request);
     }
 
-    public function update($major, $request)
+    public function update($request)
     {
-        return  $major->update($request);
+        Major::where('id', '=', $request['id'])->update($request);
     }
 
     public function delete($id)
     {
-        $major = $this->find($id);
-        if ($major->icon != null) {
-            unlink(public_path() . "/" . $major->icone);
-        }
-
-        if ($major->media != null) {
-            unlink(public_path() . "/" . $major->media);
-        }
         return Major::destroy($id);
     }
 }

@@ -31,12 +31,11 @@ class AdminFileController extends Controller
             'file' => 'required'
         ]);
 
-
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $request_data = $this->upload_file($request->only(['title', 'file']));
+        $request_data = $this->upload_file($request->toArray());
         $request_data['user_id'] = auth()->user()->id;
 
         $create = $this->repository->create($request_data);
@@ -51,24 +50,26 @@ class AdminFileController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            "id" => "required",
-            'title' => 'required',
-            'file' => 'required'
-        ]);
+        if ($request->method() == 'PUT') {
+            $validator = Validator::make($request->all(), [
+                "id" => "required",
+                'title' => 'required',
+                'file' => 'required'
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                "id" => "required",
+                'title' => 'required',
+                'file' => 'required'
+            ]);
+        }
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $request_data = $this->upload_file($request->only(['title', 'file']));
-        $file = $this->repository->find($request->id);
-
-        if ($file->file) {
-            unlink(public_path() . "/" . $file->file);
-        }
-
-        $update = $this->repository->update($file, $request_data);
+        $request_data = $this->upload_file($request->toArray());
+        $update = $this->repository->update($request_data);
 
         if ($update) {
             return response(['status' => true]);
@@ -80,6 +81,13 @@ class AdminFileController extends Controller
 
     public function delete($id)
     {
+
+        $file = $this->repository->find($id);
+
+        if ($file->file && file_exists(public_path() . "/" . $file->file)) {
+            unlink(public_path() . "/" . $file->file);
+        }
+
         $delete  = $this->repository->delete($id);
 
         if ($delete) {
