@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminStaffController;
+use App\Http\Controllers\Admin\AdminStatisticController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Client\AboutController;
@@ -86,11 +87,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
                 Route::get('account/{id}', [AdminAccountController::class, 'find']);
                 Route::put('update', [AdminAccountController::class, 'update']);
-                Route::post('archive', [AdminUserController::class, 'archive']);
+                Route::post('archive/{id}', [AdminUserController::class, 'archive']);
                 Route::put('grade/up', [AdminUserController::class, 'grade_up']);
             });
-
-
 
             Route::prefix('staff')->group(function () {
                 Route::get('all', [AdminStaffController::class, 'index']);
@@ -99,6 +98,15 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
                 Route::delete('delete/{id}', [AdminStaffController::class, 'delete']);
             });
         });
+
+
+
+        Route::prefix("statics")->group(function () {
+            Route::get('onlineuser', [AdminStatisticController::class, 'userOnlineStatus']);
+        });
+
+
+
 
 
         Route::prefix("slider")->group(function () {

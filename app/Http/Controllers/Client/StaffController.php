@@ -33,16 +33,14 @@ class StaffController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id,
-            'password' => 'required|string|min:8',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
-            'rolename' => 'required',
             'degree' => 'required',
             'teaching_experience' => 'nullable',
             'major' => 'required',
-            'status' => 'nullable',
-            'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'string',
+            'shabanumber' => 'nullable|digits:24',
+            'birthday' => 'required'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
         ]);
@@ -52,13 +50,14 @@ class StaffController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $user->update(['phone' => $request->phone, 'password' => $request->password]);
+        if ($request->file('image')) {
+            $request_data = $this->upload_image($request->only(['name', 'family', 'degree', 'teaching_experience', 'major', 'image', 'shabanumber', 'birthday']));
+        } else {
+            $request_data = $request->only(['name', 'family', 'degree', 'teaching_experience', 'major', 'image', 'shabanumber', 'birthday']);
+        }
 
-        $request_data = $this->upload_image($request->except(['id', 'phone', 'password']));
-
-        $staff = $this->repository->find($user->id);
-
-        $result = $this->repository->update($staff, $request_data);
+        $request_data['id'] = auth()->user()->id;
+        $result = $this->repository->update($request_data);
 
         if ($result) {
             return response(['status' => true], 200);

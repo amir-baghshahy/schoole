@@ -138,18 +138,10 @@ class AdminUserController extends Controller
     }
 
 
-    public function archive()
+    public function archive($id)
     {
-        $update = User::whereHas('account', function ($query) {
-            return $query->where('grade', 3);
-        })->where([['role', '=', 2], ['archive', '=', 0], ['status', 'accepted']]);
-
-        $result =  $update->update(['archive' => '1']);
-
-        if ($result) {
-            return response(['status' => true]);
-        }
-        return response(['status' => false]);
+        $user =  $this->repository->finduser($id);
+        return $user->update(['archive', '1']);
     }
 
     public function grade_up()
@@ -158,7 +150,14 @@ class AdminUserController extends Controller
             return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
         }])->where([['role', 2], ['archive', '0'], ['status', 'accepted']])->get();
 
-        if ($update) {
+
+        $update_archive = User::whereHas('account', function ($query) {
+            return $query->where('grade', 3);
+        })->where([['role', '=', 2], ['archive', '=', 0], ['status', 'accepted']]);
+
+        $result_archive =  $update_archive->update(['archive' => '1']);
+
+        if ($update && $result_archive) {
             return response(['status' => true]);
         }
         return response(['status' => false]);
