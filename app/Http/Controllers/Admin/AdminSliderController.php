@@ -39,10 +39,9 @@ class AdminSliderController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
+        $request_data = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
 
-        $requestdata = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
-
-        $create = $this->repository->create($requestdata);
+        $create = $this->repository->create($request_data);
 
         if ($create) {
             return response(['status' => true]);
@@ -77,18 +76,18 @@ class AdminSliderController extends Controller
         }
 
         if ($request->file('img')) {
-            $requestdata = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
+            $request_data = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
         } else {
-            $requestdata = $request->only(['id', 'title', 'link', 'description', 'img']);
+            $request_data = $request->toArray();
         }
 
 
-        $slider = $this->repository->findslide($request->id);
-        $update = $this->repository->update($slider, $requestdata);
+        $update = $this->repository->update($request_data);
+        $slider = $this->repository->findslide($request_data['id']);
 
         if ($update) {
             return (new SliderResource($slider))->additional([
-                "status" => $update
+                "status" => true
             ]);
         }
         return response(['status' => false]);
@@ -96,9 +95,12 @@ class AdminSliderController extends Controller
 
     public function delete($id)
     {
-        $delete  = $this->repository->delete($id);
+        $slider = $this->repository->findslide($id);
+        if ($slider->img && file_exists(public_path() . "/" . $slider->img)) {
+            unlink(public_path() . "/" . $slider->img);
+        }
 
-        if ($delete) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         }
         return response(['status' => false]);

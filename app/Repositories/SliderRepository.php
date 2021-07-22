@@ -22,18 +22,13 @@ class SliderRepository
         return  Slider::create($request);
     }
 
-    public function update($slider, $request)
+    public function update($request)
     {
-        return  $slider->update($request);
+        return Slider::where('id', '=', $request['id'])->update($request);
     }
 
     public function delete($id)
     {
-        $slider = $this->findslide($id);
-        if ($slider->img) {
-            unlink(public_path() . "/" . $slider->img);
-        }
-
         return Slider::destroy($id);
     }
 }
