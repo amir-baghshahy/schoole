@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Hekmatinasser\Verta\Facades\Verta;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response('schoole project');
+});
+
+Route::get('/test', function () {
+    $users = User::all();
+    foreach ($users as $user) {
+        $birthday = Verta::parse($user->account->birthday);
+        if ($birthday->isBirthday()) {
+            echo ($birthday);
+        } else {
+            echo ($birthday);
+        }
+    }
 });

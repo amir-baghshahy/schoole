@@ -101,7 +101,7 @@ class AccountController extends Controller
         if ($status_update == true) {
             $update = $this->repository->update($account, $request->toArray());
             $user_update = User::find($user->id);
-            $user_update->update(['status' => 'wating-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
+            $user_update->update(['status' => 'waiting-accepted', 'status_cause' => 'منتظر برای تایید ادمین']);
         } elseif ($status_update == false) {
             $update = $this->repository->update($account, $request->only(['dad_phone', 'dad_work_address', 'dad_is_dead', 'mom_phone', 'mom_work_address', 'mom_is_dead']));
         }

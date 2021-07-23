@@ -101,12 +101,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
 
-        Route::prefix("statics")->group(function () {
-            Route::get('onlineuser', [AdminStatisticController::class, 'userOnlineStatus']);
-        });
 
-
-
+        Route::get('statics', [AdminStatisticController::class, 'statics']);
 
 
         Route::prefix("slider")->group(function () {

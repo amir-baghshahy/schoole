@@ -31,7 +31,7 @@ class AdminUserController extends Controller
             return new UserResource($this->repository->get_students());
         } elseif ($status == "not-accepted") {
             return new UserResource($this->repository->get_not_accepted());
-        } elseif ($status == "wating-accepted") {
+        } elseif ($status == "waiting-accepted") {
             return new UserResource($this->repository->get_wait_accepted());
         } elseif ($status == "incomplete-information") {
             return new UserResource($this->repository->get_incomplete_info());

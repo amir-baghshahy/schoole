@@ -29,7 +29,7 @@ class UserRepository
 
     public function get_wait_accepted()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'wating-accepted'], ['archive', '0']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'waiting-accepted'], ['archive', '0']])->paginate(30);
     }
 
     public function get_incomplete_info()
