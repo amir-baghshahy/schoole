@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminDisciplineController;
+use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminFileController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminMessageController;
@@ -161,6 +162,12 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix("settings")->group(function () {
             Route::put('web', [AdminSettingController::class, 'switch_website']);
             Route::put('register', [AdminSettingController::class, 'switch_register']);
+        });
+
+
+        Route::prefix("events")->group(function () {
+            Route::get('students/birthdays', [AdminEventController::class, 'get_student_birthday']);
+            Route::get('teachers/birthdays', [AdminEventController::class, 'get_teacher_birthday']);
         });
     });
 });

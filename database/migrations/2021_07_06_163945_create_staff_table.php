@@ -23,7 +23,7 @@ class CreateStaffTable extends Migration
             $table->string('teaching_experience')->nullable();
             $table->string('major');
             $table->text('image');
-            $table->string("shabanumber");
+            $table->string("shabanumber")->nullable();
             $table->date("birthday");
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
