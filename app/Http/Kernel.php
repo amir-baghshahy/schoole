@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Support\Facades\App;
 
 class Kernel extends HttpKernel
 {
@@ -44,7 +45,7 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\LastUserActivity::class,
+            \App\Http\Middleware\LastUserActivity::class
         ],
     ];
 
@@ -67,5 +68,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
         'admin' => \App\Http\Middleware\IsAdminMiddlware::class,
+        'web_off' => \App\Http\Middleware\check_web_is_off::class,
+        'register_off' => \App\Http\Middleware\check_register_is_off::class
+
     ];
 }
