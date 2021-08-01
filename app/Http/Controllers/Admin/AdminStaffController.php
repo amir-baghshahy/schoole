@@ -103,8 +103,7 @@ class AdminStaffController extends Controller
             $request_data = $request->toArray();
         }
 
-        $staff = $this->repository->find($user->id);
-        $result = $this->repository->update($staff, $request_data);
+        $result = $this->repository->update($request_data);
 
         if ($result) {
             return response(['status' => true], 200);
