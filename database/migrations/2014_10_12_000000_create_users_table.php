@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->integer("role")->default(2);
             $table->string("status")->default('incomplete-information');
-            $table->string("status_cause")->default('ناقص بودن اطلاعات شما');
+            $table->string("status_cause")->default('احراز هویت انجام نشده');
             $table->tinyInteger("archive")->default(0);
             $table->string('password');
             $table->timestamps();

@@ -88,7 +88,7 @@ class AdminUserController extends Controller
 
         $user_request_create = $request;
         $user_request_create['status'] = 'accepted';
-        $user_request_create['status_cause'] = 'تایید شده';
+        $user_request_create['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         $user = $this->repository->create($user_request_create->only(['phone', 'password', 'status', 'status_cause']));
         $requesdaata = $request;
         $requesdaata['user_id'] = $user->id;
@@ -115,6 +115,12 @@ class AdminUserController extends Controller
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+        }
+
+        $request_data = $request->toArray();
+
+        if ($request->status == 'accepted') {
+            $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
         $user = $this->repository->finduser($request->user_id);
