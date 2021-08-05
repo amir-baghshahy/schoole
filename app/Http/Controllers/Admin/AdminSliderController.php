@@ -69,17 +69,14 @@ class AdminSliderController extends Controller
         if ($request->file('img')) {
             $request_data = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
         } else {
-            $request_data = $request->toArray();
+            $request_data = $request->only(['id', 'title', 'link', 'description', 'img']);
         }
 
 
         $update = $this->repository->update($request_data);
-        $slider = $this->repository->findslide($request_data['id']);
 
         if ($update) {
-            return (new SliderResource($slider))->additional([
-                "status" => true
-            ]);
+            return response(['status' => true]);
         }
         return response(['status' => false]);
     }
