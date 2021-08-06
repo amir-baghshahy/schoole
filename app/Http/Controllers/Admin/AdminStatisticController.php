@@ -23,35 +23,35 @@ class AdminStatisticController extends Controller
             }
         }
 
-        $all_user =  User::where([['archive', '=', 0], ['role', '=', 2]])->count();
+        $all_user =  User::where([['archive', '=', false], ['role', '=', 2]])->count();
 
 
-        $incomplete_information = User::where([['archive', 0], ['role', 2], ['status', 'incomplete-information']])->count();
+        $incomplete_information = User::where([['archive', false], ['role', 2], ['status', 'incomplete-information']])->count();
 
 
-        $not_accepted = User::where([['archive', '=', '0'], ['role', '=', '2'], ['status', '=', 'not-accepted']])->count();
+        $not_accepted = User::where([['archive', '=', false], ['role', '=', '2'], ['status', '=', 'not-accepted']])->count();
 
-        $archive = User::where([['archive', '=', '1'], ['role', '=', '2']])->count();
+        $archive = User::where([['archive', '=', true], ['role', '=', '2']])->count();
 
         $staff = User::where('role', '=', '1')->count();
 
-        $student = User::where([['status', '=', 'accepted',], ['archive', '=', '0'], ['role', '=', '2']])->count();
+        $student = User::where([['status', '=', 'accepted',], ['archive', '=', false], ['role', '=', '2']])->count();
 
-        $wait_accept = User::where([['archive', '=', '0'], ['role', '=', '2'], ['status', '=', 'waiting-accepted']])->count();
+        $wait_accept = User::where([['archive', '=', false], ['role', '=', '2'], ['status', '=', 'waiting-accepted']])->count();
 
         $grade_1 = User::whereHas(
             'account',
             function ($q) {
                 return $q->where('grade', '=', '1');
             }
-        )->where([['role', '=', '2'], ['archive', '=', '0'], ['status', '=', 'accepted']])->count();
+        )->where([['role', '=', '2'], ['archive', '=', false], ['status', '=', 'accepted']])->count();
 
         $grade_2 = User::whereHas(
             'account',
             function ($q) {
                 return $q->where('grade', '=', '2');
             }
-        )->where([['role', '=', '2'], ['archive', '0'], ['status', '=', 'accepted']])->count();
+        )->where([['role', '=', '2'], ['archive', false], ['status', '=', 'accepted']])->count();
 
 
         $grade_3 = User::whereHas(
@@ -59,7 +59,7 @@ class AdminStatisticController extends Controller
             function ($q) {
                 return $q->where('grade', '=', '3');
             }
-        )->where([['role', '=', '2'], ['archive', '=', '0'], ['status', '=', 'accepted']])->count();
+        )->where([['role', '=', '2'], ['archive', '=', false], ['status', '=', 'accepted']])->count();
 
         $dicsipline = Discipline::all()->count();
 
@@ -70,7 +70,7 @@ class AdminStatisticController extends Controller
             function ($q) {
                 return $q->where('grade', '=', '3');
             }
-        )->where([['role', '=', '2'], ['archive', '1'], ['status', '=', 'accepted']])->count();
+        )->where([['role', '=', '2'], ['archive', true], ['status', '=', 'accepted']])->count();
 
 
         return response(['data' => ['user_online' => $user_online, 'not_accepted' => $not_accepted, 'archive' => $archive, 'staff' => $staff, 'student' => $student, 'wait_accept' => $wait_accept, 'grade_1' => $grade_1, 'grade_2' => $grade_2, 'grade_3' => $grade_3, 'dicsipline' => $dicsipline, 'user_create_today' => $user_create_today, 'incomplete_information' => $incomplete_information, 'user_Graduated' => $user_Graduated, 'all_user' => $all_user]]);

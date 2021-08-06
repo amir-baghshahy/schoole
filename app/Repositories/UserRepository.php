@@ -19,17 +19,17 @@ class UserRepository
 
     public function get_students()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'accepted'], ['archive', '0']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'accepted'], ['archive', false]])->paginate(30);
     }
 
     public function get_not_accepted()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'not-accepted'], ['archive', '0']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'not-accepted'], ['archive', false]])->paginate(30);
     }
 
     public function get_wait_accepted()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'waiting-accepted'], ['archive', '0']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'waiting-accepted'], ['archive', false]])->paginate(30);
     }
 
     public function get_incomplete_info()
@@ -51,43 +51,43 @@ class UserRepository
                 function ($q) use ($code) {
                     return $q->where('national_code', $code);
                 }
-            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
         } elseif ($family) {
             return User::whereHas(
                 'account',
                 function ($q) use ($family) {
                     return $q->where('family', 'LIKE', '%' . $family . '%');
                 }
-            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
         } elseif ($grade) {
             return  User::whereHas(
                 'account',
                 function ($q) use ($grade) {
                     return $q->where('grade', $grade);
                 }
-            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
         } elseif ($major_name) {
             return  User::whereHas(
                 'account',
                 function ($q) use ($major_name) {
                     return $q->where('major_name', 'LIKE', '%' . $major_name . '%');
                 }
-            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
         } elseif ($grade && $major_name) {
             return  User::whereHas(
                 'account',
                 function ($q) use ($major_name, $grade) {
                     return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
                 }
-            )->with('account')->where([['role', '=', '2'], ['archive', '0']])->get();
+            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
         } else {
-            return  User::with('account')->where([['role', '2'], ['archive', '0']])->paginate(30);
+            return  User::with('account')->where([['role', '2'], ['archive', false]])->paginate(30);
         }
     }
 
     public function get_archives()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['archive', '1']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['archive', true]])->paginate(30);
     }
 
     public function create($request)

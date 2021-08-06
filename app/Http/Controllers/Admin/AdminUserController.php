@@ -159,14 +159,14 @@ class AdminUserController extends Controller
     {
         $update = User::with(['account' => function ($q) {
             return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
-        }])->where([['role', 2], ['archive', '0'], ['status', 'accepted']])->get();
+        }])->where([['role', 2], ['archive', false], ['status', 'accepted']])->get();
 
 
         $update_archive = User::whereHas('account', function ($query) {
             return $query->where('grade', 3);
-        })->where([['role', '=', 2], ['archive', '=', 0], ['status', 'accepted']]);
+        })->where([['role', '=', 2], ['archive', '=', false], ['status', 'accepted']]);
 
-        $result_archive =  $update_archive->update(['archive' => '1']);
+        $result_archive =  $update_archive->update(['archive' => true]);
 
         if ($update && $result_archive) {
             return response(['status' => true]);

@@ -19,7 +19,7 @@ class AdminEventController extends Controller
             function ($q) {
                 return $q->whereNotNull('birthday');
             }
-        )->with('account')->where([['role', '=', '2'], ['archive', '0'], ['status', '=', 'accepted']])->get();
+        )->with('account')->where([['role', '=', '2'], ['archive', false], ['status', '=', 'accepted']])->get();
         foreach ($users as $user) {
             $birthday = Verta::parse($user->account->birthday);
             if ($birthday->isBirthday()) {
