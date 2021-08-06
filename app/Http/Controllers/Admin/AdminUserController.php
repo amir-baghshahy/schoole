@@ -147,7 +147,12 @@ class AdminUserController extends Controller
     public function archive($id)
     {
         $user =  $this->repository->finduser($id);
-        return $user->update(['archive', '1']);
+        $update =  $user->update(['archive', '1']);
+
+        if ($update) {
+            return response(['status' => true]);
+        }
+        return response(['status' => false]);
     }
 
     public function grade_up()
