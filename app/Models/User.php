@@ -41,7 +41,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = ['archive' => 'boolean'];
 
     public function setPasswordAttribute($value)
     {
