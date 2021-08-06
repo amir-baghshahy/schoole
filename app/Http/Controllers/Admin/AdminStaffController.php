@@ -122,7 +122,10 @@ class AdminStaffController extends Controller
         $staff = $this->repository->find($id);
 
         if ($staff->image && file_exists(public_path() . "/" . $staff->image)) {
-            unlink(public_path() . "/" . $staff->img);
+            if ($staff->image == "images/staff/defualt.png") {
+            } else {
+                unlink(public_path() . "/" . $staff->img);
+            }
         }
 
         $user = User::find($id);
