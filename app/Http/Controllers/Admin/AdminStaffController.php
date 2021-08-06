@@ -54,7 +54,10 @@ class AdminStaffController extends Controller
 
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->toArray());
+        } else {
+            $request_data  = $request->toArray();
         }
+
 
         $request_data['user_id'] = $user->id;
         $request_data['image'] = 'images/staff/defualt.png';
