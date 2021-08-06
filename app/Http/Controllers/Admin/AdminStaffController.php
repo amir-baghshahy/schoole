@@ -38,7 +38,7 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'nullable|mimes:png,jpg,jpeg',
             'shabanumber' => 'nullable|digits:24',
             'birthday' => 'required'
         ], [
@@ -57,6 +57,7 @@ class AdminStaffController extends Controller
         }
 
         $request_data['user_id'] = $user->id;
+        $request_data['image'] = 'images/staff/defualt.png';
 
         $staff = $this->repository->create($request_data);
 
