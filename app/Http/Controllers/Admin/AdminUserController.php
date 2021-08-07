@@ -119,16 +119,16 @@ class AdminUserController extends Controller
 
         $request_data = $request->toArray();
 
-        if ($request->status == 'accepted' && $request->status == "" ) {
+        if ($request->status == 'accepted' && $request->status_cause == "" ) {
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
         
-        if ($request->status == 'not-accepted' && $request->status == "" ) {
+        if ($request->status == 'not-accepted' && $request->status_cause == "" ) {
             $request_data['status_cause'] = 'احراز هویت شما توسط مدیر رد شد';
         }
         
-        if ($request->status == 'waiting-accepted' && $request->status == "" ) {
+        if ($request->status == 'waiting-accepted' && $request->status_cause == "" ) {
             $request_data['status_cause'] = 'منتظر  برای تایید هویت شما توسط مدیر';
         }
         
