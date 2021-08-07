@@ -118,6 +118,7 @@ class AdminUserController extends Controller
         }
 
         $request_data = $request->toArray();
+        va
 
         if ($request->status == 'accepted' && $request->status_cause == "" ) {
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
@@ -133,7 +134,7 @@ class AdminUserController extends Controller
         }
         
         $user = $this->repository->finduser($request->user_id);
-        $update = $this->repository->update($user, $request->only(['status', 'status_cause']));
+        $update = $this->repository->update($user, $request_data->only(['status', 'status_cause']));
 
         if ($update) {
             return response(['status' => true]);
