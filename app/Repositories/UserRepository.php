@@ -34,7 +34,7 @@ class UserRepository
 
     public function get_incomplete_info()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'incomplete-information']])->paginate(30);
+        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'incomplete-information'],['archive', false]])->paginate(30);
     }
 
 
@@ -102,7 +102,7 @@ class UserRepository
 
     public function getall()
     {
-        return  User::with('account')->paginate(30);
+        return  User::with('account')->where('archive','=',false)->paginate(30);
     }
 
     public function delete($id)
