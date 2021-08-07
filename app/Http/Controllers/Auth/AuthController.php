@@ -60,7 +60,7 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->toArray())) {
-            if($this->check_archive($request->phone)){
+            if($this->check_archive($request->phone) != null){
                   return (new UserResource(auth()->user()))->additional([
                 'token' => auth()->user()->createToken('login')->plainTextToken,
             ]);
@@ -76,7 +76,7 @@ class AuthController extends Controller
     
     public function check_archive($phone)
     {
-        return User::where([['phone','=',$phone],['archive','=',false]]);
+        return User::where([['phone','=',$phone],['archive','=',false]])->get();
     }
 
 
