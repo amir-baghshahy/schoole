@@ -60,13 +60,23 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->toArray())) {
-            return (new UserResource(auth()->user()))->additional([
+            if($this->check_archive($request->phone)){
+                  return (new UserResource(auth()->user()))->additional([
                 'token' => auth()->user()->createToken('login')->plainTextToken,
             ]);
+         }else{
+               return response(["message"=>"شما توسط مدیر مسدود شده اید "], 401);   
+           }
+ 
         } else {
             $response = ['message' => 'شماره همراه  یا رمزعبور اشتباه است', 'status' => false];
             return response($response, 422);
         }
+    }
+    
+    public function check_archive($phone)
+    {
+        return User::where([['phone','=',$phone],['archive','=',false]]);
     }
 
 
