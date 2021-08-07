@@ -24,7 +24,7 @@ class CreateStaffTable extends Migration
             $table->string('major');
             $table->text('image');
             $table->string("shabanumber")->nullable();
-            $table->date("birthday");
+            $table->dateTime("birthday");
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
