@@ -110,7 +110,7 @@ class AdminUserController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|max:255',
             'status' => 'required',
-            'status_cause' => 'required|string',
+            'status_cause' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -119,10 +119,19 @@ class AdminUserController extends Controller
 
         $request_data = $request->toArray();
 
-        if ($request->status == 'accepted') {
+        if ($request->status == 'accepted' && $request->status == null ) {
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
+        
+        if ($request->status == 'not-accepted' && $request->status == null ) {
+            $request_data['status_cause'] = 'احراز هویت شما توسط مدیر رد شد';
+        }
+        
+        if ($request->status == 'waiting-accepted' && $request->status == null ) {
+            $request_data['status_cause'] = 'منتظر  برای تایید هویت شما توسط مدیر';
+        }
+        
         $user = $this->repository->finduser($request->user_id);
         $update = $this->repository->update($user, $request->only(['status', 'status_cause']));
 
