@@ -117,7 +117,7 @@ class AdminUserController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $request_data = $request->toArray();
+        $request_data = $request->only(['status', 'status_cause']);
   
 
         if ($request->status == 'accepted' && $request->status_cause == "" ) {
@@ -134,7 +134,7 @@ class AdminUserController extends Controller
         }
         
         $user = $this->repository->finduser($request->user_id);
-        $update = $this->repository->update($user, $request_data->only(['status', 'status_cause']));
+        $update = $this->repository->update($user, $request_data);
 
         if ($update) {
             return response(['status' => true]);
