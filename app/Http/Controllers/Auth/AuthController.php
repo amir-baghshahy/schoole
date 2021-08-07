@@ -60,7 +60,9 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->toArray())) {
-            if($this->check_archive($request->phone) != null){
+            $check_archiv = $this->check_archive($request->phone);
+            if($check_archiv != null){
+                var_dump($check_archiv);
                   return (new UserResource(auth()->user()))->additional([
                 'token' => auth()->user()->createToken('login')->plainTextToken,
             ]);
