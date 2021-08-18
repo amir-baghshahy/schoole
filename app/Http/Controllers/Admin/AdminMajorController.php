@@ -82,7 +82,7 @@ class AdminMajorController extends Controller
 
         if ($update) {
             return (new MajorResource($major))->additional([
-                "status" => $update
+                "status" => true
             ]);
         }
         return response(['status' => false]);
