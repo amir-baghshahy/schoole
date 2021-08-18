@@ -14,9 +14,13 @@ class MajorRepository
 
     public function index()
     {
-        return  Major::all('title', 'icone');
+        return  Major::all('title', 'icone', 'id');
     }
 
+    public function all()
+    {
+        return  Major::all();
+    }
 
     public function get_major_des($id)
     {

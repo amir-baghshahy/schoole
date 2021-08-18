@@ -19,7 +19,7 @@ class AdminMajorController extends Controller
 
     public function index()
     {
-        $major =  $this->repository->index();
+        $major =  $this->repository->all();
         return  new MajorResource($major);
     }
 
@@ -66,8 +66,12 @@ class AdminMajorController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        if ($request->file('media')) {
+        if ($request->file('media') && $request->file('icon')) {
             $request_data = $this->upload($request->only(['id', 'title', 'icone', 'text', 'media']));
+        } elseif ($request->file('media')) {
+            $request_data = $this->upload($request->only(['id', 'title', 'text', 'media']));
+        } elseif ($request->file('icone')) {
+            $request_data = $this->upload($request->only(['id', 'title', 'icone', 'text']));
         } else {
             $request_data = $request->toArray();
         }
@@ -113,20 +117,27 @@ class AdminMajorController extends Controller
     public function upload($request)
     {
 
-        $icone = $request['icone'];
-        $icone_name = "images/majors/" . time() . '_' . $icone->getClientOriginalName();
-        $location_icone = public_path('images/majors');
-        $icone->move($location_icone, $icone_name);
+        if (isset($request['icone'])) {
+            $icone = $request['icone'];
+            $icone_name = "images/majors/" . time() . '_' . $icone->getClientOriginalName();
+            $location_icone = public_path('images/majors');
+            $icone->move($location_icone, $icone_name);
+            $requestdata['icone'] = $icone_name;
+        }
 
-        $media = $request['media'];
-        $media_name = "media/" . time() . '_' . $media->getClientOriginalName();
-        $location_media = public_path('media');
-        $media->move($location_media, $media_name);
+        if (isset($request['media'])) {
+            $media = $request['media'];
+            $media_name = "media/" . time() . '_' . $media->getClientOriginalName();
+            $location_media = public_path('media');
+            $media->move($location_media, $media_name);
+            $requestdata['media'] = $media_name;
+        }
+
 
 
         $requestdata = $request;
-        $requestdata['icone'] = $icone_name;
-        $requestdata['media'] = $media_name;
+
+
 
         return $requestdata;
     }
