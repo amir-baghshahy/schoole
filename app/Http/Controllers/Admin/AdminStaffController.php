@@ -100,7 +100,13 @@ class AdminStaffController extends Controller
         }
 
         $user = User::find($request->id);
-        $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
+
+        if ($request->has('password')) {
+            $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
+        } else {
+            $user->update(['phone' => $request->phone, 'role' => $request->role]);
+        }
+
 
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->except(['phone', 'password', 'role']));
@@ -111,7 +117,7 @@ class AdminStaffController extends Controller
         $result = $this->repository->update($request_data);
 
         if ($result) {
-            return response(['status' => true], 200);
+            return response(['status' => $result], 200);
         } else {
             return response(['status' => false], 422);
         }

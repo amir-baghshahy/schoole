@@ -29,7 +29,7 @@ class StaffRepository
 
     public function update($request)
     {
-        return Staff::where("user_id", '=', $request['id'])->update($request);
+        return Staff::where("user_id", $request['id'])->update($request);
     }
 
     public function delete($id)
