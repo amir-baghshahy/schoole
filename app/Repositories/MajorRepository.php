@@ -34,7 +34,7 @@ class MajorRepository
 
     public function update($request)
     {
-        return Major::findOrFail($request['id'])->update($request);
+        return Major::where("id", $request['id'])->update($request);
     }
 
     public function delete($id)

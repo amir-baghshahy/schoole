@@ -76,8 +76,6 @@ class AdminMajorController extends Controller
             $request_data = $request->only(['id', 'title', 'icone', 'text', 'media']);
         }
 
-
-        dd($request_data);
         $update = $this->repository->update($request_data);
         $major = $this->repository->find($request->id);
 
