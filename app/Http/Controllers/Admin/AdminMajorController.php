@@ -56,9 +56,9 @@ class AdminMajorController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'title' => 'required|string|max:255',
-            'icone' => 'string',
+            'icone' => 'nullable|mimes:jpeg,jpg,png',
             'text' => 'required|string',
-            'media' => 'string'
+            'media' => 'nullable'
         ]);
 
 
