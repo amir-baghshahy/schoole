@@ -60,9 +60,9 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     // client
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('user/info', [UserController::class, 'index']);
 
     Route::prefix("user")->middleware('web_off')->group(function () {
-        Route::get('/info', [UserController::class, 'index']);
         Route::put('/update', [UserController::class, 'update']);
         Route::get('/account/info', [AccountController::class, 'index']);
         Route::put('/account/update', [AccountController::class, 'update']);
