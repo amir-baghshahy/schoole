@@ -117,7 +117,6 @@ class AdminMajorController extends Controller
     {
         $requestdata = $request;
 
-        dd(isset($request['icone']), isset($request['media']));
         if (isset($request['icone'])) {
             $icone = $request['icone'];
             $icone_name = "images/majors/" . time() . '_' . $icone->getClientOriginalName();
