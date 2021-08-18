@@ -15,6 +15,7 @@ class UserController extends Controller
 
     public function __construct(UserRepository $repository)
     {
+        $this->middleware('web_off')->except('index');
         $this->repository = $repository;
     }
 
