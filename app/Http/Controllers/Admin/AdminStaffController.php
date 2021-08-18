@@ -74,7 +74,6 @@ class AdminStaffController extends Controller
 
     public function update(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
