@@ -27,9 +27,9 @@ class StaffRepository
         return  Staff::create($request);
     }
 
-    public function update($request)
+    public function update($id, $request)
     {
-        return Staff::where("user_id", $request['id'])->update($request);
+        return Staff::where("user_id", $id)->update($request);
     }
 
     public function delete($id)
