@@ -86,7 +86,7 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'string',
+            'image' => 'nullable',
             'shabanumber' => 'nullable|digits:24',
             'birthday' => 'required'
         ], [
