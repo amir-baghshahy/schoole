@@ -116,6 +116,7 @@ class AdminMajorController extends Controller
 
     public function upload($request)
     {
+        $requestdata = $request;
 
         if (isset($request['icone'])) {
             $icone = $request['icone'];
@@ -132,12 +133,6 @@ class AdminMajorController extends Controller
             $media->move($location_media, $media_name);
             $requestdata['media'] = $media_name;
         }
-
-
-
-        $requestdata = $request;
-
-
 
         return $requestdata;
     }
