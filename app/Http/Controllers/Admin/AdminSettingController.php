@@ -15,6 +15,12 @@ class AdminSettingController extends Controller
     }
 
 
+    public function all()
+    {
+        return Setting::find(1);
+    }
+
+
     public function switch_website()
     {
         $setting = $this->get_seeting();
