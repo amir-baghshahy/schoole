@@ -160,7 +160,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
         Route::prefix("settings")->group(function () {
-            Route::put('all', [AdminSettingController::class, 'all']);
+            Route::get('all', [AdminSettingController::class, 'all']);
             Route::put('web', [AdminSettingController::class, 'switch_website']);
             Route::put('register', [AdminSettingController::class, 'switch_register']);
         });
