@@ -77,7 +77,7 @@ class AccountController extends Controller
                     'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $user->id,
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required',
-                    'relatives_phone' => 'required|regex:/(09)[0-9]{9}/|digits:11|unique:accounts,relatives_phone,' . $user->id,
+                    'relatives_phone' => 'required|unique:accounts,relatives_phone,' . $user->id,
                     'relatives_name' => 'required|string|max:255',
                 ],
                 [
