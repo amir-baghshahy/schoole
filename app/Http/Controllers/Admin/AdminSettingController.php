@@ -27,7 +27,7 @@ class AdminSettingController extends Controller
             return  $setting->update([
                 'web_mode' => 1
             ]);
-        } elseif ($setting->first()->web_mode == 1) {
+        } else {
             return  $setting->update([
                 'web_mode' => 0
             ]);
@@ -43,7 +43,7 @@ class AdminSettingController extends Controller
             return  $setting->update([
                 'register_mode' => 1
             ]);
-        } elseif ($setting->first()->register_mode == 1) {
+        } else {
             return  $setting->update([
                 'register_mode' => 0
             ]);
