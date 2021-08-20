@@ -76,7 +76,7 @@ class AdminStaffController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
+            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id,
             'password' => 'nullable|string|min:8',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
