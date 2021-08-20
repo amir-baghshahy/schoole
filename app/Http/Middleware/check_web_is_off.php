@@ -19,10 +19,6 @@ class check_web_is_off
     {
         $setting = Setting::find(['id' => 1])->first();
 
-        if ($setting == null) {
-            $setting = Setting::create(['web_mode' => 0, 'register_mode' => 0]);
-        }
-
         if ($setting->web_mode == 0) {
             return $next($request);
         } elseif ($setting->web_mode == 1) {
