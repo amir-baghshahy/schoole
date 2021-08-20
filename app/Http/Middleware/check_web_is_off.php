@@ -17,7 +17,7 @@ class check_web_is_off
      */
     public function handle(Request $request, Closure $next)
     {
-        $setting = Setting::find(['id' => 1])->first();
+        $setting = Setting::find(['id', 1])->first();
 
         if ($setting->web_mode == 0) {
             return $next($request);
