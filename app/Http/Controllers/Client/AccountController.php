@@ -62,7 +62,7 @@ class AccountController extends Controller
                     'birthday' => 'required',
                     'birthday_city' => 'required',
                     'place_issue' => 'required',
-                    'home_phone' => 'required|unique:accounts,home_phone,' . $user->id . 'id',
+                    'home_phone' => 'required|unique:accounts,home_phone,' . $user->id,
                     'grade' => 'required|max:255',
                     'major_name' => 'required|string|max:255',
                     'address' => 'required|string',

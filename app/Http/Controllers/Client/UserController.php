@@ -33,7 +33,7 @@ class UserController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id',
+                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id,
                     'password' => 'required|string|min:8|confirmed',
                 ],
                 [
@@ -59,7 +59,7 @@ class UserController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id . 'id'
+                    'phone' => 'required|max:11|min:11|unique:users,phone,' . $user->id
                 ],
                 [
                     'phone.unique' => 'شماره قبلا ثبت شده است ',
