@@ -38,8 +38,8 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'nullable|mimes:png,jpg,jpeg',
-            'shabanumber' => 'nullable|digits:24',
+            'image' => 'sometimes|nullable|mimes:png,jpg,jpeg',
+            'shabanumber' => 'sometimes|nullable|digits:24',
             'birthday' => 'required'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
