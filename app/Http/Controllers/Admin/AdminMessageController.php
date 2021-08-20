@@ -18,16 +18,12 @@ class AdminMessageController extends Controller
 
     public function getall()
     {
-        $result = $this->repository->getall();
-
-        return new MessageResource($result);
+        return new MessageResource($this->repository->getall());
     }
 
     public function delete($id)
     {
-        $result = $this->repository->delete($id);
-
-        if ($result) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);

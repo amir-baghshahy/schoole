@@ -14,12 +14,10 @@ class AdminSettingController extends Controller
         return  Setting::where('id', 1);
     }
 
-
     public function all()
     {
         return Setting::find(1);
     }
-
 
     public function switch_website()
     {

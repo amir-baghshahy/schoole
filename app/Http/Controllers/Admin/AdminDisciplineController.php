@@ -36,9 +36,7 @@ class AdminDisciplineController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $result = $this->repository->create($request->toArray());
-
-        if ($result) {
+        if ($this->repository->create($request->toArray())) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -59,24 +57,15 @@ class AdminDisciplineController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $discipline = $this->repository->find($request->id);
-
-        $result = $this->repository->update($discipline, $request->toArray());
-
-
-        if ($result) {
-            return (new DisciplineResource($discipline))->additional([
-                "status" => $result
-            ]);
+        if ($this->repository->update($request->toArray())) {
+            return response(['status' => true]);
         }
         return response(['status' => false]);
     }
 
     public function delete($id)
     {
-        $delete = $this->repository->delete($id);
-
-        if ($delete) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);

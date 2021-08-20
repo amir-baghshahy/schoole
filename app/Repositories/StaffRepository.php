@@ -19,7 +19,7 @@ class StaffRepository
 
     public function find($userid)
     {
-        return  Staff::with('user')->where(['user_id' => $userid])->firstOrFail();
+        return  Staff::with('user')->where('user_id', $userid)->firstOrFail();
     }
 
     public function create($request)

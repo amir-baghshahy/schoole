@@ -25,53 +25,66 @@ class AdminUserController extends Controller
 
     public function index(Request $request, $status)
     {
-        if ($status == "teachers") {
-            return new UserResource($this->repository->get_teachars());
-        } elseif ($status == "students") {
-            return new UserResource($this->repository->get_students());
-        } elseif ($status == "not-accepted") {
-            return new UserResource($this->repository->get_not_accepted());
-        } elseif ($status == "waiting-accepted") {
-            return new UserResource($this->repository->get_wait_accepted());
-        } elseif ($status == "incomplete-information") {
-            return new UserResource($this->repository->get_incomplete_info());
-        } elseif ($status == "archive") {
-            return new UserResource($this->repository->get_archives());
-        } elseif ($status == "all") {
-            return new UserResource($this->repository->get_all($request));
-        } else {
-            return response(["message" => "not found", "code" => "404"], 404);
+        $result = null;
+
+        switch ($status) {
+            case 'teachers':
+                $result = $this->repository->get_teachars();
+                break;
+            case 'students':
+                $result = $this->repository->get_students();
+                break;
+            case 'not-accepted':
+                $result = $this->repository->get_not_accepted();
+                break;
+            case 'waiting-accepted':
+                $result = $this->repository->get_wait_accepted();
+                break;
+            case 'incomplete-information':
+                $result = $this->repository->get_incomplete_info();
+                break;
+            case 'archive':
+                $result = $this->repository->get_archives();
+                break;
+            case 'all':
+                $result = $this->repository->get_all($request);
+                break;
+            default:
+                return response(['message' => 'not found', 'code' => '404'], 404);
+                break;
         }
+
+        return new UserResource($result);
     }
 
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:255',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
-            'home_phone' => 'required|unique:users,home_phone,' . $request->id . 'id',
+            'phone' => 'required|max:11|min:11|unique:users',
+            'home_phone' => 'required|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'birthday_city' => 'required',
             'place_issue' => 'required',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
-            'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $request->id],
+            'national_code' => ['required', new Nationalcode, 'unique:accounts'],
             'birthday' => 'required',
             'grade' => 'required|max:255',
             'major_name' => 'required|string|max:255',
             'address' => 'required|string',
             'dad_name' => 'required|string|max:255',
             'degree_dad' => 'required|string',
-            'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $request->id,
+            'dad_phone' => 'nullable|unique:accounts',
             'dad_work_address' => 'nullable',
             'dad_is_dead' => 'required|string|max:255',
             'mom_name' => 'required|string|max:255',
             'mom_family' => 'required|string|max:255',
             'degree_mom' => 'required|string|max:255',
-            'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $request->id,
+            'mom_phone' => 'nullable|unique:accounts',
             'mom_work_address' => 'nullable',
             'mom_is_dead' => 'required|string',
-            'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $request->id,
+            'relatives_phone' => 'required|digits:11|unique:accounts',
             'relatives_name' => 'required|string|max:255',
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
@@ -86,13 +99,15 @@ class AdminUserController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $user_request_create = $request;
-        $user_request_create['status'] = 'accepted';
-        $user_request_create['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
-        $user = $this->repository->create($user_request_create->only(['phone', 'password', 'status', 'status_cause']));
-        $requesdaata = $request;
-        $requesdaata['user_id'] = $user->id;
-        Account::create($request->toArray());
+        $create_user_request = $request;
+        $create_user_request['status'] = 'accepted';
+        $create_user_request['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
+
+        $user = $this->repository->create($create_user_request->only(['phone', 'password', 'status', 'status_cause']));
+
+        $request_data = $request;
+        $request_data['user_id'] = $user->id;
+        Account::create($request_data->except(['phone', 'password', 'status', 'status_cause']));
 
         if ($user) {
             return response(['status' => true], 200);
@@ -118,21 +133,21 @@ class AdminUserController extends Controller
         }
 
         $request_data = $request->only(['status', 'status_cause']);
-  
 
-        if ($request->status == 'accepted' && $request->status_cause == "" ) {
+
+        if ($request->status == 'accepted' && $request->status_cause == "") {
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
-        
-        if ($request->status == 'not-accepted' && $request->status_cause == "" ) {
+
+        if ($request->status == 'not-accepted' && $request->status_cause == "") {
             $request_data['status_cause'] = 'احراز هویت شما توسط مدیر رد شد';
         }
-        
-        if ($request->status == 'waiting-accepted' && $request->status_cause == "" ) {
+
+        if ($request->status == 'waiting-accepted' && $request->status_cause == "") {
             $request_data['status_cause'] = 'منتظر  برای تایید هویت شما توسط مدیر';
         }
-        
+
         $user = $this->repository->finduser($request->user_id);
         $update = $this->repository->update($user, $request_data);
 

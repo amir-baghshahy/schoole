@@ -41,9 +41,7 @@ class AdminSliderController extends Controller
 
         $request_data = $this->upload_image($request->only(['title', 'link', 'description', 'img']));
 
-        $create = $this->repository->create($request_data);
-
-        if ($create) {
+        if ($this->repository->create($request_data)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -72,10 +70,7 @@ class AdminSliderController extends Controller
             $request_data = $request->only(['id', 'title', 'link', 'description', 'img']);
         }
 
-
-        $update = $this->repository->update($request_data);
-
-        if ($update) {
+        if ($this->repository->update($request_data)) {
             return response(['status' => true]);
         }
         return response(['status' => false]);

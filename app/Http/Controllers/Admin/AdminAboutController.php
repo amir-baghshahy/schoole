@@ -28,9 +28,7 @@ class AdminAboutController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $result = $this->repository->create($request->toArray());
-
-        if ($result) {
+        if ($this->repository->create($request->toArray())) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -48,14 +46,9 @@ class AdminAboutController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $about = $this->repository->find($request->id);
-
-        $result = $this->repository->update($about, $request->except(['id']));
-
-        if ($result) {
-            return (new AboutResource($about))->additional([
-                "status" => true
-            ]);
+        if ($this->repository->update($request->toArray())) {
+            return response(['status' => true]);
         }
+        return response(['status' => false]);
     }
 }

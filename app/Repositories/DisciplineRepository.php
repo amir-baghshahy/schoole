@@ -22,9 +22,9 @@ class DisciplineRepository
         return Discipline::with('user.account')->get();
     }
 
-    public function update($discipline, $request)
+    public function update($request)
     {
-        return $discipline->update($request);
+        return Discipline::find($request['id'])->update($request);
     }
 
     public function delete($id)

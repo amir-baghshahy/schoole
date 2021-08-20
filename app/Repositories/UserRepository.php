@@ -19,22 +19,22 @@ class UserRepository
 
     public function get_students()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'accepted'], ['archive', false]])->paginate(30);
+        return  User::with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->paginate(10);
     }
 
     public function get_not_accepted()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'not-accepted'], ['archive', false]])->paginate(30);
+        return  User::with('account')->where([['role',  '2'], ['status', 'not-accepted'], ['archive', false]])->paginate(10);
     }
 
     public function get_wait_accepted()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'waiting-accepted'], ['archive', false]])->paginate(30);
+        return  User::with('account')->where([['role', '2'], ['status', 'waiting-accepted'], ['archive', false]])->paginate(10);
     }
 
     public function get_incomplete_info()
     {
-        return  User::with('account')->where([['role', '=', '2'], ['status', '=', 'incomplete-information'],['archive', false]])->paginate(30);
+        return  User::with('account')->where([['role', '2'], ['status', 'incomplete-information'], ['archive', false]])->paginate(30);
     }
 
 
@@ -45,44 +45,36 @@ class UserRepository
         $grade = $request->query('grade');
         $major_name = $request->query('major');
 
+        $condition = null;
+
         if ($code) {
-            return  User::whereHas(
-                'account',
-                function ($q) use ($code) {
-                    return $q->where('national_code', $code);
-                }
-            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
+            $condition =  function ($q) use ($code) {
+                return $q->where('national_code', $code);
+            };
         } elseif ($family) {
-            return User::whereHas(
-                'account',
-                function ($q) use ($family) {
-                    return $q->where('family', 'LIKE', '%' . $family . '%');
-                }
-            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
+            $condition  = function ($q) use ($family) {
+                return $q->where('family', 'LIKE', '%' . $family . '%');
+            };
         } elseif ($grade) {
-            return  User::whereHas(
-                'account',
-                function ($q) use ($grade) {
-                    return $q->where('grade', $grade);
-                }
-            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
+            $condition  = function ($q) use ($grade) {
+                return $q->where('grade', $grade);
+            };
         } elseif ($major_name) {
-            return  User::whereHas(
-                'account',
-                function ($q) use ($major_name) {
-                    return $q->where('major_name', 'LIKE', '%' . $major_name . '%');
-                }
-            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
+            $condition = function ($q) use ($major_name) {
+                return $q->where('major_name', 'LIKE', '%' . $major_name . '%');
+            };
         } elseif ($grade && $major_name) {
-            return  User::whereHas(
-                'account',
-                function ($q) use ($major_name, $grade) {
-                    return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
-                }
-            )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
+            $condition =  function ($q) use ($major_name, $grade) {
+                return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
+            };
         } else {
-            return  User::with('account')->where([['role', '2'], ['archive', false]])->paginate(30);
+            return  User::with('account')->where([['role', '2'], ['archive', false]])->paginate(10);
         }
+
+        return User::whereHas(
+            'account',
+            $condition
+        )->with('account')->where([['role', '=', '2'], ['archive', false]])->get();
     }
 
     public function get_archives()
@@ -102,7 +94,7 @@ class UserRepository
 
     public function getall()
     {
-        return  User::with('account')->where('archive','=',false)->paginate(30);
+        return  User::with('account')->where('archive', false)->paginate(30);
     }
 
     public function delete($id)

@@ -30,8 +30,8 @@ class AdminAccountController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:255',
-            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id . 'id',
-            'home_phone' => 'required|unique:accounts,home_phone,' . $request->id . 'id',
+            'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id,
+            'home_phone' => 'required|unique:accounts,home_phone,' . $request->id,
             'password' => 'string|min:8',
             'birthday_city' => 'required',
             'place_issue' => 'required',

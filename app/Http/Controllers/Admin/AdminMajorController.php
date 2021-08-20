@@ -24,7 +24,6 @@ class AdminMajorController extends Controller
     }
 
 
-
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -39,9 +38,8 @@ class AdminMajorController extends Controller
         }
 
         $request_data = $this->upload($request->only(['title', 'icone', 'text', 'media']));
-        $create = $this->repository->create($request_data);
 
-        if ($create) {
+        if ($this->repository->create($request_data)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -76,13 +74,8 @@ class AdminMajorController extends Controller
             $request_data = $request->only(['id', 'title', 'icone', 'text', 'media']);
         }
 
-        $update = $this->repository->update($request_data);
-        $major = $this->repository->find($request->id);
-
-        if ($update) {
-            return (new MajorResource($major))->additional([
-                "status" => $update
-            ]);
+        if ($this->repository->update($request_data)) {
+            return response(['status' => true]);
         }
         return response(['status' => false]);
     }
@@ -102,9 +95,7 @@ class AdminMajorController extends Controller
             unlink(public_path() . "/" . $major->media);
         }
 
-        $delete  = $this->repository->delete($id);
-
-        if ($delete) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         }
         return response(['status' => false]);
@@ -115,14 +106,14 @@ class AdminMajorController extends Controller
 
     public function upload($request)
     {
-        $requestdata = $request;
+        $request_data = $request;
 
         if (isset($request['icone'])) {
             $icone = $request['icone'];
             $icone_name = "images/majors/" . time() . '_' . $icone->getClientOriginalName();
             $location_icone = public_path('images/majors');
             $icone->move($location_icone, $icone_name);
-            $requestdata['icone'] = $icone_name;
+            $request_data['icone'] = $icone_name;
         }
 
         if (isset($request['media'])) {
@@ -130,9 +121,9 @@ class AdminMajorController extends Controller
             $media_name = "media/" . time() . '_' . $media->getClientOriginalName();
             $location_media = public_path('media');
             $media->move($location_media, $media_name);
-            $requestdata['media'] = $media_name;
+            $request_data['media'] = $media_name;
         }
 
-        return $requestdata;
+        return $request_data;
     }
 }

@@ -38,9 +38,7 @@ class AdminFileController extends Controller
         $request_data = $this->upload_file($request->toArray());
         $request_data['user_id'] = auth()->user()->id;
 
-        $create = $this->repository->create($request_data);
-
-        if ($create) {
+        if ($this->repository->create($request_data)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -53,17 +51,20 @@ class AdminFileController extends Controller
         $validator = Validator::make($request->all(), [
             "id" => "required",
             'title' => 'required',
-            'file' => 'string'
+            'file' => 'nullable'
         ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $request_data = $this->upload_file($request->toArray());
-        $update = $this->repository->update($request_data);
+        if ($request->file('file')) {
+            $request_data = $this->upload_file($request->toArray());
+        } else {
+            $request_data = $request->toArray();
+        }
 
-        if ($update) {
+        if ($this->repository->update($request_data)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -80,11 +81,10 @@ class AdminFileController extends Controller
             unlink(public_path() . "/" . $file->file);
         }
 
-        $delete  = $this->repository->delete($id);
-
-        if ($delete) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         }
+
         return response(['status' => false]);
     }
 
@@ -92,7 +92,7 @@ class AdminFileController extends Controller
     {
         $file = $request['file'];
         if ($request['file']) {
-            $filename = "media/" . time() . '_' . $file->getClientOriginalName();
+            $filename = 'media/' . time() . '_' . $file->getClientOriginalName();
             $location = public_path('media');
             $file->move($location, $filename);
 

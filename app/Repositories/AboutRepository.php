@@ -22,8 +22,8 @@ class AboutRepository
         return  About::create($request);
     }
 
-    public function update($about, $request)
+    public function update($request)
     {
-        return  $about->update($request);
+        return  About::find($request['id'])->update($request);
     }
 }

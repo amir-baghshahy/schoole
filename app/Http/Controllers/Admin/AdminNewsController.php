@@ -20,8 +20,7 @@ class AdminNewsController extends Controller
 
     public function index()
     {
-        $news =  $this->repository->getall();
-        return  NewsResource::collection($news);
+        return  NewsResource::collection($this->repository->getall());
     }
 
     public function create(Request $request)
@@ -36,12 +35,10 @@ class AdminNewsController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $requestdata = $this->upload_image($request->only(['title', 'text', 'image']));
-        $requestdata['user_id'] = auth()->user()->id;
+        $request_data = $this->upload_image($request->only(['title', 'text', 'image']));
+        $request_data['user_id'] = auth()->user()->id;
 
-        $create = $this->repository->create($requestdata);
-
-        if ($create) {
+        if ($this->repository->create($request_data)) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -54,7 +51,7 @@ class AdminNewsController extends Controller
             'id' => 'required|string',
             'title' => 'required|string|max:255',
             'text' => 'required|string',
-            'image' => 'string',
+            'image' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -63,16 +60,11 @@ class AdminNewsController extends Controller
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->only(['id', 'title', 'text', 'image']));
         } else {
-            $request_data = $request->only(['id', 'title', 'text', 'image']);
+            $request_data = $request->toArray();
         }
 
-        $update = $this->repository->update($request_data);
-        $news = $this->repository->find($request->id);
-
-        if ($update) {
-            return (new NewsResource($news))->additional([
-                "status" => $update
-            ]);
+        if ($this->repository->update($request_data)) {
+            return response(['status' => true]);
         }
         return response(['status' => false]);
     }
@@ -86,9 +78,7 @@ class AdminNewsController extends Controller
             unlink(public_path() . "/" . $news->image);
         }
 
-        $delete  = $this->repository->delete($id);
-
-        if ($delete) {
+        if ($this->repository->delete($id)) {
             return response(['status' => true]);
         }
         return response(['status' => false]);
@@ -102,10 +92,10 @@ class AdminNewsController extends Controller
         $location = public_path('images/news');
         $file->move($location, $filename);
 
-        $requestdata = $request;
-        $requestdata['image'] = $filename;
-        $requestdata['user_id'] = auth()->user()->id;
+        $request_data = $request;
+        $request_data['image'] = $filename;
+        $request_data['user_id'] = auth()->user()->id;
 
-        return $requestdata;
+        return $request_data;
     }
 }
