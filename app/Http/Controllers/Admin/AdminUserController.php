@@ -60,16 +60,13 @@ class AdminUserController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|string|max:255',
-            'phone' => 'required|max:11|min:11|unique:users',
-            'home_phone' => 'required|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'birthday_city' => 'required',
-            'place_issue' => 'required',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
             'national_code' => ['required', new Nationalcode, 'unique:accounts'],
             'birthday' => 'required',
+            'birthday_city' => 'required',
+            'place_issue' => 'required',
+            'home_phone' => 'required|unique:accounts',
             'grade' => 'required|max:255',
             'major_name' => 'required|string|max:255',
             'address' => 'required|string',
@@ -77,15 +74,16 @@ class AdminUserController extends Controller
             'degree_dad' => 'required|string',
             'dad_phone' => 'nullable|unique:accounts',
             'dad_work_address' => 'nullable',
-            'dad_is_dead' => 'required|string|max:255',
+            'dad_is_dead' => 'required',
             'mom_name' => 'required|string|max:255',
             'mom_family' => 'required|string|max:255',
             'degree_mom' => 'required|string|max:255',
             'mom_phone' => 'nullable|unique:accounts',
             'mom_work_address' => 'nullable',
-            'mom_is_dead' => 'required|string',
-            'relatives_phone' => 'required|digits:11|unique:accounts',
+            'mom_is_dead' => 'required',
+            'relatives_phone' => 'required|unique:accounts',
             'relatives_name' => 'required|string|max:255',
+            'password' => 'required|string|min:8|confirmed'
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
@@ -105,18 +103,15 @@ class AdminUserController extends Controller
 
         $user = $this->repository->create($create_user_request->only(['phone', 'password', 'status', 'status_cause']));
 
-        $request_data = $request;
+        $request_data = $request->except(['phone', 'password', 'status', 'status_cause']);
         $request_data['user_id'] = $user->id;
-        Account::create($request_data->except(['phone', 'password', 'status', 'status_cause']));
 
-        if ($user) {
+        if (Account::create($request_data)) {
             return response(['status' => true], 200);
         } else {
             return response(['status' => false], 422);
         }
     }
-
-
 
 
     public function change_status(Request $request)
