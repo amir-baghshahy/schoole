@@ -143,6 +143,11 @@ class AdminUserController extends Controller
             $request_data['status_cause'] = 'منتظر  برای تایید هویت شما توسط مدیر';
         }
 
+        if ($request->status == 'incomplete-information' && $request->status_cause == "") {
+            $request_data['status_cause'] =' لطفا احراز هویت خود را تکمیل کنید' ;
+        }
+
+
         $user = $this->repository->finduser($request->user_id);
         $update = $this->repository->update($user, $request_data);
 
