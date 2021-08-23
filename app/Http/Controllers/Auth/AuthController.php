@@ -50,14 +50,19 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required|digits:11',
-            'password' => 'required|string',
+//         $validator = Validator::make($request->all(), [
+//             'phone' => 'required|digits:11',
+//             'password' => 'required|string',
+//         ]);
+       $validated = $request->validate([
+           'phone' => 'required|digits:11',
+           'password' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
-        }
+
+//         if ($validator->fails()) {
+//             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
+//         }
 
         if (Auth::attempt($request->toArray())) {
             $check_archiv = $this->check_archive($request->phone);
