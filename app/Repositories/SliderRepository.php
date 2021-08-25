@@ -14,7 +14,7 @@ class SliderRepository
 
     public function getall()
     {
-        return  Slider::orderBy('created_at', 'asc')->get();
+        return  Slider::orderBy('created_at', 'desc')->get();
     }
 
     public function create($request)

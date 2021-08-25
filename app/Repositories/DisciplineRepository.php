@@ -19,7 +19,7 @@ class DisciplineRepository
 
     public function getall()
     {
-        return Discipline::with('user.account')->orderBy('created_at', 'asc')->get();
+        return Discipline::with('user.account')->orderBy('created_at', 'desc')->get();
     }
 
     public function update($request)
