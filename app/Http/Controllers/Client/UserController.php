@@ -48,7 +48,7 @@ class UserController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        if ($this->repository->update(auth()->user(), $request->toArray())) {
+        if ($this->repository->update(auth()->user(), $request->except(['role', 'super_user']))) {
             return response(['status' => true]);
         }
         return response(['status' => false]);

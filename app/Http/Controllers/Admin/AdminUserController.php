@@ -144,7 +144,7 @@ class AdminUserController extends Controller
         }
 
         if ($request->status == 'incomplete-information' && $request->status_cause == "") {
-            $request_data['status_cause'] =' لطفا احراز هویت خود را تکمیل کنید' ;
+            $request_data['status_cause'] = ' لطفا احراز هویت خود را تکمیل کنید';
         }
 
 

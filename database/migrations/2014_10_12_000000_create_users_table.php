@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('phone');
             $table->integer("role")->default(2);
+            $table->boolean('super_user')->default(false);
             $table->string("status")->default('incomplete-information');
             $table->string("status_cause")->default('لطفا احراز هویت خود را تکمیل کنید');
             $table->boolean("archive")->default(false);

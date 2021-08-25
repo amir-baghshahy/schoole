@@ -24,7 +24,8 @@ class User extends Authenticatable
         'status',
         'status_cause',
         'password',
-        'archive'
+        'archive',
+        'super_user'
     ];
 
     /**
@@ -33,7 +34,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
+        'super_user'
     ];
 
     /**
@@ -41,7 +43,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = ['archive' => 'boolean'];
+    protected $casts = ['archive' => 'boolean', 'super_user' => 'boolean'];
 
     public function setPasswordAttribute($value)
     {
