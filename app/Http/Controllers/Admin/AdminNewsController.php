@@ -74,8 +74,8 @@ class AdminNewsController extends Controller
 
         $news = $this->repository->find($id);
 
-        if ($news->image != null && file_exists(public_path() . "/" . $news->image)) {
-            unlink(public_path() . "/" . $news->image);
+        if ($news[0]->image != null && file_exists(public_path() . "/" . $news[0]->image)) {
+            unlink(public_path() . "/" . $news[0]->image);
         }
 
         if ($this->repository->delete($id)) {
