@@ -1,32 +1,46 @@
-FROM webdevops/php-nginx:7.4-alpine
+FROM php:7.1.5-apache
 
-# Install Laravel framework system requirements (https://laravel.com/docs/8.x/deployment#optimizing-configuration-loading)
-RUN apk add oniguruma-dev postgresql-dev libxml2-dev
-RUN docker-php-ext-install \
-        bcmath \
-        ctype \
-        fileinfo \
-        json \
-        mbstring \
-        pdo_mysql \
-        pdo_pgsql \
-        tokenizer \
-        xml
+#install all the system dependencies and enable PHP modules 
+RUN apt-get update && apt-get install -y \
+      libicu-dev \
+      libpq-dev \
+      libmcrypt-dev \
+      git \
+      zip \
+      unzip \
+    && rm -r /var/lib/apt/lists/* \
+    && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
+    && docker-php-ext-install \
+      intl \
+      mbstring \
+      mcrypt \
+      pcntl \
+      pdo_mysql \
+      pdo_pgsql \
+      pgsql \
+      zip \
+      opcache
 
-# Copy Composer binary from the Composer official Docker image
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+#install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
-ENV WEB_DOCUMENT_ROOT /app/public
-ENV APP_ENV production
-WORKDIR /app
-COPY . .
+#set our application folder as an environment variable
+ENV APP_HOME /var/www/html
 
-RUN composer install --no-interaction --optimize-autoloader --no-dev
-# Optimizing Configuration loading
-RUN php artisan config:cache
-# Optimizing Route loading
-RUN php artisan route:cache
-# Optimizing View loading
-RUN php artisan vew:cache
+#change uid and gid of apache to docker user uid/gid
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
-RUN chown -R application:application .
+#change the web_root to laravel /var/www/html/public folder
+RUN sed -i -e "s/html/html\/public/g" /etc/apache2/sites-enabled/000-default.conf
+
+# enable apache module rewrite
+RUN a2enmod rewrite
+
+#copy source files and run composer
+COPY . $APP_HOME
+
+# install all PHP dependencies
+RUN composer install --no-interaction
+
+#change ownership of our applications
+RUN chown -R www-data:www-data $APP_HOME
