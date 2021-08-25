@@ -22,6 +22,11 @@ class AdminDisciplineController extends Controller
         return new DisciplineResource($this->repository->getall());
     }
 
+    public function get_by_user($id)
+    {
+        return new DisciplineResource($this->repository->findbyuser($id));
+    }
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

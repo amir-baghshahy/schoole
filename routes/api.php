@@ -152,6 +152,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         });
 
         Route::prefix("discipline")->group(function () {
+            Route::post('all', [AdminDisciplineController::class, 'get_all']);
+            Route::post('find/{id}', [AdminDisciplineController::class, 'get_all']);
             Route::post('create', [AdminDisciplineController::class, 'create']);
             Route::put('update', [AdminDisciplineController::class, 'update']);
             Route::delete('delete/{id}', [AdminDisciplineController::class, 'delete']);
