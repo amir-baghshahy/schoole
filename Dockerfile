@@ -1,46 +1,32 @@
-FROM php:7.4-fpm
+FROM webdevops/php-nginx:7.4-alpine
 
-# Copy composer.lock and composer.json into the working directory
-COPY composer.lock composer.json /var/www/html/
+# Install Laravel framework system requirements (https://laravel.com/docs/8.x/deployment#optimizing-configuration-loading)
+RUN apk add oniguruma-dev postgresql-dev libxml2-dev
+RUN docker-php-ext-install \
+        bcmath \
+        ctype \
+        fileinfo \
+        json \
+        mbstring \
+        pdo_mysql \
+        pdo_pgsql \
+        tokenizer \
+        xml
 
-# Set working directory
-WORKDIR /var/www/html/
+# Copy Composer binary from the Composer official Docker image
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependencies for the operating system software
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    libzip-dev \
-    unzip \
-    git \
-    libonig-dev \
-    curl
+ENV WEB_DOCUMENT_ROOT /app/public
+ENV APP_ENV production
+WORKDIR /app
+COPY . .
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+# Optimizing Configuration loading
+RUN php artisan config:cache
+# Optimizing Route loading
+RUN php artisan route:cache
+# Optimizing View loading
+RUN php artisan vew:cache
 
-# Install extensions for php
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
-
-# Install composer (php package manager)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Copy existing application directory contents to the working directory
-COPY . /var/www/html
-
-# Assign permissions of the working directory to the www-data user
-RUN chown -R www-data:www-data \
-        /var/www/html/storage \
-        /var/www/html/bootstrap/cache
-
-# Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
-EXPOSE 9000
-CMD ["php-fpm"]
+RUN chown -R application:application .
