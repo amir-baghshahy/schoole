@@ -34,6 +34,6 @@ class FileRepository
 
     public function update($request)
     {
-        return File::where('id', '=', $request['id'])->update($request);
+        return File::find($request['id'])->update($request);
     }
 }
