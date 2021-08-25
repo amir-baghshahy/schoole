@@ -43,6 +43,7 @@ Route::middleware(['json.response', 'web_off'])->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login');
         Route::post('/register', [AuthController::class, 'register'])->middleware('register_off');
     });
+
     Route::get('about/all', [AboutController::class, 'index']);
     Route::get('slider/all', [SliderController::class, 'index']);
     Route::get('major/all', [MajorController::class, 'index']);
@@ -61,18 +62,27 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     // client
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('user/info', [UserController::class, 'index']);
+    Route::post('messages/create', [MessageController::class, 'create']);
+    Route::get('discipline', [DisciplineController::class, 'index']);
 
     Route::prefix("user")->middleware('web_off')->group(function () {
         Route::put('/update', [UserController::class, 'update']);
         Route::get('/account/info', [AccountController::class, 'index']);
         Route::put('/account/update', [AccountController::class, 'update']);
-        Route::put('staff/update', [StaffController::class, 'update']);
     });
 
 
 
-    Route::post('messages/create', [MessageController::class, 'create']);
-    Route::get('discipline', [DisciplineController::class, 'index']);
+    Route::middleware('staff_or_admin')->group(function () {
+        Route::put('staff/update', [StaffController::class, 'update']);
+        Route::prefix("admin/file")->group(function () {
+            Route::get('all', [AdminFileController::class, 'getall']);
+            Route::post('create', [AdminFileController::class, 'create']);
+            Route::put('update', [AdminFileController::class, 'update']);
+            Route::delete('delete/{id}', [AdminFileController::class, 'delete']);
+        });
+    });
+
 
 
     // admin
@@ -93,6 +103,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
                 Route::put('grade/up', [AdminUserController::class, 'grade_up']);
             });
 
+
             Route::prefix('staff')->group(function () {
                 Route::get('all', [AdminStaffController::class, 'index']);
                 Route::post('create', [AdminStaffController::class, 'create']);
@@ -102,10 +113,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         });
 
 
-
-
         Route::get('statics', [AdminStatisticController::class, 'statics']);
-
 
         Route::prefix("slider")->group(function () {
             Route::post('create', [AdminSliderController::class, 'create']);
@@ -148,15 +156,6 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
             Route::put('update', [AdminDisciplineController::class, 'update']);
             Route::delete('delete/{id}', [AdminDisciplineController::class, 'delete']);
         });
-
-
-        Route::prefix("file")->group(function () {
-            Route::get('all', [AdminFileController::class, 'getall']);
-            Route::post('create', [AdminFileController::class, 'create']);
-            Route::put('update', [AdminFileController::class, 'update']);
-            Route::delete('delete/{id}', [AdminFileController::class, 'delete']);
-        });
-
 
 
         Route::prefix("settings")->group(function () {

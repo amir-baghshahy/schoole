@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
         'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
         'admin' => \App\Http\Middleware\IsAdminMiddlware::class,
         'web_off' => \App\Http\Middleware\check_web_is_off::class,
-        'register_off' => \App\Http\Middleware\check_register_is_off::class
-
+        'register_off' => \App\Http\Middleware\check_register_is_off::class,
+        'staff_or_admin' => \App\Http\Middleware\staff::class,
     ];
 }
