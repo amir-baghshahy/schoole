@@ -100,12 +100,15 @@ class AdminStaffController extends Controller
 
         $user = User::find($request->id);
 
-        if ($request->has('password')) {
-            $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
+        if ($user->super_user == true) {
+            return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
         } else {
-            $user->update(['phone' => $request->phone, 'role' => $request->role]);
+            if ($request->has('password')) {
+                $user->update(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role]);
+            } else {
+                $user->update(['phone' => $request->phone, 'role' => $request->role]);
+            }
         }
-
 
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->except(['phone', 'password', 'role', '_method', 'id']));
@@ -125,17 +128,21 @@ class AdminStaffController extends Controller
 
     public function delete($id)
     {
+
         $staff = $this->repository->find($id);
 
-        if ($staff->image && file_exists(public_path() . "/" . $staff->image)) {
-            if ($staff->image != "images/staff/defualt.png") {
-                unlink(public_path() . "/" . $staff->img);
-            }
-        }
-
         $user = User::find($id);
-        $user->staff()->delete();
-        return $user->delete();
+        if ($user->super_user == true) {
+            return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
+        } else {
+            if ($staff->image && file_exists(public_path() . "/" . $staff->image)) {
+                if ($staff->image != "images/staff/defualt.png") {
+                    unlink(public_path() . "/" . $staff->img);
+                }
+            }
+            $user->staff()->delete();
+            return $user->delete();
+        }
     }
 
     public function upload_image($request)

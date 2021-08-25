@@ -160,7 +160,16 @@ class AdminUserController extends Controller
 
     public function delete($id)
     {
-        $delete  = $this->repository->delete($id);
+        $user = $this->repository->finduser($id);
+
+        if ($user->status = 'accepted') {
+            if (auth()->user()->super_user != true) {
+                return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
+            }
+            $delete  = $this->repository->delete($id);
+        } else {
+            $delete  = $this->repository->delete($id);
+        }
 
         if ($delete) {
             return response(['status' => true]);
@@ -182,20 +191,24 @@ class AdminUserController extends Controller
 
     public function grade_up()
     {
-        $update = User::with(['account' => function ($q) {
-            return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
-        }])->where([['role', 2], ['archive', false], ['status', 'accepted']])->get();
+        if (auth()->user()->super_user == true) {
+            $update = User::with(['account' => function ($q) {
+                return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
+            }])->where([['role', 2], ['archive', false], ['status', 'accepted']])->get();
 
 
-        $update_archive = User::whereHas('account', function ($query) {
-            return $query->where('grade', 3);
-        })->where([['role', '=', 2], ['archive', '=', false], ['status', 'accepted']]);
+            $update_archive = User::whereHas('account', function ($query) {
+                return $query->where('grade', 3);
+            })->where([['role', '=', 2], ['archive', '=', false], ['status', 'accepted']]);
 
-        $result_archive =  $update_archive->update(['archive' => true]);
+            $result_archive =  $update_archive->update(['archive' => true]);
 
-        if ($update && $result_archive) {
-            return response(['status' => true]);
+            if ($update && $result_archive) {
+                return response(['status' => true]);
+            }
+            return response(['status' => false]);
         }
-        return response(['status' => false]);
+
+        return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
     }
 }
