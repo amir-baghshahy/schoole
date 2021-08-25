@@ -19,7 +19,7 @@ class MajorRepository
 
     public function all()
     {
-        return  Major::all();
+        return  Major::orderBy('created_at', 'asc')->get();
     }
 
     public function get_major_des($id)

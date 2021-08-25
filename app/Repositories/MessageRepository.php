@@ -10,7 +10,7 @@ class MessageRepository
     {
         return Message::with(['user.account' => function ($q) {
             return $q->select('user_id', 'name', 'family', 'grade');
-        }])->paginate(30);
+        }])->orderBy('created_at', 'asc')->paginate(30);
     }
 
     public function create($request)
