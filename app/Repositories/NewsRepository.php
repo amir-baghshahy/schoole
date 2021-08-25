@@ -18,7 +18,7 @@ class NewsRepository
             return  $q->select('id');
         }, "user.account" => function ($q) {
             return  $q->select('id', 'user_id', 'name', 'family');
-        }])->orderBy('created_at', 'asc')->paginate(10);
+        }])->orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function create($request)
