@@ -41,7 +41,7 @@ class AdminPictureController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'image' => 'nullable|image',
+            'image' => 'nullable',
             'album_id' => 'required'
         ]);
 

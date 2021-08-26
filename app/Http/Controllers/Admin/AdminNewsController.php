@@ -53,9 +53,7 @@ class AdminNewsController extends Controller
             'id' => 'required|string',
             'title' => 'required|string|max:255',
             'text' => 'required|string',
-            'image' => 'nullable|image',
-        ], [
-            'image.image' => 'فایل وارد شده معتبر نمی باشد'
+            'image' => 'nullable',
         ]);
 
         if ($validator->fails()) {
