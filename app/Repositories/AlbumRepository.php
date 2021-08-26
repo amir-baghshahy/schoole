@@ -17,6 +17,11 @@ class AlbumRepository
         return Album::create($request);
     }
 
+    public function find($id)
+    {
+        return Album::findOrFail($id);
+    }
+
     public function update($request)
     {
         return Album::find($request->id)->update($request);
@@ -24,7 +29,7 @@ class AlbumRepository
 
     public function delete($id)
     {
-        $albume = Album::findOrFail($id);
+        $albume = $this->find($id);
         $albume->pictures()->delete();
         return $albume->delete();
     }

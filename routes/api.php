@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminFileController;
 use App\Http\Controllers\Admin\AdminMajorController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminNewsController;
+use App\Http\Controllers\Admin\AdminPictureController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminSliderController;
 use App\Http\Controllers\Admin\AdminStaffController;
@@ -56,6 +57,7 @@ Route::middleware(['json.response', 'web_off'])->group(function () {
     Route::get('file/{id}', [FileController::class, 'find']);
     Route::get('staff/all', [StaffController::class, 'index']);
     Route::get('album/all', [AlbumController::class, 'all']);
+    Route::get('album/{id}', [AlbumController::class, 'find']);
 });
 
 
@@ -178,9 +180,17 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
         Route::prefix('album')->group(function () {
             Route::get('/all', [AdminAlbumController::class, 'index']);
+            Route::get('album/{id}', [AdminAlbumController::class, 'find']);
             Route::post('/create', [AdminAlbumController::class, 'create']);
             Route::put('/update', [AdminAlbumController::class, 'update']);
             Route::delete('/delete', [AdminAlbumController::class, 'delete']);
+        });
+
+
+        Route::prefix('album')->group(function () {
+            Route::post('/create', [AdminPictureController::class, 'create']);
+            Route::put('/update', [AdminPictureController::class, 'update']);
+            Route::delete('/delete', [AdminPictureController::class, 'delete']);
         });
     });
 });

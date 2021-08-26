@@ -21,4 +21,12 @@ class AlbumController extends Controller
     {
         return new AlbumResource($this->repository->index());
     }
+
+    public function find($id)
+    {
+        $album = $this->repository->find($id);
+        $pictures = $album->pictures;
+
+        return new AlbumResource($pictures);
+    }
 }
