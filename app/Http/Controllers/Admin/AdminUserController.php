@@ -7,7 +7,6 @@ use App\Rules\Nationalcode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\Staff;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
@@ -163,7 +162,7 @@ class AdminUserController extends Controller
         $user = $this->repository->finduser($id);
 
         if ($user->status = 'accepted') {
-            if (auth()->user()->super_user != true) {
+            if (!auth()->user()->super_user) {
                 return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
             }
             $delete  = $this->repository->delete($id);
@@ -181,19 +180,17 @@ class AdminUserController extends Controller
     public function archive($id)
     {
         $user =  $this->repository->finduser($id);
-        
-        if($user->status == 'accepted'){
-             if($user->super_user == true){
-                   $update =  $this->repository->update($user, ['archive' => true]);
-             }else{
-                  return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
-             }
-            
+
+        if ($user->status == 'accepted') {
+            if (!auth()->user()->super_user) {
+                return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
+            } else {
+                $update =  $this->repository->update($user, ['archive' => true]);
+            }
+        } else {
             $update =  $this->repository->update($user, ['archive' => true]);
         }
-                          
-          $update =  $this->repository->update($user, ['archive' => true]);
-      
+
         if ($update) {
             return response(['status' => true]);
         }
@@ -202,7 +199,7 @@ class AdminUserController extends Controller
 
     public function grade_up()
     {
-        if (auth()->user()->super_user == true) {
+        if (auth()->user()->super_user) {
             $update = User::with(['account' => function ($q) {
                 return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
             }])->where([['role', 2], ['archive', false], ['status', 'accepted']])->get();
