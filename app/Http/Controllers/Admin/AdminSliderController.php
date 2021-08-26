@@ -34,7 +34,7 @@ class AdminSliderController extends Controller
             'description' => 'nullable',
             'img' => 'required|image',
         ], [
-            'image.image' => 'فایل وارد شده معتبر نمی باشد'
+            'img.image' => 'فایل وارد شده معتبر نمی باشد'
         ]);
 
         if ($validator->fails()) {
@@ -59,6 +59,8 @@ class AdminSliderController extends Controller
             'link' => 'nullable|max:255',
             'description' => 'nullable|max:255',
             'img' => 'nullable|image',
+        ], [
+            'img.image' => 'فایل نامعتبر است '
         ]);
 
 

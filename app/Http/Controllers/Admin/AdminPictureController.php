@@ -21,6 +21,8 @@ class AdminPictureController extends Controller
         $validator = Validator::make($request->all(), [
             'image' => 'required|image',
             'album_id' => 'required'
+        ], [
+            'image.image' => 'فایل نامعتبر است'
         ]);
 
         if ($validator->fails()) {
@@ -43,6 +45,8 @@ class AdminPictureController extends Controller
             'id' => 'required',
             'image' => 'nullable|image',
             'album_id' => 'required'
+        ], [
+            'image.image' => 'فایل نامعتبر است'
         ]);
 
         if ($validator->fails()) {

@@ -43,6 +43,7 @@ class AdminStaffController extends Controller
             'birthday' => 'required'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
+            'image.image' => 'فایل نامعتبر است '
         ]);
 
 
@@ -91,6 +92,7 @@ class AdminStaffController extends Controller
             'birthday' => 'required'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
+            'image.image' => 'فایل نامعتبر است '
         ]);
 
 

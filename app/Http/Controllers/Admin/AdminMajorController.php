@@ -28,9 +28,11 @@ class AdminMajorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
-            'icone' => 'required|mimes:png,jpg,jpeg',
+            'icone' => 'required|image',
             'text' => 'required|string',
             'media' => 'required|mimes:png,jpg,jpeg,mp4,mov,ogg,ogx,oga,ogv,ogg,webm'
+        ], [
+            'icone.image' => 'فایل نامعتبر است'
         ]);
 
         if ($validator->fails()) {
@@ -54,9 +56,11 @@ class AdminMajorController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'title' => 'required|string|max:255',
-            'icone' => 'nullable',
+            'icone' => 'nullable|image',
             'text' => 'required|string',
             'media' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,ogg,ogx,oga,ogv,ogg,webm'
+        ], [
+            'icone.image' => 'فایل نامعتبر است'
         ]);
 
 
