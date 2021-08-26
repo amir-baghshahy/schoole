@@ -58,7 +58,7 @@ class AdminSliderController extends Controller
             'id' => 'required|string|max:255',
             'link' => 'nullable|max:255',
             'description' => 'nullable|max:255',
-            'img' => 'nullable',
+            'img' => 'nullable|image',
         ]);
 
 

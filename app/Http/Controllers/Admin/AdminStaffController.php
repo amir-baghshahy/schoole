@@ -38,7 +38,7 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'nullable|mimes:png,jpg,jpeg',
+            'image' => 'nullable|image',
             'shabanumber' => 'nullable|digits:24',
             'birthday' => 'required'
         ], [
@@ -86,7 +86,7 @@ class AdminStaffController extends Controller
             'teaching_experience' => 'nullable',
             'major' => 'required',
             'status' => 'nullable',
-            'image' => 'nullable',
+            'image' => 'nullable|image',
             'shabanumber' => 'nullable|digits:24',
             'birthday' => 'required'
         ], [

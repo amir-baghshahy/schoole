@@ -56,7 +56,7 @@ class AdminMajorController extends Controller
             'title' => 'required|string|max:255',
             'icone' => 'nullable',
             'text' => 'required|string',
-            'media' => 'nullable'
+            'media' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,ogg,ogx,oga,ogv,ogg,webm'
         ]);
 
 
