@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAboutController;
 use App\Http\Controllers\Admin\AdminAccountController;
+use App\Http\Controllers\Admin\AdminAlbumController;
 use App\Http\Controllers\Admin\AdminDisciplineController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminFileController;
@@ -170,6 +171,14 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix("events")->group(function () {
             Route::get('students/birthdays', [AdminEventController::class, 'get_student_birthday']);
             Route::get('teachers/birthdays', [AdminEventController::class, 'get_teacher_birthday']);
+        });
+
+
+        Route::prefix('album')->group(function () {
+            Route::get('/all', [AdminAlbumController::class, 'index']);
+            Route::post('/create', [AdminAlbumController::class, 'create']);
+            Route::put('/update', [AdminAlbumController::class, 'update']);
+            Route::delete('/delete', [AdminAlbumController::class, 'delete']);
         });
     });
 });

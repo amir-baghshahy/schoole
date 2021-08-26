@@ -61,5 +61,10 @@ class AdminAlbumController extends Controller
 
     public function delete($id)
     {
+        if ($this->repository->delete($id)) {
+            return response(['status' => true]);
+        }
+
+        return response(['status' => false]);
     }
 }

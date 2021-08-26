@@ -21,4 +21,11 @@ class AlbumRepository
     {
         return Album::find($request->id)->update($request);
     }
+
+    public function delete($id)
+    {
+        $albume = Album::findOrFail($id);
+        $albume->pictures()->delete();
+        return $albume->delete();
+    }
 }
