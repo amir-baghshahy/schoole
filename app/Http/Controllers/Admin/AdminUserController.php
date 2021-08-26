@@ -181,8 +181,19 @@ class AdminUserController extends Controller
     public function archive($id)
     {
         $user =  $this->repository->finduser($id);
-        $update =  $this->repository->update($user, ['archive' => true]);
-
+        
+        if($user->status == 'accepted'){
+             if($user->super_user == true){
+                   $update =  $this->repository->update($user, ['archive' => true]);
+             }else{
+                  return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
+             }
+            
+            $update =  $this->repository->update($user, ['archive' => true]);
+        }
+                          
+          $update =  $this->repository->update($user, ['archive' => true]);
+      
         if ($update) {
             return response(['status' => true]);
         }
