@@ -23,6 +23,11 @@ class AdminFileController extends Controller
         return new FileResource($this->repository->getall());
     }
 
+    public function staff_all()
+    {
+        return new FileResource($this->repository->get_all_staff(auth()->user()->id));
+    }
+
     public function create(Request $request)
     {
 

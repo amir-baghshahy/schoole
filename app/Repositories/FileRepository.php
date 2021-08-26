@@ -22,6 +22,11 @@ class FileRepository
         return File::with('user.staff')->get();
     }
 
+    public function get_all_staff($userid)
+    {
+        return File::with('user.staff')->where('user_id', $userid)->get();
+    }
+
     public function create($request)
     {
         return  File::create($request);
