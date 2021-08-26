@@ -86,7 +86,13 @@ class AdminFileController extends Controller
             unlink(public_path() . "/" . $file->file);
         }
 
-        if ($this->repository->delete($id)) {
+        if (auth()->user()->role == 0) {
+            $delete = $this->repository->delete($id);
+        } else {
+            $delete = $this->repository->delete_check_user_id($id, auth()->user()->id);
+        }
+
+        if ($delete) {
             return response(['status' => true]);
         }
 

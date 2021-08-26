@@ -37,6 +37,11 @@ class FileRepository
         return File::destroy($id);
     }
 
+    public function delete_check_user_id($id, $userid)
+    {
+        return File::where([['id', $id], ['user_id', $userid]])->delete();
+    }
+
     public function update($request)
     {
         return File::find($request['id'])->update($request);
