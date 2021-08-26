@@ -28,7 +28,9 @@ class AdminNewsController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'text' => 'required|string',
-            'image' => 'required|mimes:png,jpg,jpeg',
+            'image' => 'required|image',
+        ], [
+            'image.image' => 'فایل وارد شده معتبر نمی باشد'
         ]);
 
         if ($validator->fails()) {
