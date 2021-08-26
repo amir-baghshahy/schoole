@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Client\AboutController;
 use App\Http\Controllers\Client\AccountController;
+use App\Http\Controllers\Client\AlbumController;
 use App\Http\Controllers\Client\DisciplineController;
 use App\Http\Controllers\Client\FileController;
 use App\Http\Controllers\Client\MajorController;
@@ -54,6 +55,7 @@ Route::middleware(['json.response', 'web_off'])->group(function () {
     Route::get('file/all', [FileController::class, 'getall']);
     Route::get('file/{id}', [FileController::class, 'find']);
     Route::get('staff/all', [StaffController::class, 'index']);
+    Route::get('album/all', [AlbumController::class, 'all']);
 });
 
 
