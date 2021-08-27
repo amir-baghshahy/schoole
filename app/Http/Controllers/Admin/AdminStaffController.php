@@ -102,7 +102,7 @@ class AdminStaffController extends Controller
 
         $user = User::find($request->id);
 
-        if ($user->super_user == true) {
+        if (!auth()->user()->super_user) {
             return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
         } else {
             if ($request->has('password')) {
