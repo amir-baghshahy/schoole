@@ -13,14 +13,14 @@
         "laravel/framework": "^8.40",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "fakerphp/faker": "^1.9.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.3.3",
+        "fakerphp/faker": "^1.9.1"
     },
     "autoload": {
         "psr-4": {
