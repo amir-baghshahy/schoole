@@ -16,9 +16,9 @@ class CreateMajorsTable extends Migration
         Schema::create('majors', function (Blueprint $table) {
             $table->id();
             $table->string("title");
-            $table->text("icone")->nullable();
+            $table->text("icone")->nullable()->default('');
             $table->text("text");
-            $table->text("media")->nullable();
+            $table->text("media")->nullable()->default('');
             $table->timestamps();
         });
     }
