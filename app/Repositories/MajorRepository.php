@@ -24,7 +24,7 @@ class MajorRepository
 
     public function get_major_des($id)
     {
-        return  Major::findOrFail($id)->get(['media', 'text']);
+        return  Major::findOrFail($id)->get(['media', 'text', 'title']);
     }
 
     public function create($request)
