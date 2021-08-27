@@ -9,7 +9,7 @@ class MessageRepository
     public function getall()
     {
         return Message::with(['user.account' => function ($q) {
-            return $q->select('user_id', 'name', 'family', 'grade');
+            return $q->select('user_id', 'name', 'family', 'grade', 'major_name');
         }])->orderBy('created_at', 'desc')->paginate(30);
     }
 
