@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MajorResource;
@@ -114,7 +115,7 @@ class AdminMajorController extends Controller
 
         if (isset($request['icone'])) {
             $icone = $request['icone'];
-            $icone_name = "images/majors/" . time() . '_' . $icone->getClientOriginalName();
+            $icone_name = "images/majors/" . Str::random(20) . '_' . $icone->getClientOriginalName();
             $location_icone = public_path('images/majors');
             $icone->move($location_icone, $icone_name);
             $request_data['icone'] = $icone_name;
@@ -122,7 +123,7 @@ class AdminMajorController extends Controller
 
         if (isset($request['media'])) {
             $media = $request['media'];
-            $media_name = "media/" . time() . '_' . $media->getClientOriginalName();
+            $media_name = "media/" . Str::random(20) . '_' . $media->getClientOriginalName();
             $location_media = public_path('media');
             $media->move($location_media, $media_name);
             $request_data['media'] = $media_name;

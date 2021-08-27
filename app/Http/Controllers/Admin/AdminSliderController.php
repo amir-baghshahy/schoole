@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SliderResource;
@@ -98,7 +99,7 @@ class AdminSliderController extends Controller
     public function upload_image($request)
     {
         $file = $request['img'];
-        $filename = "images/sliders/" . time() . '_' . $file->getClientOriginalName();
+        $filename = "images/sliders/" . Str::random(20) . '_' . $file->getClientOriginalName();
         $location = public_path('images/sliders');
         $file->move($location, $filename);
 

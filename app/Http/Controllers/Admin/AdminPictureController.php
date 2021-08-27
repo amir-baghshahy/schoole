@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\PictureRepository;
@@ -78,7 +79,7 @@ class AdminPictureController extends Controller
     {
         $file = $request['image'];
         if ($request['image']) {
-            $filename = 'pictures/' . time() . '_' . $file->getClientOriginalName();
+            $filename = 'pictures/' . Str::random(20) . '_' . $file->getClientOriginalName();
             $location = public_path('pictures');
             $file->move($location, $filename);
 

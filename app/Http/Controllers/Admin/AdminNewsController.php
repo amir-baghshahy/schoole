@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsResource;
@@ -92,7 +93,7 @@ class AdminNewsController extends Controller
     public function upload_image($request)
     {
         $file = $request['image'];
-        $filename = "images/news/" . time() . '_' . $file->getClientOriginalName();
+        $filename = "images/news/" . Str::random(20) . '_' . $file->getClientOriginalName();
         $location = public_path('images/news');
         $file->move($location, $filename);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
@@ -103,7 +104,7 @@ class AdminFileController extends Controller
     {
         $file = $request['file'];
         if ($request['file']) {
-            $filename = 'media/' . time() . '_' . $file->getClientOriginalName();
+            $filename = 'media/' . Str::random(20) . '_' . $file->getClientOriginalName();
             $location = public_path('media');
             $file->move($location, $filename);
 

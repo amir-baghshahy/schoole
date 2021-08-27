@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StaffResource;
-use App\Models\User;
 use App\Repositories\StaffRepository;
 use Illuminate\Support\Facades\Validator;
 
@@ -150,7 +151,7 @@ class AdminStaffController extends Controller
     public function upload_image($request)
     {
         $file = $request['image'];
-        $filename = "images/staff/" . time() . '_' . $file->getClientOriginalName();
+        $filename = "images/staff/" . Str::random(20) . '_' . $file->getClientOriginalName();
         $location = public_path('images/staff');
         $file->move($location, $filename);
 
