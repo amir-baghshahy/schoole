@@ -27,9 +27,6 @@ class AdminUserController extends Controller
         $result = null;
 
         switch ($status) {
-            case 'teachers':
-                $result = $this->repository->get_teachars();
-                break;
             case 'students':
                 $result = $this->repository->get_students();
                 break;
