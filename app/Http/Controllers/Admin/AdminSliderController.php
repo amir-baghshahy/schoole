@@ -22,7 +22,7 @@ class AdminSliderController extends Controller
     {
         $slides =  $this->repository->getall();
 
-        return  new SliderResource($slides);
+        return  SliderResource::collection($slides);
     }
 
 
