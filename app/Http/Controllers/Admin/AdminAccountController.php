@@ -28,32 +28,35 @@ class AdminAccountController extends Controller
     public function update(Request $request)
     {
 
+        $user = User::findOrFail($request->id);
+        $account = $this->repository->find($user->id);
+
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:255',
             'phone' => 'required|max:11|min:11|unique:users,phone,' . $request->id,
-            'home_phone' => 'required|unique:accounts,home_phone,' . $request->id,
+            'home_phone' => 'required|unique:accounts,home_phone,' . $account->id,
             'password' => 'string|min:8',
             'birthday_city' => 'required',
             'place_issue' => 'required',
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
-            'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $request->id],
+            'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $account->id],
             'birthday' => 'required',
             'grade' => 'required|max:255',
             'major_name' => 'required|string|max:255',
             'address' => 'required|string',
             'dad_name' => 'required|string|max:255',
             'degree_dad' => 'required|string',
-            'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $request->id,
+            'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $account->id,
             'dad_work_address' => 'nullable',
             'dad_is_dead' => 'required',
             'mom_name' => 'required|string|max:255',
             'mom_family' => 'required|string|max:255',
             'degree_mom' => 'required|string|max:255',
-            'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $request->id,
+            'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $account->id,
             'mom_work_address' => 'nullable',
             'mom_is_dead' => 'required',
-            'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $request->id,
+            'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $account->id,
             'relatives_name' => 'required|string|max:255',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
@@ -69,9 +72,7 @@ class AdminAccountController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $user = User::findOrFail($request->id);
         $user->update($request->only(['phone', 'password']));
-        $account = $this->repository->find($user->id);
         $update_account = $this->repository->update($account, $request->toArray());
 
         if ($update_account) {
