@@ -75,7 +75,7 @@ class AdminMajorController extends Controller
         } elseif ($request->file('icone')) {
             $request_data = $this->upload($request->only(['id', 'title', 'icone', 'text']));
         } else {
-            $request_data = $request->only(['id', 'title', 'icone', 'text', 'media']);
+            $request_data = $request->only(['id', 'title', 'text']);
         }
 
         if ($this->repository->update($request_data)) {

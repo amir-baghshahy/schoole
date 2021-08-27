@@ -71,7 +71,7 @@ class AdminSliderController extends Controller
         if ($request->file('img')) {
             $request_data = $this->upload_image($request->only(['id', 'title', 'link', 'description', 'img']));
         } else {
-            $request_data = $request->only(['id', 'title', 'link', 'description', 'img']);
+            $request_data = $request->only(['id', 'title', 'link', 'description']);
         }
 
         if ($this->repository->update($request_data)) {

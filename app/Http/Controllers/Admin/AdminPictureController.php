@@ -56,7 +56,7 @@ class AdminPictureController extends Controller
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->only(['id', 'image', 'album_id']));
         } else {
-            $request_data = $request->toArray();
+            $request_data = $request->except(['image']);
         }
 
         if ($this->repository->update($request_data)) {

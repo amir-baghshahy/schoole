@@ -115,7 +115,7 @@ class AdminStaffController extends Controller
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->except(['phone', 'password', 'role', '_method', 'id']));
         } else {
-            $request_data = $request->except(["phone", "password", "role", '_method', 'id']);
+            $request_data = $request->except(["phone", "password", "role", '_method', 'id', 'image']);
         }
 
         $result = $this->repository->update($request->id, $request_data);

@@ -66,7 +66,7 @@ class AdminFileController extends Controller
         if ($request->file('file')) {
             $request_data = $this->upload_file($request->toArray());
         } else {
-            $request_data = $request->toArray();
+            $request_data = $request->except(['file']);
         }
 
         if ($this->repository->update($request_data)) {
