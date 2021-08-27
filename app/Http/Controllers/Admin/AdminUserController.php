@@ -58,6 +58,7 @@ class AdminUserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'family' => 'required|string|max:255',
+            'phone' => 'required|unique:users',
             'national_code' => ['required', new Nationalcode, 'unique:accounts'],
             'birthday' => 'required',
             'birthday_city' => 'required',
