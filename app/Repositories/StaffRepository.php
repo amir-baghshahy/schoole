@@ -14,7 +14,7 @@ class StaffRepository
 
     public function all_admin()
     {
-        return Staff::with('user');
+        return Staff::with('user')->orderBy('created_at', 'desc')->get();
     }
 
     public function find($userid)
