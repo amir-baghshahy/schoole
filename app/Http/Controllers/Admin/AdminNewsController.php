@@ -64,7 +64,7 @@ class AdminNewsController extends Controller
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->only(['id', 'title', 'text', 'image']));
         } else {
-            $request_data = $request->except(['image']);
+            $request_data = $request->only(['id', 'title', 'text']);
         }
 
         if ($this->repository->update($request_data)) {
