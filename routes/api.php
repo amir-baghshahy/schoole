@@ -78,16 +78,14 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
 
-    Route::middleware('staff_or_admin')->group(function () {
-        Route::put('staff/update', [StaffController::class, 'update']);
 
-        Route::prefix("admin/file")->group(function () {
-            Route::get('all', [AdminFileController::class, 'getall']);
-            Route::get('staff/all', [AdminFileController::class, 'staff_all']);
-            Route::post('create', [AdminFileController::class, 'create']);
-            Route::put('update', [AdminFileController::class, 'update']);
-            Route::delete('delete/{id}', [AdminFileController::class, 'delete']);
-        });
+    Route::put('staff/update', [StaffController::class, 'update'])->middleware('staff_or_admin');
+    Route::prefix('admin/file')->middleware('staff_or_admin')->group(function () {
+        Route::get('all', [AdminFileController::class, 'getall']);
+        Route::get('staff/all', [AdminFileController::class, 'staff_all']);
+        Route::post('create', [AdminFileController::class, 'create']);
+        Route::put('update', [AdminFileController::class, 'update']);
+        Route::delete('delete/{id}', [AdminFileController::class, 'delete']);
     });
 
 
