@@ -31,16 +31,17 @@ class AccountController extends Controller
         $user = auth()->user();
         $status_update = null;
 
+        $account = $this->repository->find($user->id);
 
         if ($user->status == 'accepted' && $user->role == 2) {
             $status_update = false;
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $user->id,
+                    'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $account->id,
                     'dad_work_address' => 'nullable',
                     'dad_is_dead' => 'required',
-                    'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $user->id,
+                    'mom_phone' => 'nullable|unique:accounts,mom_phone,' .  $account->id,
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required',
                 ],
@@ -58,26 +59,26 @@ class AccountController extends Controller
                 [
                     'name' => 'required|string|max:255',
                     'family' => 'required|string|max:255',
-                    'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $user->id],
+                    'national_code' => ['required', new Nationalcode, 'unique:accounts,national_code,' . $account->id],
                     'birthday' => 'required',
                     'birthday_city' => 'required',
                     'place_issue' => 'required',
-                    'home_phone' => 'required|unique:accounts,home_phone,' . $user->id,
+                    'home_phone' => 'required|unique:accounts,home_phone,' . $account->id,
                     'grade' => 'required|max:255',
                     'major_name' => 'required|string|max:255',
                     'address' => 'required|string',
                     'dad_name' => 'required|string|max:255',
                     'degree_dad' => 'required|string',
-                    'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $user->id,
+                    'dad_phone' => 'nullable|unique:accounts,dad_phone,' . $account->id,
                     'dad_work_address' => 'nullable',
                     'dad_is_dead' => 'required',
                     'mom_name' => 'required|string|max:255',
                     'mom_family' => 'required|string|max:255',
                     'degree_mom' => 'required|string|max:255',
-                    'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $user->id,
+                    'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $account->id,
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required',
-                    'relatives_phone' => 'required|unique:accounts,relatives_phone,' . $user->id,
+                    'relatives_phone' => 'required|unique:accounts,relatives_phone,' . $account->id,
                     'relatives_name' => 'required|string|max:255',
                 ],
                 [
@@ -95,8 +96,6 @@ class AccountController extends Controller
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
-
-        $account = $this->repository->find($user->id);
 
         if ($status_update == true) {
             $update = $this->repository->update($account, $request->toArray());
