@@ -131,15 +131,15 @@ class AdminStaffController extends Controller
     public function delete($id)
     {
 
+        $user = User::find($id);
         $staff = $this->repository->find($id);
 
-        $user = User::find($id);
-        if ($user->super_user == true) {
+        if ($user->super_user && !auth()->user()->super_user) {
             return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
         } else {
-            if ($staff->image && file_exists(public_path() . "/" . $staff->image)) {
-                if ($staff->image != "images/staff/defualt.png") {
-                    unlink(public_path() . "/" . $staff->img);
+            if ($staff->image && file_exists(public_path() . '/' . $staff->image)) {
+                if ($staff->image != 'images/staff/defualt.png') {
+                    unlink(public_path() . '/' . $staff->img);
                 }
             }
             $user->staff()->delete();
