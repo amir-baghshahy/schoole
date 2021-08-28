@@ -126,8 +126,14 @@ class AdminUserController extends Controller
 
         $request_data = $request->only(['status', 'status_cause']);
 
+        $user = $this->repository->finduser($request->user_id);
+        
+      
 
         if ($request->status == 'accepted' && $request->status_cause == "") {
+             if($user->name == "" || $user->family == "" || $user->national_code == "" ){
+                     return response(['message' => "امکان تااید احراز هویت این  کاربر به دلیل کامل نبودن اطلاعات وجود ندارد "]);
+              }
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
@@ -144,8 +150,6 @@ class AdminUserController extends Controller
             $request_data['status_cause'] = ' لطفا احراز هویت خود را تکمیل کنید';
         }
 
-
-        $user = $this->repository->finduser($request->user_id);
         $update = $this->repository->update($user, $request_data);
 
         if ($update) {
