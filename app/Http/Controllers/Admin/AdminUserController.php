@@ -127,13 +127,10 @@ class AdminUserController extends Controller
         $request_data = $request->only(['status', 'status_cause']);
 
         $user = $this->repository->finduser($request->user_id);
-        
       
 
-        if ($request->status == 'accepted' && $request->status_cause == "") {
-             if(empty($user->national_code)){
-                     return response(['message' => "امکان تااید احراز هویت این  کاربر به دلیل کامل نبودن اطلاعات وجود ندارد "]);
-              }
+        if ($request->status == 'accepted' && $request->status_cause == "")
+            
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
 
