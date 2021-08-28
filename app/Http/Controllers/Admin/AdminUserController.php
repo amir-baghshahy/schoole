@@ -129,7 +129,7 @@ class AdminUserController extends Controller
         $user = $this->repository->finduser($request->user_id);
       
 
-        if ($request->status == 'accepted' && $request->status_cause == "")
+        if ($request->status == 'accepted' && $request->status_cause == ""){
             
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
         }
