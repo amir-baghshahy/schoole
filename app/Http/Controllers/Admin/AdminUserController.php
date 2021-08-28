@@ -131,7 +131,7 @@ class AdminUserController extends Controller
       
 
         if ($request->status == 'accepted' && $request->status_cause == "") {
-             if($user->name == "" || $user->family == "" || $user->national_code == "" ){
+             if(empty($user->national_code)){
                      return response(['message' => "امکان تااید احراز هویت این  کاربر به دلیل کامل نبودن اطلاعات وجود ندارد "]);
               }
             $request_data['status_cause'] = 'مشخصات فردی شما مورد تأیید بوده و احراز هویت انجام شده است. بنابراین تنها برخی از مشخصات خود را می‌توانید ویرایش نمایید.';
