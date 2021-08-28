@@ -69,7 +69,7 @@ class AdminMajorController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        if ($request->file('media') && $request->file('icon')) {
+        if ($request->file('media') && $request->file('icone')) {
             $request_data = $this->upload($request->only(['id', 'title', 'icone', 'text', 'media']));
         } elseif ($request->file('media')) {
             $request_data = $this->upload($request->only(['id', 'title', 'text', 'media']));
