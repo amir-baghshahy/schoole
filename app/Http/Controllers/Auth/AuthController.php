@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -42,6 +43,7 @@ class AuthController extends Controller
         
 
         if (Auth::attempt($request->only(['phone', 'password']))) {
+            Cache::put('user_role' , auth()->user()->role);
             return (new UserResource($user))->additional([
                 'token' => auth()->user()->createToken('register')->plainTextToken,
             ]);
