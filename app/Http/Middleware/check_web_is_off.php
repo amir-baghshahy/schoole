@@ -28,7 +28,7 @@ class check_web_is_off
                  return $next($request);
                 }else{
                 return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-                    } 
+                 
             }
         }
     }
