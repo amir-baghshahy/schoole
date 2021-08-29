@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class check_web_is_off
 {
@@ -23,8 +23,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         }elseif ($setting->web_mode == 1) {
-            $user_role = session('user_role');
-            dd($user_role );
+            $user_role = Cache::get('user_role');
             if(isset($user_role) && $user_role == 0){
                  return $next($request);
          }else{
