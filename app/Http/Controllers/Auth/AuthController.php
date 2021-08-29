@@ -103,6 +103,7 @@ class AuthController extends Controller
         $delete =  auth()->user()->currentAccessToken()->delete();
 
         if ($delete) {
+            unset(session('user_role');
             return response(['status' => true], 200);
         }
 
