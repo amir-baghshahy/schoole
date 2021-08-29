@@ -66,7 +66,7 @@ class AuthController extends Controller
             
             $setting = Setting::find(1)->first();
            if(count($check_archiv) == 1){
-                if ($setting->web_mode == 1) {
+                if ($setting->web_mode == 0) {
                       return (new UserResource(auth()->user()))->additional([
                     'token' => auth()->user()->createToken('login')->plainTextToken,
                 ]);
