@@ -66,14 +66,15 @@ class AuthController extends Controller
             
             $setting = Setting::find(1)->first();
            if(count($check_archiv) == 1){
-                if ($setting->web_mode == 0) {
-                      return (new UserResource(auth()->user()))->additional([
-                    'token' => auth()->user()->createToken('login')->plainTextToken,
-                ]);
-           }else{
-                  return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-             }
-            
+                 if ($setting->web_mode == 0) {
+                          return (new UserResource(auth()->user()))->additional([
+                        'token' => auth()->user()->createToken('login')->plainTextToken,
+                        ]);
+                 }else{
+                     if(auth()->user()->role!=0){
+                        return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
+                     }
+                 }
          }else{
                return response(["message"=>"شما توسط مدیر مسدود شده اید "], 401);   
            }
