@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class check_web_is_off
 {
@@ -22,9 +23,14 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         }elseif ($setting->web_mode == 1) {
-            if(isset(auth()->user()) && auth()->user()->role == 0)
+            if(Auth::check())
             {
-                 return $next($request);
+                if(auth()->user()->role ==0){
+                     return $next($request);
+                }else{
+                      return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
+                }
+                
             }
             return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
         }
