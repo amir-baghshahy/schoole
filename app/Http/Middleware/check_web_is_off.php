@@ -22,7 +22,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         }elseif ($setting->web_mode == 1) {
-            if(isset(auth()->user()->role) && auth()->user()->role == 0)
+            if(isset(auth()->user()) && auth()->user()->role == 0)
             {
                  return $next($request);
             }
