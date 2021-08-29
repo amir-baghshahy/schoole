@@ -11,6 +11,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Setting;
 
 class AuthController extends Controller
 {
@@ -62,10 +63,17 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->toArray())) {
             $check_archiv = $this->check_archive($request->phone);
-            if(count($check_archiv) == 1){
-                  return (new UserResource(auth()->user()))->additional([
-                'token' => auth()->user()->createToken('login')->plainTextToken,
-            ]);
+            
+            $setting = Setting::find(1)->first();
+           if(count($check_archiv) == 1){
+                if ($setting->web_mode == 1) {
+                      return (new UserResource(auth()->user()))->additional([
+                    'token' => auth()->user()->createToken('login')->plainTextToken,
+                ]);
+           }else{
+                  return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
+             }
+            
          }else{
                return response(["message"=>"شما توسط مدیر مسدود شده اید "], 401);   
            }
