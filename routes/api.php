@@ -58,7 +58,7 @@ Route::prefix('auth')->group(function () {
         Route::get('staff/all', [StaffController::class, 'index']);
         Route::get('album/all', [AlbumController::class, 'all']);
         Route::get('album/{id}', [AlbumController::class, 'find']);
-     })
+     });
 
 
 });
