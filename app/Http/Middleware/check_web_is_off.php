@@ -24,6 +24,7 @@ class check_web_is_off
             return $next($request);
         }elseif ($setting->web_mode == 1) {
             $user_role = session('user_role');
+            dd($user_role );
             if(isset($user_role) && $user_role == 0){
                  return $next($request);
          }else{
