@@ -37,10 +37,10 @@ class AdminUserController extends Controller
                 $result = $this->repository->get_wait_accepted($request);
                 break;
             case 'incomplete-information':
-                $result = $this->repository->get_incomplete_info();
+                $result = $this->repository->get_incomplete_info($request);
                 break;
             case 'archive':
-                $result = $this->repository->get_archives();
+                $result = $this->repository->get_archives($request);
                 break;
             case 'all':
                 $result = $this->repository->get_all($request);
