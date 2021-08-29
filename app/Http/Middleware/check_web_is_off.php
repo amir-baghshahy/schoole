@@ -23,7 +23,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         }elseif ($setting->web_mode == 1) {
-                       dd(auth()->user()->role);
+                       dd(Auth::check(),auth()->user());
             if(Auth::check())
             {
                 if(auth()->user()->role ==0){
