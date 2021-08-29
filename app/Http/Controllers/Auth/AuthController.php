@@ -104,7 +104,6 @@ class AuthController extends Controller
         $delete =  auth()->user()->currentAccessToken()->delete();
 
         if ($delete) {
-            Cache::forget('user_role');
             return response(['status' => true], 200);
         }
 
