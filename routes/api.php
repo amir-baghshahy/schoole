@@ -41,23 +41,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware(['json.response', 'web_off'])->group(function () {
-    Route::prefix('auth')->group(function () {
-        Route::post('/login', [AuthController::class, 'login'])->name('login');
-        Route::post('/register', [AuthController::class, 'register'])->middleware('register_off');
-    });
+Route::prefix('auth')->group(function () {
+    
+     Route::post('/login', [AuthController::class, 'login'])->name('login');
+     Route::post('/register', [AuthController::class, 'register'])->middleware(['register_off','web_off']);
+    
+     Route::group(['middleware' => 'web_off'], function(){
+        Route::get('about/all', [AboutController::class, 'index']);
+        Route::get('slider/all', [SliderController::class, 'index']);
+        Route::get('major/all', [MajorController::class, 'index']);
+        Route::get('major/{id}', [MajorController::class, 'get_descroption']);
+        Route::get('news/all', [NewsController::class, 'index']);
+        Route::get('news/{id}', [NewsController::class, 'find']);
+        Route::get('file/all', [FileController::class, 'getall']);
+        Route::get('file/{id}', [FileController::class, 'find']);
+        Route::get('staff/all', [StaffController::class, 'index']);
+        Route::get('album/all', [AlbumController::class, 'all']);
+        Route::get('album/{id}', [AlbumController::class, 'find']);
+     })
 
-    Route::get('about/all', [AboutController::class, 'index']);
-    Route::get('slider/all', [SliderController::class, 'index']);
-    Route::get('major/all', [MajorController::class, 'index']);
-    Route::get('major/{id}', [MajorController::class, 'get_descroption']);
-    Route::get('news/all', [NewsController::class, 'index']);
-    Route::get('news/{id}', [NewsController::class, 'find']);
-    Route::get('file/all', [FileController::class, 'getall']);
-    Route::get('file/{id}', [FileController::class, 'find']);
-    Route::get('staff/all', [StaffController::class, 'index']);
-    Route::get('album/all', [AlbumController::class, 'all']);
-    Route::get('album/{id}', [AlbumController::class, 'find']);
+
 });
 
 
@@ -65,10 +68,12 @@ Route::middleware(['json.response', 'web_off'])->group(function () {
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     // client
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('user/info', [UserController::class, 'index']);
-    Route::post('messages/create', [MessageController::class, 'create']);
-    Route::get('discipline', [DisciplineController::class, 'index']);
+
+      Route::post('/auth/logout', [AuthController::class, 'logout']);
+      Route::get('user/info', [UserController::class, 'index']);
+      Route::post('messages/create', [MessageController::class, 'create'])->middleware('web_off');
+      Route::get('discipline', [DisciplineController::class, 'index'])->middleware('web_off');
+
 
     Route::prefix("user")->middleware('web_off')->group(function () {
         Route::put('/update', [UserController::class, 'update']);
@@ -77,9 +82,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
     });
 
 
-
-
     Route::put('staff/update', [StaffController::class, 'update'])->middleware('staff_or_admin');
+    
     Route::prefix('admin/file')->middleware('staff_or_admin')->group(function () {
         Route::get('all', [AdminFileController::class, 'getall']);
         Route::get('staff/all', [AdminFileController::class, 'staff_all']);
