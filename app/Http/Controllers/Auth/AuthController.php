@@ -70,7 +70,7 @@ class AuthController extends Controller
            if(count($check_archiv) == 1){
                  if ($setting->web_mode == 1) {
                       if(auth()->user()->role==0){
-                          session('user_role',auth()->user()->role);
+                        Cache::put('user_role' , auth()->user()->role);
                          return (new UserResource(auth()->user()))->additional([
                                 'token' => auth()->user()->createToken('login')->plainTextToken,
                             ]);
@@ -78,7 +78,7 @@ class AuthController extends Controller
                            return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
                       }
                  }else{
-                       session('user_role',auth()->user()->role);
+                      Cache::put('user_role' , auth()->user()->role);
                       return (new UserResource(auth()->user()))->additional([
                             'token' => auth()->user()->createToken('login')->plainTextToken,
                      ]);
