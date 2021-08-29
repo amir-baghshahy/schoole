@@ -12,9 +12,44 @@ class UserRepository
     }
 
 
-    public function get_students()
+    public function get_students($request)
     {
-        return  User::with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        $code = $request->query('code');
+        $family = $request->query('family');
+        $grade = $request->query('grade');
+        $major_name = $request->query('major');
+
+        $condition = null;
+
+
+        if ($code) {
+            $condition =  function ($q) use ($code) {
+                return $q->where('national_code', $code);
+            };
+        } elseif ($family) {
+            $condition  = function ($q) use ($family) {
+                return $q->where('family', 'LIKE', '%' . $family . '%');
+            };
+        } elseif ($grade) {
+            $condition  = function ($q) use ($grade) {
+                return $q->where('grade', $grade);
+            };
+        } elseif ($major_name) {
+            $condition = function ($q) use ($major_name) {
+                return $q->where('major_name', 'LIKE', '%' . $major_name . '%');
+            };
+        } elseif ($grade && $major_name) {
+            $condition =  function ($q) use ($major_name, $grade) {
+                return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
+            };
+        } else {
+            return  User::with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->paginate(10);
+        }
+
+        return User::whereHas(
+            'account',
+            $condition
+        )->with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get_not_accepted()
