@@ -28,13 +28,13 @@ class AdminUserController extends Controller
 
         switch ($status) {
             case 'students':
-                $result = $this->repository->get_students();
+                $result = $this->repository->get_students($request);
                 break;
             case 'not-accepted':
-                $result = $this->repository->get_not_accepted();
+                $result = $this->repository->get_not_accepted($request);
                 break;
             case 'waiting-accepted':
-                $result = $this->repository->get_wait_accepted();
+                $result = $this->repository->get_wait_accepted($request);
                 break;
             case 'incomplete-information':
                 $result = $this->repository->get_incomplete_info();
