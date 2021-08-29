@@ -25,14 +25,16 @@ class check_web_is_off
         }elseif ($setting->web_mode == 1) {
             if(Auth::check())
             {
+                dd(auth()->user()->role);
                 if(auth()->user()->role ==0){
                      return $next($request);
                 }else{
                       return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
                 }
-                
+            }else{
+                  return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
             }
-            return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
+
         }
     }
 }
