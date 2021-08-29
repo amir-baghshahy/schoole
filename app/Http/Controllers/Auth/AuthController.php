@@ -9,7 +9,6 @@ use App\Http\Resources\UserResource;
 use App\Models\Account;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
@@ -40,10 +39,10 @@ class AuthController extends Controller
 
         $user = $this->repository->create($request->only(['phone', 'password']));
         Account::create(['user_id' => $user->id]);
-        
+
 
         if (Auth::attempt($request->only(['phone', 'password']))) {
-            Cache::put('user_role' , auth()->user()->role);
+            Cache::put('user_role', auth()->user()->role);
             return (new UserResource($user))->additional([
                 'token' => auth()->user()->createToken('register')->plainTextToken,
             ]);
@@ -54,7 +53,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'phone' => 'required|digits:11',
             'password' => 'required|string',
@@ -66,37 +65,36 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->toArray())) {
             $check_archiv = $this->check_archive($request->phone);
-            
+
             $setting = Setting::find(1)->first();
-           if(count($check_archiv) == 1){
-                 if ($setting->web_mode == 1) {
-                      if(auth()->user()->role==0){
-                        Cache::put('user_role' , auth()->user()->role);
-                         return (new UserResource(auth()->user()))->additional([
-                                'token' => auth()->user()->createToken('login')->plainTextToken,
-                            ]);
-                       }else{
-                           return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-                      }
-                 }else{
-                      Cache::put('user_role' , auth()->user()->role);
-                      return (new UserResource(auth()->user()))->additional([
+            if (count($check_archiv) == 1) {
+                if ($setting->web_mode == 1) {
+                    if (auth()->user()->role == 0) {
+                        Cache::put('user_role', auth()->user()->role);
+                        return (new UserResource(auth()->user()))->additional([
                             'token' => auth()->user()->createToken('login')->plainTextToken,
-                     ]);
-                 }
-         }else{
-               return response(["message"=>"شما توسط مدیر مسدود شده اید "], 401);   
-           }
- 
+                        ]);
+                    } else {
+                        return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
+                    }
+                } else {
+                    Cache::put('user_role', auth()->user()->role);
+                    return (new UserResource(auth()->user()))->additional([
+                        'token' => auth()->user()->createToken('login')->plainTextToken,
+                    ]);
+                }
+            } else {
+                return response(["message" => "شما توسط مدیر مسدود شده اید "], 401);
+            }
         } else {
             $response = ['message' => 'شماره همراه  یا رمزعبور اشتباه است', 'status' => false];
             return response($response, 422);
         }
     }
-    
+
     public function check_archive($phone)
     {
-        return User::where([['phone','=',$phone],['archive','=',false]])->get();
+        return User::where([['phone', '=', $phone], ['archive', '=', false]])->get();
     }
 
 

@@ -42,13 +42,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('auth')->group(function () {
-     Route::post('/login', [AuthController::class, 'login'])->name('login');
-     Route::post('/register', [AuthController::class, 'register'])->middleware(['register_off','web_off']);
-      Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/register', [AuthController::class, 'register'])->middleware(['register_off', 'web_off']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
 
-Route::group(['middleware' => 'web_off'], function(){
+Route::group(['middleware' => 'web_off'], function () {
     Route::get('about/all', [AboutController::class, 'index']);
     Route::get('slider/all', [SliderController::class, 'index']);
     Route::get('major/all', [MajorController::class, 'index']);
@@ -67,9 +67,9 @@ Route::group(['middleware' => 'web_off'], function(){
 Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
     // client
-      Route::get('user/info', [UserController::class, 'index']);
-      Route::post('messages/create', [MessageController::class, 'create'])->middleware('web_off');
-      Route::get('discipline', [DisciplineController::class, 'index'])->middleware('web_off');
+    Route::get('user/info', [UserController::class, 'index']);
+    Route::post('messages/create', [MessageController::class, 'create'])->middleware('web_off');
+    Route::get('discipline', [DisciplineController::class, 'index'])->middleware('web_off');
 
 
     Route::prefix("user")->middleware('web_off')->group(function () {
@@ -80,8 +80,8 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
     Route::put('staff/update', [StaffController::class, 'update'])->middleware('staff_or_admin');
-    
-    
+
+
     Route::prefix('admin/file')->middleware('staff_or_admin')->group(function () {
         Route::get('all', [AdminFileController::class, 'getall']);
         Route::get('staff/all', [AdminFileController::class, 'staff_all']);
@@ -92,7 +92,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
 
-   
+
     Route::prefix("admin")->middleware(['admin'])->group(function () {
 
         Route::prefix("user")->group(function () {
@@ -160,7 +160,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
         Route::prefix("discipline")->group(function () {
             Route::get('all', [AdminDisciplineController::class, 'get_all']);
-            Route::get('find/{id}', [AdminDisciplineController::class, 'get_all']);
+            Route::get('find/{id}', [AdminDisciplineController::class, 'get_by_user']);
             Route::post('create', [AdminDisciplineController::class, 'create']);
             Route::put('update', [AdminDisciplineController::class, 'update']);
             Route::delete('delete/{id}', [AdminDisciplineController::class, 'delete']);

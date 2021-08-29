@@ -22,13 +22,12 @@ class check_web_is_off
 
         if ($setting->web_mode == 0) {
             return $next($request);
-        }elseif ($setting->web_mode == 1) {
+        } elseif ($setting->web_mode == 1) {
             $user_role = Cache::get('user_role');
-            if(isset($user_role) && $user_role == 0){
-                 return $next($request);
-                }else{
+            if (isset($user_role) && $user_role == 0) {
+                return $next($request);
+            } else {
                 return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-                 
             }
         }
     }
