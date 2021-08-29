@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -103,7 +104,7 @@ class AuthController extends Controller
         $delete =  auth()->user()->currentAccessToken()->delete();
 
         if ($delete) {
-            session()->forget('user_role');
+            Cache::forget('user_role');
             return response(['status' => true], 200);
         }
 
