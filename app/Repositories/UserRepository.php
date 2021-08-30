@@ -43,13 +43,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'accepted']])->archive(false)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role', '2'], ['status', 'accepted'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where([['role', '2'], ['status', 'accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get_not_accepted($request)
@@ -82,13 +82,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role',  '2'], ['status', 'not-accepted'], ['archive', false]])->paginate(10);
+            return  User::with('account')->where([['role',  '2'], ['status', 'not-accepted']])->archive(false)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role',  '2'], ['status', 'not-accepted'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where([['role',  '2'], ['status', 'not-accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get_wait_accepted($request)
@@ -121,13 +121,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'waiting-accepted'], ['archive', false]])->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'waiting-accepted']])->archive(false)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role', '2'], ['status', 'waiting-accepted'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where([['role', '2'], ['status', 'waiting-accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get_incomplete_info($request)
@@ -160,13 +160,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'incomplete-information'], ['archive', false]])->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'incomplete-information']])->archive(false)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role', '2'], ['status', 'incomplete-information'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where([['role', '2'], ['status', 'incomplete-information']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
 
@@ -200,13 +200,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['archive', false]])->paginate(10);
+            return  User::with('account')->where('role', '2')->archive(false)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role', '=', '2'], ['archive', false]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where('role', '2')->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function get_archives($request)
@@ -239,13 +239,13 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '=', '2'], ['archive', true]])->paginate(10);
+            return  User::with('account')->where('role', '2')->archive(true)->paginate(10);
         }
 
         return User::whereHas(
             'account',
             $condition
-        )->with('account')->where([['role', '=', '2'], ['archive', true]])->OrderBy('created_at', 'desc')->paginate(10);
+        )->with('account')->where('role', '2')->archive(true)->OrderBy('created_at', 'desc')->paginate(10);
     }
 
     public function create($request)
@@ -260,7 +260,7 @@ class UserRepository
 
     public function getall()
     {
-        return  User::with('account')->where('archive', false)->OrderBy('created_at', 'desc')->paginate(30);
+        return  User::with('account')->archive(false)->OrderBy('created_at', 'desc')->paginate(30);
     }
 
     public function delete($id)

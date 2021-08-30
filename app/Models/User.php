@@ -45,10 +45,15 @@ class User extends Authenticatable
      */
     protected $casts = ['archive' => 'boolean', 'super_user' => 'boolean'];
 
+    protected $guarded  = ['super_user'];
+
+
     public function setPasswordAttribute($value)
     {
         return  $this->attributes['password'] =  Hash::make($value);
     }
+
+
 
     public function account()
     {
@@ -68,5 +73,10 @@ class User extends Authenticatable
     public function disciplines()
     {
         return $this->hasMany(Discipline::class, 'id', 'user_id');
+    }
+
+    public function scopeArchive($query, $arg = false)
+    {
+        return $query->where('archive', $arg);
     }
 }
