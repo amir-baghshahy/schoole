@@ -43,7 +43,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'accepted']])->archive(false)->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
@@ -82,7 +82,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role',  '2'], ['status', 'not-accepted']])->archive(false)->paginate(10);
+            return  User::with('account')->where([['role',  '2'], ['status', 'not-accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
@@ -121,7 +121,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'waiting-accepted']])->archive(false)->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'waiting-accepted']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
@@ -160,7 +160,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where([['role', '2'], ['status', 'incomplete-information']])->archive(false)->paginate(10);
+            return  User::with('account')->where([['role', '2'], ['status', 'incomplete-information']])->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
@@ -200,7 +200,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where('role', '2')->archive(false)->paginate(10);
+            return  User::with('account')->where('role', '2')->archive(false)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
@@ -239,7 +239,7 @@ class UserRepository
                 return $q->where([['major_name', 'LIKE', '%' . $major_name . '%'], ['grade', $grade]]);
             };
         } else {
-            return  User::with('account')->where('role', '2')->archive(true)->paginate(10);
+            return  User::with('account')->where('role', '2')->archive(true)->OrderBy('created_at', 'desc')->paginate(10);
         }
 
         return User::whereHas(
