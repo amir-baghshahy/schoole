@@ -35,14 +35,14 @@ class AdminAlbumController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'titile' => 'required|string'
+            'title' => 'required|string'
         ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        if ($this->repository->create($request)) {
+        if ($this->repository->create($request->toArray())) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
@@ -53,14 +53,14 @@ class AdminAlbumController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'titile' => 'required|string'
+            'title' => 'required|string'
         ]);
 
         if ($validator->fails()) {
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        if ($this->repository->update($request)) {
+        if ($this->repository->update($request->toArray())) {
             return response(['status' => true]);
         } else {
             return response(['status' => false]);
