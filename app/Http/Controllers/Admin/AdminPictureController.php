@@ -75,7 +75,7 @@ class AdminPictureController extends Controller
         return response(['status' => false]);
     }
 
-    public function upload_file($request)
+    public function upload_image($request)
     {
         $file = $request['image'];
         if ($request['image']) {
