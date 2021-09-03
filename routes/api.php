@@ -192,7 +192,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
         Route::prefix('picture')->group(function () {
             Route::post('/create', [AdminPictureController::class, 'create']);
             Route::put('/update', [AdminPictureController::class, 'update']);
-            Route::delete('/delete', [AdminPictureController::class, 'delete']);
+            Route::delete('/delete/{id}', [AdminPictureController::class, 'delete']);
         });
     });
 });
