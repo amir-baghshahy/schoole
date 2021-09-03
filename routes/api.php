@@ -182,7 +182,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
         Route::prefix('album')->group(function () {
             Route::get('/all', [AdminAlbumController::class, 'index']);
-            Route::get('album/{id}', [AdminAlbumController::class, 'find']);
+            Route::get('{id}', [AdminAlbumController::class, 'find']);
             Route::post('/create', [AdminAlbumController::class, 'create']);
             Route::put('/update', [AdminAlbumController::class, 'update']);
             Route::delete('/delete/{id}', [AdminAlbumController::class, 'delete']);
