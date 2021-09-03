@@ -39,10 +39,16 @@ class CreateAccountsTable extends Migration
             $table->tinyInteger("mom_is_dead")->nullable();
             $table->string("relatives_phone")->nullable();
             $table->string("relatives_name")->nullable();
+            $table->string("count_sister")->nullable();
+            $table->string("count_brother")->nullable();
+            $table->string("count_family")->nullable();
+            $table->string("several _child_count")->nullable();
+            $table->string("nationality")->nullable();
+            $table->string("faith")->nullable();
+            $table->string("religion")->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

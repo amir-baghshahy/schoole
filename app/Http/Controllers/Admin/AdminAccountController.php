@@ -58,6 +58,13 @@ class AdminAccountController extends Controller
             'mom_is_dead' => 'required',
             'relatives_phone' => 'required|digits:11|unique:accounts,relatives_phone,' . $account->id,
             'relatives_name' => 'required|string|max:255',
+            'count_sister' => 'required|string',
+            'count_brother' => 'required|string',
+            'count_family' => 'required|string',
+            'several _child_count' => 'required|string',
+            'nationality' => 'required|string',
+            'faith' => 'required|string',
+            'religion' => 'required|string',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
             'home_phone.unique' => 'شماره منزل قبلا ثبت شده است ',

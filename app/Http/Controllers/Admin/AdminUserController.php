@@ -80,7 +80,15 @@ class AdminUserController extends Controller
             'mom_is_dead' => 'required',
             'relatives_phone' => 'required|unique:accounts',
             'relatives_name' => 'required|string|max:255',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8|confirmed',
+            'count_sister' => 'required|string',
+            'count_brother' => 'required|string',
+            'count_family' => 'required|string',
+            'several _child_count' => 'required|string',
+            'nationality' => 'required|string',
+            'faith' => 'required|string',
+            'religion' => 'required|string',
+
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',
@@ -199,14 +207,14 @@ class AdminUserController extends Controller
     public function grade_up()
     {
         if (auth()->user()->super_user) {
-            
-            
+
+
             $update_archive = User::whereHas('account', function ($query) {
                 return $query->where('grade', 3);
             })->where([['role', '=', 2], ['archive', '=', false], ['status', 'accepted']]);
-            
+
             $result_archive =  $update_archive->update(['archive' => true]);
-            
+
             $update = User::with(['account' => function ($q) {
                 return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
             }])->where([['role', 2], ['status', 'accepted']])->archive(false)->get();

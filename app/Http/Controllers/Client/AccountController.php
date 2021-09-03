@@ -79,7 +79,13 @@ class AccountController extends Controller
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required',
                     'relatives_phone' => 'required|unique:accounts,relatives_phone,' . $account->id,
-                    'relatives_name' => 'required|string|max:255',
+                    'count_sister' => 'required|string',
+                    'count_brother' => 'required|string',
+                    'count_family' => 'required|string',
+                    'several _child_count' => 'required|string',
+                    'nationality' => 'required|string',
+                    'faith' => 'required|string',
+                    'religion' => 'required|string',
                 ],
                 [
 
