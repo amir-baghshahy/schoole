@@ -29,7 +29,7 @@ class AdminAlbumController extends Controller
         $album = $this->repository->find($id);
         $pictures = $album->pictures;
 
-        return new AlbumResource($pictures);
+        return new AlbumResource(['pictutres' => $pictures, 'album' =>  $album]);
     }
 
     public function create(Request $request)
