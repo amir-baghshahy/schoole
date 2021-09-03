@@ -199,16 +199,17 @@ class AdminUserController extends Controller
     public function grade_up()
     {
         if (auth()->user()->super_user) {
-            $update = User::with(['account' => function ($q) {
-                return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
-            }])->where([['role', 2], ['status', 'accepted']])->archive(false)->get();
-
-
+            
+            
             $update_archive = User::whereHas('account', function ($query) {
                 return $query->where('grade', 3);
             })->where([['role', '=', 2], ['archive', '=', false], ['status', 'accepted']]);
-
+            
             $result_archive =  $update_archive->update(['archive' => true]);
+            
+            $update = User::with(['account' => function ($q) {
+                return  $q->where('grade', '=', '1')->Orwhere('grade', '=', '2')->update(['grade' => DB::raw('grade+1')]);
+            }])->where([['role', 2], ['status', 'accepted']])->archive(false)->get();
 
             if ($update && $result_archive) {
                 return response(['status' => true]);
