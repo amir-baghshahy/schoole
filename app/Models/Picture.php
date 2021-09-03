@@ -9,7 +9,7 @@ class Picture extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['image'];
+    protected $fillable = ['image', 'album_id'];
 
     public function album()
     {
