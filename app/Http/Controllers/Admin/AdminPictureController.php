@@ -30,7 +30,7 @@ class AdminPictureController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $request_data = $this->upload_file($request->toArray());
+        $request_data = $this->upload_image($request->toArray());
 
         if ($this->repository->create($request_data)) {
             return response(['status' => true]);
