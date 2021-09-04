@@ -88,7 +88,12 @@ class AdminUserController extends Controller
             'nationality' => 'required|string',
             'faith' => 'required|string',
             'religion' => 'required|string',
-
+            'dad_work' => 'required|string',
+            'mom_work' => 'required|string',
+            'last_mark' => 'required|string',
+            'last_schoole' => 'required|string',
+            'disease_background' => 'nullable',
+            'separation_family_select' => 'required|string'
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',

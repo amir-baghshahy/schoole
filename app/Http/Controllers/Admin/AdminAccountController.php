@@ -65,6 +65,12 @@ class AdminAccountController extends Controller
             'nationality' => 'required|string',
             'faith' => 'required|string',
             'religion' => 'required|string',
+            'dad_work' => 'required|string',
+            'mom_work' => 'required|string',
+            'last_mark' => 'required|string',
+            'last_schoole' => 'required|string',
+            'disease_background' => 'nullable',
+            'separation_family_select' => 'required|string'
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
             'home_phone.unique' => 'شماره منزل قبلا ثبت شده است ',
