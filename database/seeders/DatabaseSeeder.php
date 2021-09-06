@@ -30,6 +30,28 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
         ]);
 
+        $user1 = User::create([
+            'phone' => '09224048766',
+            'role' => '0',
+            'status' => '',
+            'status_cause' => '',
+            'super_user' => false,
+            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
+        ]);
+
+        $user2 = User::create([
+            'phone' => '09013137962',
+            'role' => '0',
+            'status' => '',
+            'status_cause' => '',
+            'super_user' => false,
+            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
+        ]);
+
+        Staff::create(['user_id' => $user2->id, 'name' => 'qqqqq', 'family' => 'bbbbbb', 'rolename' => 'مدیر', 'teaching_experience' => 0, 'major' => 'کامپیوتر', "birthday" => "1381-12-25", 'status' => 0, 'degree' => 'لیسانس']);
+
+        Staff::create(['user_id' => $user1->id, 'name' => 'jhgjgh', 'family' => 'ghjgh', 'rolename' => 'مدیر', 'teaching_experience' => 0, 'major' => 'کامپیوتر', "birthday" => "1381-12-25", 'status' => 0, 'degree' => 'لیسانس']);
+
         Staff::create(['user_id' => $user->id, 'name' => 'امیر', 'family' => 'باغشاهی', 'rolename' => 'مدیر', 'teaching_experience' => 0, 'major' => 'کامپیوتر', "birthday" => "1381-12-25", 'status' => 0, 'degree' => 'لیسانس']);
     }
 }
