@@ -78,6 +78,7 @@ class AccountController extends Controller
                     'mom_phone' => 'nullable|unique:accounts,mom_phone,' . $account->id,
                     'mom_work_address' => 'nullable',
                     'mom_is_dead' => 'required',
+                    'relatives_name' => 'required',
                     'relatives_phone' => 'required|unique:accounts,relatives_phone,' . $account->id,
                     'count_sister' => 'required|string',
                     'count_brother' => 'required|string',
