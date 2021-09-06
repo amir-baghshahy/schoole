@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'status' => '',
             'status_cause' => '',
             'super_user' => true,
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
         ]);
 
         Staff::create(['user_id' => $user->id, 'name' => 'امیر', 'family' => 'باغشاهی', 'rolename' => 'مدیر', 'teaching_experience' => 0, 'major' => 'کامپیوتر', "birthday" => "1381-12-25", 'status' => 0, 'degree' => 'لیسانس']);
