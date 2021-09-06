@@ -84,7 +84,7 @@ class AdminUserController extends Controller
             'count_sister' => 'required|string',
             'count_brother' => 'required|string',
             'count_family' => 'required|string',
-            'several _child_count' => 'required|string',
+            'several_child_count' => 'required|string',
             'nationality' => 'required|string',
             'faith' => 'required|string',
             'religion' => 'required|string',
@@ -93,7 +93,7 @@ class AdminUserController extends Controller
             'last_mark' => 'required|string',
             'last_schoole' => 'required|string',
             'disease_background' => 'nullable',
-            'separation_family_select' => 'required|string'
+            'separation_family_select' => 'nullable',
         ], [
             'phone.unique' => 'شماره تلفن قبلا ثبت شده است ',
             'dad_phone.unique' => 'شماره پدر قبلا ثبت شده است ',

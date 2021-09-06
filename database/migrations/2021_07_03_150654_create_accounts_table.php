@@ -45,7 +45,7 @@ class CreateAccountsTable extends Migration
             $table->string("count_sister")->nullable();
             $table->string("count_brother")->nullable();
             $table->string("count_family")->nullable();
-            $table->string("several _child_count")->nullable();
+            $table->string("several_child_count")->nullable();
             $table->string("nationality")->nullable();
             $table->string("faith")->nullable();
             $table->string("religion")->nullable();

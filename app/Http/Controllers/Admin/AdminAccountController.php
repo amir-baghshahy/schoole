@@ -61,7 +61,7 @@ class AdminAccountController extends Controller
             'count_sister' => 'required|string',
             'count_brother' => 'required|string',
             'count_family' => 'required|string',
-            'several _child_count' => 'required|string',
+            'several_child_count' => 'required|string',
             'nationality' => 'required|string',
             'faith' => 'required|string',
             'religion' => 'required|string',
@@ -70,7 +70,7 @@ class AdminAccountController extends Controller
             'last_mark' => 'required|string',
             'last_schoole' => 'required|string',
             'disease_background' => 'nullable',
-            'separation_family_select' => 'required|string'
+            'separation_family_select' => 'nullable',
         ], [
             'phone.unique' => 'شماره قبلا ثبت شده است ',
             'home_phone.unique' => 'شماره منزل قبلا ثبت شده است ',
