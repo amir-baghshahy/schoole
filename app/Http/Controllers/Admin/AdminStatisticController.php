@@ -40,7 +40,7 @@ class AdminStatisticController extends Controller
         $archive = DB::table('users')->where([['role', '=', '2'], ['archive', '=', true]])->count();
 
         // $staff = User::where('role', '=', '1')->count();
-        $staff = DB::table('users')->where('role', '=', 1)->count();
+        $staff = DB::table('users')->where('role', '=', 1)->orWhere("role","=",0)->count();
 
         // $student = User::where([['status', '=', 'accepted',], ['role', '=', '2']])->archive(false)->count();
         $student = DB::table('users')->where([['role', '=', '2'], ['status', '=', 'accepted'], ['archive', '=', false]])->count();
