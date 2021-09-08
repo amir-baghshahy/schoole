@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'status' => '',
             'status_cause' => '',
             'super_user' => true,
-            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
+            'password' => '12345678',
         ]);
 
         $user1 = User::create([
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             'status' => '',
             'status_cause' => '',
             'super_user' => false,
-            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
+            'password' => '12345678',
         ]);
 
         $user2 = User::create([
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'status' => '',
             'status_cause' => '',
             'super_user' => false,
-            'password' => '$2y$10$OE3mZsWYdl1Hb8LywGljJOzDr2FI/MuFM1qioo5VkotL7i.Gr3./i',
+            'password' => '12345678',
         ]);
 
         Staff::create(['user_id' => $user2->id, 'name' => 'qqqqq', 'family' => 'bbbbbb', 'rolename' => 'مدیر', 'teaching_experience' => 0, 'major' => 'کامپیوتر', "birthday" => "1381-12-25", 'status' => 0, 'degree' => 'لیسانس']);
