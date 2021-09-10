@@ -153,7 +153,7 @@ Route::middleware(['auth:sanctum', 'json.response'])->group(function () {
 
 
         Route::prefix("about")->group(function () {
-            Route::get('about/all', [AboutController::class, 'index']);
+            Route::get('all', [AboutController::class, 'index']);
             Route::put('update', [AdminAboutController::class, 'update']);
         });
 
