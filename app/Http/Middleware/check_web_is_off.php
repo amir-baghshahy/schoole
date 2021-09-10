@@ -23,6 +23,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         } elseif ($setting->web_mode == 1) {
+            error_log($request->user() . PHP_EOL);
             if ($request->user()) {
                 $user_role = $request->user()->role ?? null;
                 if (isset($user_role) && $user_role == 0) {
