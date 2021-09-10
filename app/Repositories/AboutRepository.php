@@ -14,12 +14,7 @@ class AboutRepository
 
     public function index()
     {
-        return  About::all();
-    }
-
-    public function create($request)
-    {
-        return  About::create($request);
+        return  $this->find(1);
     }
 
     public function update($request)

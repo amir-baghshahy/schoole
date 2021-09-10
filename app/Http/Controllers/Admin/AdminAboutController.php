@@ -18,27 +18,9 @@ class AdminAboutController extends Controller
     }
 
 
-    public function create(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'text' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response(['message' => $validator->errors()->first(), 'status' => false], 422);
-        }
-
-        if ($this->repository->create($request->toArray())) {
-            return response(['status' => true]);
-        } else {
-            return response(['status' => false]);
-        }
-    }
-
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
             'text' => 'required|string',
         ]);
 
