@@ -52,7 +52,13 @@ class AdminStaffController extends Controller
             return response(['message' => $validator->errors()->first(), 'status' => false], 422);
         }
 
-        $user = User::create(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role, 'status' => '', 'status_cause' => '']);
+        if ($request->role == 0) {
+            if (auth()->user()->super_user == true) {
+                $user = User::create(['phone' => $request->phone, 'password' => $request->password, 'role' => $request->role, 'status' => '', 'status_cause' => '']);
+            } else {
+                return response(['message' => 'شما به این بخش دسترسی ندارید'], 403);
+            }
+        }
 
         if ($request->file('image')) {
             $request_data = $this->upload_image($request->toArray());
