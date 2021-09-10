@@ -11,7 +11,6 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
-use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
@@ -42,7 +41,7 @@ class AuthController extends Controller
 
 
         if (Auth::attempt($request->only(['phone', 'password']))) {
-            Cache::put('user_role', auth()->user()->role);
+            session(['user_role' => auth()->user()->role]);
             return (new UserResource($user))->additional([
                 'token' => auth()->user()->createToken('register')->plainTextToken,
             ]);
@@ -70,7 +69,7 @@ class AuthController extends Controller
             if (count($check_archiv) == 1) {
                 if ($setting->web_mode == 1) {
                     if (auth()->user()->role == 0) {
-                        Cache::put('user_role', auth()->user()->role);
+                        session(['user_role' => auth()->user()->role]);
                         return (new UserResource(auth()->user()))->additional([
                             'token' => auth()->user()->createToken('login')->plainTextToken,
                         ]);
@@ -78,7 +77,7 @@ class AuthController extends Controller
                         return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
                     }
                 } else {
-                    Cache::put('user_role', auth()->user()->role);
+                    session(['user_role' => auth()->user()->role]);
                     return (new UserResource(auth()->user()))->additional([
                         'token' => auth()->user()->createToken('login')->plainTextToken,
                     ]);
@@ -103,7 +102,7 @@ class AuthController extends Controller
         $delete =  auth()->user()->currentAccessToken()->delete();
 
         if ($delete) {
-            Cache::forget('user_role');
+            session()->forget('user_role');
             return response(['status' => true], 200);
         }
 

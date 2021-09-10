@@ -23,7 +23,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         } elseif ($setting->web_mode == 1) {
-            $user_role = Cache::get('user_role');
+            $user_role = session()->get('user_role');
             file_put_contents("php://stderr", $user_role . PHP_EOL);
             file_put_contents("php://stderr", $user_role == 0 . PHP_EOL);
             if (isset($user_role) && $user_role == 0) {
