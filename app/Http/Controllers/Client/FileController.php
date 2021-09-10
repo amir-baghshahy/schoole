@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Client;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FileResource;
 use App\Repositories\FileRepository;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class FileController extends Controller
 {
@@ -25,6 +27,14 @@ class FileController extends Controller
     public function find($id)
     {
         $file =  $this->repository->find($id);
-        return response()->download(public_path() . "/" . $file->file);
+
+        $response = new Response($file->file);
+
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $file->file
+        );
+
+        return $response->headers->set('Content-Disposition', $disposition);
     }
 }
