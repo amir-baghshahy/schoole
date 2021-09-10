@@ -23,20 +23,7 @@ class check_web_is_off
         if ($setting->web_mode == 0) {
             return $next($request);
         } elseif ($setting->web_mode == 1) {
-            $response = $next($request);
-            error_log($request->user() . PHP_EOL);
-            error_log(auth()->user() . PHP_EOL);
-            if ($request->user()) {
-                $user_role = $request->user()->role ?? null;
-                if (isset($user_role) && $user_role == 0) {
-                    // return $next($request);
-                    return $response;
-                } else {
-                    return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-                }
-            } else {
-                return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
-            }
+            return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
         }
     }
 }
