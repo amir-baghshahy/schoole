@@ -20,13 +20,18 @@ class check_web_is_off
     {
 
         $setting = Setting::find(1)->first();
+
         if ($setting->web_mode == 1) {
+            error_log("ommmmmmmmmmmmmmmad\n");
+            error_log(auth()->user()->role . PHP_EOL);
+            error_log(auth()->user() . PHP_EOL);
             if (auth()->user()->role == 0) {
                 return $next($request);
             } else {
                 return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
             }
+        } else {
+            return $next($request);
         }
-        return $next($request);
     }
 }
