@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StaffResource;
 use App\Repositories\StaffRepository;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminStaffController extends Controller
@@ -156,13 +157,14 @@ class AdminStaffController extends Controller
 
     public function upload_image($request)
     {
-        $file = $request['image'];
-        $filename = "images/staff/" . Str::random(20) . '_' . $file->getClientOriginalName();
-        $location = public_path('images/staff');
-        $file->move($location, $filename);
+        // $file = $request['image'];
+        // $filename = "images/staff/" . Str::random(20) . '_' . $file->getClientOriginalName();
+        // $location = public_path('images/staff');
+        // $file->move($location, $filename);
+        $filename =  Storage::disk('public')->put("staff", $request['image']);
 
         $request_data = $request;
-        $request_data['image'] = $filename;
+        $request_data['image'] = 'storage/' . $filename;
 
         return $request_data;
     }

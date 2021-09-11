@@ -104,11 +104,11 @@ class AdminSliderController extends Controller
         // $filename = "images/sliders/" . Str::random(20) . '_' . $file->getClientOriginalName();
         // $location = public_path('images/sliders');
         // $file->move($location, $filename);
-        $filename =  Storage::put("public/sliders", $request['img']);
+        $filename =  Storage::disk('public')->put("sliders", $request['img']);
 
 
         $request_data = $request;
-        $request_data['img'] = $filename;
+        $request_data['img'] = "storage/" . $filename;
 
         return $request_data;
     }

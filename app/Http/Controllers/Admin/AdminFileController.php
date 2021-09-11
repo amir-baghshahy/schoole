@@ -104,12 +104,13 @@ class AdminFileController extends Controller
     {
         $file = $request['file'];
         if ($request['file']) {
-            $filename = 'media/' . Str::random(20) . '_' . $file->getClientOriginalName();
-            $location = public_path('media');
-            $file->move($location, $filename);
+            // $filename = 'media/' . Str::random(20) . '_' . $file->getClientOriginalName();
+            // $location = public_path('media');
+            // $file->move($location, $filename);
+            $filename =  Storage::disk('public')->put("files", $request['file']);
 
             $request_data = $request;
-            $request_data['file'] = $filename;
+            $request_data['file'] = 'storage/' . $filename;
 
             return $request_data;
         }
