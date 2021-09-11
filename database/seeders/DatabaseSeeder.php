@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\About;
 use App\Models\User;
 use App\Models\Setting;
 use App\Models\Staff;
@@ -20,6 +21,8 @@ class DatabaseSeeder extends Seeder
             'web_mode' => 0,
             'register_mode' => 0
         ]);
+
+        About::create(["text" => ""]);
 
         $user = User::create([
             'phone' => '09140912196',
