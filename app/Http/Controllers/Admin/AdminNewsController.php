@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NewsResource;
 use App\Repositories\NewsRepository;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminNewsController extends Controller
@@ -92,13 +93,14 @@ class AdminNewsController extends Controller
 
     public function upload_image($request)
     {
-        $file = $request['image'];
-        $filename = "images/news/" . Str::random(20) . '_' . $file->getClientOriginalName();
-        $location = public_path('images/news');
-        $file->move($location, $filename);
+        // $file = $request['image'];
+        // $filename = "images/news/" . Str::random(20) . '_' . $file->getClientOriginalName();
+        // $location = public_path('images/news');
+        // $file->move($location, $filename);
+        $filename =  Storage::disk('public')->put("news", $request['image']);
 
         $request_data = $request;
-        $request_data['image'] = $filename;
+        $request_data['image'] = 'storage/' . $filename;
         $request_data['user_id'] = auth()->user()->id;
 
         return $request_data;
