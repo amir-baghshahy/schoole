@@ -24,7 +24,7 @@ class AlbumRepository
 
     public function update($request)
     {
-        return Album::find($request->id)->update($request);
+        return Album::find($request['id'])->update($request);
     }
 
     public function delete($id)
