@@ -22,8 +22,8 @@ class check_web_is_off
         $setting = Setting::find(1)->first();
 
         if ($setting->web_mode == 1) {
-            if($request->user('api')){
-                if($request->user('api')->role == 0){
+            if(auth('api')->user()){
+                if(auth('api')->user()->role == 0){
                       return $next($request);
                 }else{
                     return response(['message' => 'در حال حاضر وبسایت در دسترس نمی باشد', 'code' => '503'], 503);
