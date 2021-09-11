@@ -99,16 +99,17 @@ class AdminSliderController extends Controller
 
     public function upload_image($request)
     {
-        // $file = $request['img'];
-        // $filename = Str::random(20) . '_' . $file->getClientOriginalName();
-        // $filename = "images/sliders/" . Str::random(20) . '_' . $file->getClientOriginalName();
-        // $location = public_path('images/sliders');
-        // $file->move($location, $filename);
-        $filename =  Storage::disk('public')->put("sliders", $request['img']);
+        $file = $request['img'];
+        $filename = Str::random(20) . '_' . $file->getClientOriginalName();
+        $filename = "images/sliders/" . Str::random(20) . '_' . $file->getClientOriginalName();
+        $location = public_path('images/sliders');
+        $file->move($location, $filename);
+        // $filename =  Storage::disk('public')->put("sliders", $request['img']);
 
 
         $request_data = $request;
-        $request_data['img'] = "storage/" . $filename;
+        // $request_data['img'] = "storage/" . $filename;
+        $request_data['img'] =  $filename;
 
         return $request_data;
     }

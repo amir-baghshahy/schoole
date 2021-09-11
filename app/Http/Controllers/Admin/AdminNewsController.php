@@ -93,14 +93,15 @@ class AdminNewsController extends Controller
 
     public function upload_image($request)
     {
-        // $file = $request['image'];
-        // $filename = "images/news/" . Str::random(20) . '_' . $file->getClientOriginalName();
-        // $location = public_path('images/news');
-        // $file->move($location, $filename);
-        $filename =  Storage::disk('public')->put("news", $request['image']);
+        $file = $request['image'];
+        $filename = "images/news/" . Str::random(20) . '_' . $file->getClientOriginalName();
+        $location = public_path('images/news');
+        $file->move($location, $filename);
+        // $filename =  Storage::disk('public')->put("news", $request['image']);
 
         $request_data = $request;
-        $request_data['image'] = 'storage/' . $filename;
+        // $request_data['image'] = 'storage/' . $filename;
+        $request_data['image'] =  $filename;
         $request_data['user_id'] = auth()->user()->id;
 
         return $request_data;

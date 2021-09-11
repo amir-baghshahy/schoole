@@ -115,21 +115,23 @@ class AdminMajorController extends Controller
         $request_data = $request;
 
         if (isset($request['icone'])) {
-            // $icone = $request['icone'];
-            // $icone_name = "images/majors/" . Str::random(20) . '_' . $icone->getClientOriginalName();
-            // $location_icone = public_path('images/majors');
-            // $icone->move($location_icone, $icone_name);
-            $icone_name =  Storage::disk('public')->put("majors", $request['icone']);
-            $request_data['icone'] = 'storage/' . $icone_name;
+            $icone = $request['icone'];
+            $icone_name = "images/majors/" . Str::random(20) . '_' . $icone->getClientOriginalName();
+            $location_icone = public_path('images/majors');
+            $icone->move($location_icone, $icone_name);
+            // $icone_name =  Storage::disk('public')->put("majors", $request['icone']);
+            // $request_data['icone'] = 'storage/' . $icone_name;
+            $request_data['icone'] =  $icone_name;
         }
 
         if (isset($request['media'])) {
-            // $media = $request['media'];
-            // $media_name = "media/" . Str::random(20) . '_' . $media->getClientOriginalName();
-            // $location_media = public_path('media');
-            // $media->move($location_media, $media_name);
-            $media_name =  Storage::disk('public')->put("majors_media", $request['media']);
-            $request_data['media'] = 'storage/' . $media_name;
+            $media = $request['media'];
+            $media_name = "media/" . Str::random(20) . '_' . $media->getClientOriginalName();
+            $location_media = public_path('media');
+            $media->move($location_media, $media_name);
+            // $media_name =  Storage::disk('public')->put("majors_media", $request['media']);
+            // $request_data['media'] = 'storage/' . $media_name;
+            $request_data['media'] =  $media_name;
         }
 
         return $request_data;
